@@ -1,16 +1,25 @@
 /* eslint-disable react/prop-types */
-import Card from "@mui/joy/Card";
-import CardContent from "@mui/joy/CardContent";
-import Grid from "@mui/joy/Grid";
-import Typography from "@mui/joy/Typography";
-import FemaleIcon from "../../assets/FemaleIcon.jpg";
-import MaleIcon from "../../assets/MaleIcon.jpg";
+import { Box, Typography } from "@mui/material";
+import FemaleImg from "../../assets/FemaleIcon.jpg";
+import MaleImg from "../../assets/MaleIcon.jpeg";
 import "./listing.css";
+import { convertToDateObject } from "../../utils";
+import MaleIcon from "@mui/icons-material/Male";
+import FemaleIcon from "@mui/icons-material/Female";
 
 const Listing = ({ excelData }) => {
+  const getFormattedDate = (dateString) => {
+    const dateObj = convertToDateObject(dateString);
+    // Format the date
+    const formattedDate = `${dateObj.getDate()} ${dateObj.toLocaleString(
+      "default",
+      { month: "short" }
+    )}, ${dateObj.getFullYear()}`;
+    return formattedDate;
+  };
+
   return (
     <div className="MainListingPage">
-      <h2>Listing Page</h2>
       <div
         className="cardContainer"
         style={{
@@ -19,142 +28,384 @@ const Listing = ({ excelData }) => {
           justifyContent: "center",
         }}
       >
-        {/* <Grid container spacing={2} width="100%"> */}
-        {excelData.map((obj, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index}>
-            <Card
-              className="CardMainContainer"
-              orientation="horizontal"
-              sx={{
-                minHeight: "45vh",
-                Width: "10em",
-                display: "flex",
-                flexDirection: "row",
-              }}
-            >
-              <CardContent sx={{ display: "flex", flexDirection: "row" }}>
-                <div style={{ maxWidth: "200px" }}>
-                  <img
-                    src={obj.gender === "Male" ? MaleIcon : FemaleIcon}
-                    srcSet={
-                      obj.gender === "Male" ? `${MaleIcon}` : `${FemaleIcon}`
-                    }
-                    loading="fast"
-                    alt=""
-                    style={{
-                      borderRadius: "50%",
-                      maxHeight: "15vh",
-                      maxWidth: "7.5vw",
-                    }}
-                  />
-                  <Typography
-                    fontSize="xl"
-                    fontWeight="lg"
-                    textAlign="center"
-                    maxWidth={"10vw"}
-                  >
-                    {obj.name}
-                  </Typography>
-                  <Typography
-                    level="body-sm"
-                    fontWeight="lg"
-                    textColor="text.tertiary"
-                  >
-                    <strong>
-                      Gender: <br />
-                    </strong>
-                    {obj.gender}
-                  </Typography>
-                  <Typography
-                    fontSize={"14px"}
-                    level="body-sm"
-                    fontWeight="lg"
-                    textColor="text.tertiary"
-                  >
-                    <strong>
-                      Qualification: <br />
-                    </strong>
-                    {obj.qualification}
-                  </Typography>
-                  <Typography
-                    level="body-sm"
-                    fontWeight="lg"
-                    textColor="text.tertiary"
-                  >
-                    <strong>
-                      Education: <br />
-                    </strong>
-                    {obj.education}
-                  </Typography>
-                  <Typography
-                    level="body-sm"
-                    fontWeight="lg"
-                    textColor="text.tertiary"
-                  >
-                    <strong>
-                      Date Of Birth: <br />
-                    </strong>
-                    {obj.dateOfBirth}
-                  </Typography>
-                  <Typography
-                    level="body-sm"
-                    fontWeight="lg"
-                    textColor="text.tertiary"
-                  >
-                    <strong>
-                      Height: <br />
-                    </strong>
-                    {obj.height}
-                  </Typography>
-                  <Typography
-                    level="body-sm"
-                    fontWeight="lg"
-                    textColor="text.tertiary"
-                  >
-                    <strong>
-                      Weight: <br />
-                    </strong>
-                    {obj.weight}
-                  </Typography>
+        {excelData.map((obj, index) => {
+          return (
+            <>
+              <div key={index} className="container">
+                <div className="card_box">
+                  <span data-id={`ID: ${obj.id}`}></span>
+                  <div className="card_grid_container">
+                    <div className="left_side_card">
+                      <img
+                        src={obj.gender === "male" ? MaleImg : FemaleImg}
+                        loading="fast"
+                        alt=""
+                        className="left_profile_avatar"
+                      />
+                      <Box>
+                        <Typography
+                          color={"#fff"}
+                          fontFamily={"Public Sans"}
+                          fontSize={"22px"}
+                          textAlign="center"
+                          fontWeight="bold"
+                        >
+                          {obj.name}
+                        </Typography>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          gap: "20px",
+                          paddingTop: "5px",
+                        }}
+                      >
+                        <Typography
+                          color={"#fff"}
+                          fontFamily={"Public Sans"}
+                          fontSize={"16px"}
+                          textAlign="center"
+                        >
+                          {getFormattedDate(obj.dateOfBirth)}
+                        </Typography>
+                        <Typography
+                          color={"#fff"}
+                          fontFamily={"Public Sans"}
+                          fontSize={"16px"}
+                          textAlign="center"
+                          display={"flex"}
+                          alignItems="center"
+                          gap="5px"
+                        >
+                          {obj.gender === "female" ? "Female" : "Male"}
+                          {obj.gender === "female" ? (
+                            <FemaleIcon
+                              fontSize="small"
+                              sx={{
+                                fill: "#FFB1CB",
+                              }}
+                            />
+                          ) : (
+                            <MaleIcon
+                              fontSize="small"
+                              sx={{
+                                fill: "#01A6EA",
+                              }}
+                            />
+                          )}
+                        </Typography>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          gap: "20px",
+                          paddingTop: "5px",
+                        }}
+                      >
+                        <Typography
+                          color={"#fff"}
+                          fontFamily={"Public Sans"}
+                          fontSize={"16px"}
+                          textAlign="center"
+                        >
+                          <p style={{ display: "inline", color: "#ffb144" }}>
+                            Height:
+                          </p>
+                          {` ${obj.height || "--"}`}
+                        </Typography>
+                      </Box>
+
+                      <Box
+                        sx={{
+                          display: "flex",
+                          gap: "20px",
+                          paddingTop: "5px",
+                        }}
+                      >
+                        <Typography
+                          color={"#fff"}
+                          fontFamily={"Public Sans"}
+                          fontSize={"16px"}
+                          textAlign="center"
+                          display={"flex"}
+                          alignItems="center"
+                          gap="5px"
+                        >
+                          <p style={{ display: "inline", color: "#ffb144" }}>
+                            City:
+                          </p>
+                          {` ${
+                            obj.cityVillage
+                              ? obj.cityVillage?.charAt(0).toUpperCase() +
+                                obj.cityVillage.slice(1).toLowerCase()
+                              : "--"
+                          }`}
+                        </Typography>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          gap: "20px",
+                          paddingTop: "5px",
+                        }}
+                      >
+                        <Typography
+                          color={"#fff"}
+                          fontFamily={"Public Sans"}
+                          fontSize={"16px"}
+                          textAlign="center"
+                          display={"flex"}
+                          alignItems="baseline"
+                          gap="5px"
+                        >
+                          <p style={{ display: "inline", color: "#ffb144" }}>
+                            Qualification:
+                          </p>
+                          {` ${
+                            obj.qualification
+                              ? obj.qualification?.toUpperCase()
+                              : "--"
+                          }`}
+                        </Typography>
+                      </Box>
+                    </div>
+                    <div className="right_side_card">
+                      <Box
+                        sx={{
+                          display: "flex",
+                          gap: "20px",
+                          paddingTop: "5px",
+                        }}
+                      >
+                        <Typography
+                          color={"#fff"}
+                          fontFamily={"Public Sans"}
+                          fontSize={"16px"}
+                          display={"flex"}
+                          gap="5px"
+                          className="detail_tag"
+                        >
+                          <p
+                            style={{
+                              display: "inline",
+                              color: "#ffb144",
+                              maxWidth: "160px",
+                            }}
+                          >
+                            Weight/Other Information:
+                          </p>
+                          {` ${obj.weight || "--"}`}
+                        </Typography>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          gap: "20px",
+                          paddingTop: "5px",
+                        }}
+                      >
+                        <Typography
+                          color={"#fff"}
+                          fontFamily={"Public Sans"}
+                          fontSize={"16px"}
+                          display={"flex"}
+                          alignItems="baseline"
+                          gap="5px"
+                          className="detail_tag"
+                        >
+                          <p
+                            style={{
+                              display: "inline",
+                              color: "#ffb144",
+                              minWidth: "160px",
+                            }}
+                          >
+                            Education:
+                          </p>
+                          {` ${obj.education || "--"}`}
+                        </Typography>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          gap: "20px",
+                          paddingTop: "5px",
+                        }}
+                      >
+                        <Typography
+                          color={"#fff"}
+                          fontFamily={"Public Sans"}
+                          fontSize={"16px"}
+                          display={"flex"}
+                          alignItems="baseline"
+                          gap="5px"
+                          className="detail_tag"
+                        >
+                          <p
+                            style={{
+                              display: "inline",
+                              color: "#ffb144",
+                              minWidth: "160px",
+                            }}
+                          >
+                            Marital Status:
+                          </p>
+                          {` ${
+                            obj.maritalStatus
+                              ? obj.maritalStatus?.charAt(0).toUpperCase() +
+                                obj.maritalStatus.slice(1).toLowerCase()
+                              : "--"
+                          }`}
+                        </Typography>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          gap: "20px",
+                          paddingTop: "5px",
+                        }}
+                      >
+                        <Typography
+                          color={"#fff"}
+                          fontFamily={"Public Sans"}
+                          fontSize={"16px"}
+                          display={"flex"}
+                          alignItems="baseline"
+                          gap="5px"
+                          className="detail_tag"
+                        >
+                          <p
+                            style={{
+                              display: "inline",
+                              color: "#ffb144",
+                              minWidth: "160px",
+                            }}
+                          >
+                            Father's Name:
+                          </p>
+                          {` ${obj.fatherName || "--"}`}
+                        </Typography>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          gap: "20px",
+                          paddingTop: "5px",
+                        }}
+                      >
+                        <Typography
+                          color={"#fff"}
+                          fontFamily={"Public Sans"}
+                          fontSize={"16px"}
+                          display={"flex"}
+                          alignItems="baseline"
+                          gap="5px"
+                          className="detail_tag"
+                        >
+                          <p
+                            style={{
+                              display: "inline",
+                              color: "#ffb144",
+                              minWidth: "160px",
+                            }}
+                          >
+                            Father's Occupation:
+                          </p>
+                          {` ${obj.fatherOccupation || "--"}`}
+                        </Typography>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          gap: "20px",
+                          paddingTop: "5px",
+                        }}
+                      >
+                        <Typography
+                          color={"#fff"}
+                          fontFamily={"Public Sans"}
+                          fontSize={"16px"}
+                          display={"flex"}
+                          alignItems="baseline"
+                          gap="5px"
+                          className="detail_tag"
+                        >
+                          <p
+                            style={{
+                              display: "inline",
+                              color: "#ffb144",
+                              minWidth: "160px",
+                            }}
+                          >
+                            Mother's Name:
+                          </p>
+                          {` ${obj.motherName || "--"}`}
+                        </Typography>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          gap: "20px",
+                          paddingTop: "5px",
+                        }}
+                      >
+                        <Typography
+                          color={"#fff"}
+                          fontFamily={"Public Sans"}
+                          fontSize={"16px"}
+                          display={"flex"}
+                          alignItems="baseline"
+                          gap="5px"
+                          className="detail_tag"
+                        >
+                          <p
+                            style={{
+                              display: "inline",
+                              color: "#ffb144",
+                              minWidth: "160px",
+                            }}
+                          >
+                            Cast:
+                          </p>
+                          {` ${obj.subCast || "--"}`}
+                        </Typography>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          gap: "20px",
+                          paddingTop: "5px",
+                        }}
+                      >
+                        <Typography
+                          color={"#fff"}
+                          fontFamily={"Public Sans"}
+                          fontSize={"16px"}
+                          display={"flex"}
+                          alignItems="baseline"
+                          gap="5px"
+                          className="detail_tag"
+                          sx={{ wordBreak: "break-all" }}
+                        >
+                          <p
+                            style={{
+                              display: "inline",
+                              color: "#ffb144",
+                              minWidth: "160px",
+                            }}
+                          >
+                            Contact:
+                          </p>
+                          {` ${obj.contactNumber || "--"}`}
+                        </Typography>
+                      </Box>
+                    </div>
+                  </div>
                 </div>
-                <hr />
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "auto auto",
-                    gap: "10px",
-                  }}
-                >
-                  <Typography level="body-xs" fontWeight="lg" maxWidth="10vw">
-                    <strong>ID No. :</strong> {obj.id}
-                  </Typography>
-                  <Typography level="body-xs" fontWeight="lg" maxWidth="10vw">
-                    <strong>Father's Name:</strong> {obj.fatherName}
-                  </Typography>
-                  <Typography level="body-xs" fontWeight="lg" maxWidth="10vw">
-                    <strong>Father's Occupation:</strong> {obj.fatherOccupation}
-                  </Typography>
-                  <Typography level="body-xs" fontWeight="lg" maxWidth="10vw">
-                    <strong>Mother's Name:</strong> {obj.motherName}
-                  </Typography>
-                  <Typography level="body-xs" fontWeight="lg" maxWidth="10vw">
-                    <strong>Current Profile:</strong> {obj.currentProfile}
-                  </Typography>
-                  <Typography level="body-xs" fontWeight="lg" maxWidth="10vw">
-                    <strong>Marital Status:</strong> {obj.maritalStatus}
-                  </Typography>
-                  <Typography level="body-xs" fontWeight="lg" maxWidth="10vw">
-                    <strong>Contact Number:</strong> {obj.contactNumber}
-                  </Typography>
-                  <Typography level="body-xs" fontWeight="lg" maxWidth="10vw">
-                    <strong>68 Sub Cast:</strong> {obj.subCast}
-                  </Typography>
-                </div>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-        {/* </Grid> */}
+              </div>
+            </>
+          );
+        })}
       </div>
     </div>
   );

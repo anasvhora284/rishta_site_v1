@@ -1,34 +1,82 @@
 body {
-    background: url(../../assets/SearchPage.png) no-repeat fixed;
-    background-size: auto;
-    max-height: 100vh;
+  background: url(../../assets/SearchPage.png) no-repeat fixed;
+  background-size: auto;
+  max-height: 100vh;
 }
 
 .cardContainer {
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
 }
 
 .MuiTypography-root Strong {
-    font-size: large;
-    color: black;
-    display: block;
+  font-size: large;
+  color: black;
+  display: block;
 }
 
-.MainListingPage .MuiTypography-root {
+/* .MainListingPage .MuiTypography-root {
     font-size: large;
     color: black;
     max-width: 10vw;
+} */
+
+.card_grid_container {
+  display: grid;
+  grid-template-columns: 40% 60%;
+  padding: 25px;
+}
+
+.left_side_card {
+  border-right: 1px solid white;
+  min-height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-right: 20px;
+}
+.left_profile_avatar {
+  border-radius: 50%;
+  max-height: 100px;
+  max-width: unset;
+  margin-block-end: 16px;
+}
+.right_side_card {
+  margin-inline-start: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@media only screen and (max-width: 767px) {
+  .card_grid_container {
+    grid-template-columns: auto;
+  }
+  .left_side_card {
+    border-right: none;
+    border-bottom: 1px solid white;
+    padding-right: unset;
+    padding-bottom: 20px;
+  }
+
+  .right_side_card {
+    margin-top: 20px;
+    margin-inline-start: unset;
+    gap: 20px;
+  }
+  .detail_tag {
+    flex-direction: column;
+  }
 }
 
 .CardMainContainer {
-/* From https://css.glass */
-background: rgba(0, 0, 0, 0.14);
-border-radius: 16px;
-box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-backdrop-filter: blur(8.2px);
--webkit-backdrop-filter: blur(8.2px);
-border: 1px solid rgba(0, 0, 0, 0.3);
-
+  /* From https://css.glass */
+  background: rgba(0, 0, 0, 0.14);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(8.2px);
+  -webkit-backdrop-filter: blur(8.2px);
+  border: 1px solid rgba(0, 0, 0, 0.3);
 }

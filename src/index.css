@@ -13,6 +13,80 @@ input[type="number"]::-webkit-outer-spin-button {
   margin-right: 0;
   margin-left: 0;
 }
+
+:root {
+  --dynamic-id: 1;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.container:first-child {
+  margin-top: 60px;
+}
+.container:last-child {
+  margin-bottom: 60px;
+}
+.card_box {
+  width: 768px;
+  border-radius: 20px;
+  background: linear-gradient(
+    170deg,
+    rgba(58, 56, 56, 0.623) 0%,
+    rgb(31, 31, 31) 100%
+  );
+  position: relative;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.55);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.card_box span {
+  position: absolute;
+  overflow: hidden;
+  width: 100px;
+  height: 100px;
+  top: -4px;
+  left: -4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card_box span::before {
+  content: attr(data-id);
+  position: absolute;
+  width: 150%;
+  height: 30px;
+  background-image: linear-gradient(
+    45deg,
+    #ff6547 0%,
+    #ffb144 51%,
+    #ff7053 100%
+  );
+  transform: rotate(-45deg) translateY(-20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.23);
+}
+
+@media only screen and (max-width: 767px) {
+  /* Your mobile styles go here */
+  .card_box {
+    width: calc(100vw - 60px);
+  }
+  .container {
+    margin: 30px;
+  }
+}
+
 /* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

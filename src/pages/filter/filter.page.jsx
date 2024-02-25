@@ -356,7 +356,8 @@ const Filter = ({
                       </MenuItem>
                       {qualificationValues.map((value) => (
                         <MenuItem key={value} value={value}>
-                          {value}
+                          {value.charAt(0).toUpperCase() +
+                            value.slice(1).toLowerCase()}
                         </MenuItem>
                       ))}
                     </Select>
@@ -387,7 +388,8 @@ const Filter = ({
                       </MenuItem>
                       {cityValues.map((value) => (
                         <MenuItem key={value} value={value}>
-                          {value}
+                          {value.charAt(0).toUpperCase() +
+                            value.slice(1).toLowerCase()}
                         </MenuItem>
                       ))}
                     </Select>
@@ -429,7 +431,8 @@ const Filter = ({
                       </MenuItem>
                       {maritalStatusValues.map((value) => (
                         <MenuItem key={value} value={value}>
-                          {value}
+                          {value.charAt(0).toUpperCase() +
+                            value.slice(1).toLowerCase()}
                         </MenuItem>
                       ))}
                     </Select>
@@ -460,7 +463,8 @@ const Filter = ({
                       </MenuItem>
                       {genderData.map((value) => (
                         <MenuItem key={value} value={value}>
-                          {value}
+                          {value.charAt(0).toUpperCase() +
+                            value.slice(1).toLowerCase()}
                         </MenuItem>
                       ))}
                     </Select>

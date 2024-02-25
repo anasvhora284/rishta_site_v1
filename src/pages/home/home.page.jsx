@@ -25,7 +25,11 @@ const Home = () => {
   return (
     <>
       {currentPage === "listing" ? (
-        <Listing setCurrentPage={setCurrentPage} excelData={excelData} />
+        <Listing
+          setCurrentPage={setCurrentPage}
+          excelData={excelData}
+          setExcelData={setExcelData}
+        />
       ) : (
         <Filter setCurrentPage={setCurrentPage} />
       )}

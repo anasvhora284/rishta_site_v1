@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Filter from "../filter/filter.page";
@@ -6,6 +7,10 @@ import Listing from "../listing/listing.page";
 const Home = () => {
   const [excelData, setExcelData] = useState([]);
   const [currentPage, setCurrentPage] = useState("filter");
+  const [cityValues, setCityValues] = useState([]);
+  const [qualificationValues, setQualificationValues] = useState([]);
+  const [maritalStatusValues, setMaritalStatusValues] = useState([]);
+  const [genderData, setGenderData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,7 +38,7 @@ const Home = () => {
                   obj.name = row[index];
                   break;
                 case "Gender":
-                  obj.gender = row[index];
+                  obj.gender = String(row[index]).toLowerCase();
                   break;
                 case "Boy's / Girl's Current Profile ":
                   obj.currentProfile = row[index];
@@ -48,13 +53,13 @@ const Home = () => {
                   obj.motherName = row[index];
                   break;
                 case "City / Village":
-                  obj.cityVillage = row[index];
+                  obj.cityVillage = String(row[index]).toLowerCase();
                   break;
                 case "Date of Birth":
                   obj.dateOfBirth = row[index];
                   break;
                 case "Marital Status":
-                  obj.maritalStatus = row[index];
+                  obj.maritalStatus = String(row[index]).toLowerCase();
                   break;
                 case "Height":
                   obj.height = row[index];
@@ -69,13 +74,72 @@ const Home = () => {
                   obj.subCast = row[index];
                   break;
                 case "Qualification":
-                  obj.qualification = row[index];
+                  obj.qualification = String(row[index]).toLowerCase();
                   break;
                 default:
                   obj[header] = row[index];
               }
             });
+            obj.education = row[3];
             return obj;
+          });
+
+          const cities = excelData
+            .slice(1) // Skip the header row
+            .map(
+              (row) =>
+                row[8]?.charAt(0).toLowerCase() + row[8].slice(1).toLowerCase()
+            ) // Convert to lowercase
+            .filter(
+              (city) =>
+                city !== undefined && city !== null && city.trim() !== ""
+            ); // Filter out empty values
+
+          setCityValues((prevCities) => {
+            const uniqueCities = Array.from(
+              new Set([...prevCities, ...cities])
+            );
+            return uniqueCities;
+          });
+
+          // Extract qualifications from the 16th column (index 15) of Excel data
+          const qualifications = excelData
+            .slice(1) // Skip the header row
+            .map((row) =>
+              (
+                row[15].charAt(0).toLowerCase() + row[15].slice(1).toLowerCase()
+              ).trim()
+            ); // Convert to lowercase
+          setQualificationValues((prevQualifications) => {
+            const uniqueQualifications = [
+              ...new Set([...prevQualifications, ...qualifications]),
+            ];
+            return uniqueQualifications;
+          });
+
+          // Extract marital statuses from the 11th column (index 10) of Excel data
+          const maritalStatuses = excelData
+            .slice(1) // Skip the header row
+            .map((row) =>
+              (
+                row[10].charAt(0).toLowerCase() + row[10].slice(1).toLowerCase()
+              ).trim()
+            ); // Convert to lowercase
+          setMaritalStatusValues((prevMaritalStatuses) => {
+            const uniqueMaritalStatuses = Array.from(
+              new Set([...prevMaritalStatuses, ...maritalStatuses])
+            );
+            return uniqueMaritalStatuses;
+          });
+
+          const gender = excelData
+            .slice(1) // Skip the header row
+            .map((row) => row[2].toLowerCase().trim()); // Convert to lowercase
+          setGenderData((prevGenderData) => {
+            const uniqueGenderData = Array.from(
+              new Set([...prevGenderData, ...gender])
+            );
+            return uniqueGenderData;
           });
 
           // Set the processed data in the state variable
@@ -97,7 +161,15 @@ const Home = () => {
           setExcelData={setExcelData}
         />
       ) : (
-        <Filter setCurrentPage={setCurrentPage} />
+        <Filter
+          excelData={excelData}
+          setExcelData={setExcelData}
+          setCurrentPage={setCurrentPage}
+          qualificationValues={qualificationValues}
+          cityValues={cityValues}
+          maritalStatusValues={maritalStatusValues}
+          genderData={genderData}
+        />
       )}
     </>
   );

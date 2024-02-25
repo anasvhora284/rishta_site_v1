@@ -1,0 +1,34 @@
+body {
+    background: url(../../assets/SearchPage.png) no-repeat;
+    background-size: auto;
+    max-height: 100vh;
+}
+
+.cardContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.MuiTypography-root Strong {
+    font-size: large;
+    color: black;
+    display: block;
+}
+
+.MuiTypography-root {
+    font-size: large;
+    color: black;
+    max-width: 10vw;
+}
+
+.CardMainContainer {
+/* From https://css.glass */
+background: rgba(0, 0, 0, 0.14);
+border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(8.2px);
+-webkit-backdrop-filter: blur(8.2px);
+border: 1px solid rgba(0, 0, 0, 0.3);
+
+}

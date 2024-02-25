@@ -1,7 +1,28 @@
-import { Button } from "@mui/material";
+/* eslint-disable react/prop-types */
+import {
+  Box,
+  Button,
+  Card,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { useState } from "react";
+import samajLogo from "../../assets/SplashScreenLogo.png";
 
 // eslint-disable-next-line react/prop-types
-const Filter = ({ setCurrentPage }) => {
+const Filter = ({
+  excelData,
+  setExcelData,
+  setCurrentPage,
+  qualificationValues,
+  cityValues,
+  maritalStatusValues,
+  genderData,
+}) => {
   //color codes :
 
   // #1f4373
@@ -10,22 +31,461 @@ const Filter = ({ setCurrentPage }) => {
   // #f28F16
   // #d90404
 
+  const [fromAge, setFromAge] = useState("");
+  const [toAge, setToAge] = useState("");
+  const [fromAgeError, setFromAgeError] = useState({
+    isError: false,
+    message: "",
+  });
+  const [toAgeError, setToAgeError] = useState({
+    isError: false,
+    message: "",
+  });
+  const [qualification, setQualification] = useState("");
+  const [city, setCity] = useState("");
+  const [maritalStatus, setMaritalStatus] = useState("");
+  const [gender, setGender] = useState("");
+
   const handleSubmit = () => {
+    const filteredData = excelData.filter((data) => {
+      // Filter by age
+      const dobFromData = data.dateOfBirth.replaceAll("-", "/");
+
+      function calculateAge(dateString) {
+        // Convert unformatted date to a standardized format (dd-mm-yyyy)
+        const formattedDate = convertToDateObject(dateString);
+
+        // Get current date
+        const currentDate = new Date();
+
+        // Calculate age
+        let age = currentDate.getFullYear() - formattedDate.getFullYear();
+
+        // Check if birthday has occurred for the current year
+        if (
+          currentDate.getMonth() < formattedDate.getMonth() ||
+          (currentDate.getMonth() === formattedDate.getMonth() &&
+            currentDate.getDate() < formattedDate.getDate())
+        ) {
+          age--;
+        }
+
+        return age;
+      }
+
+      function convertToDateObject(unformattedDate) {
+        // Replace both '-' and '/' with a consistent separator, e.g., '-'
+        const standardizedDateStr = unformattedDate.replace(/[/]/g, "-");
+
+        // Split the standardized date string into day, month, and year
+        const dateComponents = standardizedDateStr.split("-");
+
+        // Ensure each component is parsed as an integer
+        const day = parseInt(dateComponents[0], 10);
+        const month = parseInt(dateComponents[1], 10) - 1; // Months are 0-based in JavaScript Date
+        const year = parseInt(dateComponents[2], 10);
+
+        // Create a Date object from the parsed components
+        const formattedDate = new Date(year, month, day);
+
+        return formattedDate;
+      }
+
+      const userAge = calculateAge(dobFromData);
+
+      if (
+        (fromAge && userAge < parseInt(fromAge)) ||
+        (toAge && userAge > parseInt(toAge))
+      ) {
+        return false;
+      }
+
+      // Filter by other criteria
+      return (
+        (!qualification || data.qualification === qualification) &&
+        (!gender || data.gender === gender) &&
+        (!city || data.cityVillage === city) &&
+        (!maritalStatus || data.maritalStatus === maritalStatus)
+      );
+    });
+    setExcelData(filteredData);
     setCurrentPage("listing");
   };
 
+  const handleFromAgeChange = (event) => {
+    const value = event.target.value;
+    const regex = /^[0-9]+$/;
+
+    if (["e", "E", "-"].some((char) => value.includes(char))) {
+      return;
+    }
+
+    if (regex.test(value) || !value) {
+      setFromAge(event.target.value);
+    }
+    // Validate toAge against fromAge
+    if (!value) {
+      setFromAgeError({
+        isError: false,
+        message: "",
+      });
+      return;
+    }
+    if (value <= 0) {
+      setFromAgeError({
+        isError: true,
+        message: "From age must be greater than 0",
+      });
+      return;
+    } else {
+      setFromAgeError({
+        isError: false,
+        message: "",
+      });
+    }
+    if (value > 100) {
+      setFromAgeError({
+        isError: true,
+        message: "From age must be less than 100",
+      });
+      return;
+    } else {
+      setFromAgeError({
+        isError: false,
+        message: "",
+      });
+    }
+
+    if (value && toAge && Number(toAge) < Number(value)) {
+      setToAgeError({
+        isError: true,
+        message: "To age cannot be less than From age",
+      });
+      return;
+    } else {
+      setToAgeError({
+        isError: false,
+        message: "",
+      });
+    }
+  };
+
+  const handleToAgeChange = (event) => {
+    const value = event.target.value;
+    const regex = /^[0-9]+$/;
+
+    if (["e", "E", "-"].some((char) => value.includes(char))) {
+      return;
+    }
+
+    if (regex.test(value) || !value) {
+      setToAge(event.target.value);
+    }
+    // Validate against fromAge
+    if (!value) {
+      setToAgeError({
+        isError: false,
+        message: "",
+      });
+      return;
+    }
+    if (value <= 0) {
+      setToAgeError({
+        isError: true,
+        message: "To age must be greater than 0",
+      });
+      return;
+    } else {
+      setToAgeError({
+        isError: false,
+        message: "",
+      });
+    }
+
+    if (value > 100) {
+      setToAgeError({
+        isError: true,
+        message: "To age must be less than 100",
+      });
+      return;
+    } else {
+      setToAgeError({
+        isError: false,
+        message: "",
+      });
+    }
+    if (fromAge && value && Number(value) < Number(fromAge)) {
+      setToAgeError({
+        isError: true,
+        message: "To age cannot be less than From age",
+      });
+      return;
+    } else {
+      setToAgeError({
+        isError: false,
+        message: "",
+      });
+    }
+  };
+
+  const handleChangeQualification = (event) => {
+    setQualification(event.target.value);
+  };
+
+  const handleChangeCity = (event) => {
+    setCity(event.target.value);
+  };
+
+  const handleChangeMaritalStatus = (event) => {
+    setMaritalStatus(event.target.value);
+  };
+
+  const handleChangeGender = (event) => {
+    setGender(event.target.value);
+  };
   return (
     <div
       style={{
-        minHeight: "100vh",
-        height: "100%",
-        width: "100%",
-        backgroundColor: "#FCF5ED",
+        backgroundColor: "#f1ffd4",
       }}
     >
-      <Button variant="contained" onClick={handleSubmit}>
-        Submit
-      </Button>
+      <div
+        style={{
+          minHeight: "100vh",
+          height: "100%",
+          width: "100%",
+          maxWidth: "1140px",
+          margin: "auto",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "16px",
+            marginBlockEnd: "20px",
+          }}
+        >
+          <img src={samajLogo} height={"100px"} width={"100px"} />
+          <Box sx={{ display: "flex", flexDirection: "column" }}>
+            <Typography color={"#1f4373"} fontSize={"20px"} fontWeight={600}>
+              ચરોતર સુન્ની વ્હોરા સુધારક મંડળ - 68 અટક
+            </Typography>
+            <Typography color={"#000"} fontSize={"20px"} fontWeight={600}>
+              Rishta Group
+            </Typography>
+          </Box>
+        </div>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Card sx={{ padding: "25px" }}>
+            <InputLabel sx={{ marginBottom: "4px" }}>Age:</InputLabel>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "16px",
+              }}
+            >
+              <TextField
+                label="From Age"
+                value={fromAge}
+                onChange={handleFromAgeChange}
+                margin="normal"
+                fullWidth
+                error={fromAgeError.isError}
+                helperText={fromAgeError.message}
+                sx={{
+                  minHeight: "78px",
+                }}
+              />
+              <TextField
+                label="To Age"
+                value={toAge}
+                onChange={handleToAgeChange}
+                margin="normal"
+                fullWidth
+                error={toAgeError.isError}
+                helperText={toAgeError.message}
+                sx={{ minHeight: "78px" }}
+              />
+            </Box>
+
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "16px",
+              }}
+            >
+              <Box sx={{ width: "100%" }}>
+                <InputLabel sx={{ marginBottom: "4px" }}>
+                  Qualification:
+                </InputLabel>
+                <Box
+                  sx={{ display: "flex", gap: "20px", marginBottom: "15px" }}
+                >
+                  <FormControl sx={{ width: "100%" }}>
+                    <Select
+                      value={qualification}
+                      onChange={handleChangeQualification}
+                      displayEmpty
+                      MenuProps={{
+                        PaperProps: {
+                          style: {
+                            maxHeight: 200, // Set your desired max height here
+                          },
+                        },
+                      }}
+                    >
+                      <MenuItem value={""}>
+                        <p>All</p>
+                      </MenuItem>
+                      {qualificationValues.map((value) => (
+                        <MenuItem key={value} value={value}>
+                          {value}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Box>
+              </Box>
+
+              <Box sx={{ width: "100%" }}>
+                <InputLabel sx={{ marginBottom: "4px" }}>City:</InputLabel>
+                <Box
+                  sx={{ display: "flex", gap: "20px", marginBottom: "15px" }}
+                >
+                  <FormControl sx={{ width: "100%" }}>
+                    <Select
+                      value={city}
+                      onChange={handleChangeCity}
+                      displayEmpty
+                      MenuProps={{
+                        PaperProps: {
+                          style: {
+                            maxHeight: 200, // Set your desired max height here
+                          },
+                        },
+                      }}
+                    >
+                      <MenuItem value={""}>
+                        <p>All</p>
+                      </MenuItem>
+                      {cityValues.map((value) => (
+                        <MenuItem key={value} value={value}>
+                          {value}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Box>
+              </Box>
+            </Box>
+
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "16px",
+              }}
+            >
+              <Box sx={{ width: "100%" }}>
+                <InputLabel sx={{ marginBottom: "4px" }}>
+                  Marital Status:
+                </InputLabel>
+                <Box
+                  sx={{ display: "flex", gap: "20px", marginBottom: "15px" }}
+                >
+                  <FormControl sx={{ width: "100%" }}>
+                    <Select
+                      value={maritalStatus}
+                      onChange={handleChangeMaritalStatus}
+                      displayEmpty
+                      MenuProps={{
+                        PaperProps: {
+                          style: {
+                            maxHeight: 200, // Set your desired max height here
+                          },
+                        },
+                      }}
+                    >
+                      <MenuItem value={""}>
+                        <p>All</p>
+                      </MenuItem>
+                      {maritalStatusValues.map((value) => (
+                        <MenuItem key={value} value={value}>
+                          {value}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Box>
+              </Box>
+
+              <Box sx={{ width: "100%" }}>
+                <InputLabel sx={{ marginBottom: "4px" }}>Gender:</InputLabel>
+                <Box
+                  sx={{ display: "flex", gap: "20px", marginBottom: "15px" }}
+                >
+                  <FormControl sx={{ width: "100%" }}>
+                    <Select
+                      value={gender}
+                      onChange={handleChangeGender}
+                      displayEmpty
+                      MenuProps={{
+                        PaperProps: {
+                          style: {
+                            maxHeight: 200, // Set your desired max height here
+                          },
+                        },
+                      }}
+                    >
+                      <MenuItem value={""}>
+                        <p>All</p>
+                      </MenuItem>
+                      {genderData.map((value) => (
+                        <MenuItem key={value} value={value}>
+                          {value}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Box>
+              </Box>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+                marginBlockStart: "10px",
+              }}
+            >
+              <Button
+                variant="contained"
+                disabled={fromAgeError.isError || toAgeError.isError}
+                onClick={handleSubmit}
+              >
+                Submit
+              </Button>
+            </Box>
+          </Card>
+        </Box>
+      </div>
     </div>
   );
 };

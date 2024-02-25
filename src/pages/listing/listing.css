@@ -1,5 +1,5 @@
 body {
-    background: url(../../assets/SearchPage.png) no-repeat;
+    background: url(../../assets/SearchPage.png) no-repeat fixed;
     background-size: auto;
     max-height: 100vh;
 }
@@ -16,7 +16,7 @@ body {
     display: block;
 }
 
-.MuiTypography-root {
+.MainListingPage .MuiTypography-root {
     font-size: large;
     color: black;
     max-width: 10vw;

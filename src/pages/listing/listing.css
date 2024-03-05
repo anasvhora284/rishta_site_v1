@@ -16,12 +16,6 @@
   display: block;
 }
 
-/* .MainListingPage .MuiTypography-root {
-    font-size: large;
-    color: black;
-    max-width: 10vw;
-} */
-
 .card_grid_container {
   display: grid;
   grid-template-columns: 40% 60%;

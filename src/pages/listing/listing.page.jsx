@@ -1,11 +1,12 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/prop-types */
+import FemaleIcon from "@mui/icons-material/Female";
+import MaleIcon from "@mui/icons-material/Male";
 import { Box, Typography } from "@mui/material";
 import FemaleImg from "../../assets/FemaleIcon.jpg";
 import MaleImg from "../../assets/MaleIcon.jpeg";
-import "./listing.css";
 import { convertToDateObject } from "../../utils";
-import MaleIcon from "@mui/icons-material/Male";
-import FemaleIcon from "@mui/icons-material/Female";
+import "./listing.css";
 
 const Listing = ({ excelData }) => {
   const getFormattedDate = (dateString) => {

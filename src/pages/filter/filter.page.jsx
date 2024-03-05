@@ -11,6 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
+import RishtaImage from "../../assets/RishtaSuggestedImage.jpg";
 import samajLogo from "../../assets/SplashScreenLogo.png";
 import { calculateAge } from "../../utils";
 
@@ -208,6 +209,7 @@ const Filter = ({
     <div
       style={{
         backgroundColor: "#f1ffd4",
+        width: "100%",
       }}
     >
       <div
@@ -242,6 +244,12 @@ const Filter = ({
               Rishta Group
             </Typography>
           </Box>
+          <img
+            src={RishtaImage}
+            height={"100px"}
+            width={"100px"}
+            style={{ borderRadius: "50%" }}
+          />
         </div>
         <Box
           sx={{

@@ -1,7 +1,7 @@
-body {
+.MainListingPage {
   background: url(../../assets/SearchPage.png) no-repeat fixed;
   background-size: auto;
-  max-height: 100vh;
+  /* max-height: 100vh; */
 }
 
 .cardContainer {

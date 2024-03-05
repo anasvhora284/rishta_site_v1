@@ -3,6 +3,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Filter from "../filter/filter.page";
 import Listing from "../listing/listing.page";
+import Loader from "../loader/loader.page";
+import "./home.css";
 
 const Home = () => {
   const [excelData, setExcelData] = useState([]);
@@ -11,10 +13,12 @@ const Home = () => {
   const [qualificationValues, setQualificationValues] = useState([]);
   const [maritalStatusValues, setMaritalStatusValues] = useState([]);
   const [genderData, setGenderData] = useState([]);
+  const [loader, setLoader] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoader(true);
         // Fetch all Excel data
         const excelDataResponse = await axios.get(
           "https://script.google.com/macros/s/AKfycbwtA1B-M3F3V-53MoKt2PgPGgBQOfLzst4ckDvsjI7xJgdTOyuyPcS7fbBzhALBI8g/exec"
@@ -145,33 +149,43 @@ const Home = () => {
           // Set the processed data in the state variable
           setExcelData(processedData);
         }
+
+        setLoader(false);
       } catch (error) {
         console.error("Error fetching data:", error);
+        setLoader(false);
       }
     };
     fetchData();
   }, []);
 
   return (
-    <>
-      {currentPage === "listing" ? (
-        <Listing
-          setCurrentPage={setCurrentPage}
-          excelData={excelData}
-          setExcelData={setExcelData}
-        />
+    <div className="HomePageDiv">
+      {loader ? (
+        <Loader />
       ) : (
-        <Filter
-          excelData={excelData}
-          setExcelData={setExcelData}
-          setCurrentPage={setCurrentPage}
-          qualificationValues={qualificationValues}
-          cityValues={cityValues}
-          maritalStatusValues={maritalStatusValues}
-          genderData={genderData}
-        />
+        // Render the main content once data is loaded
+        <>
+          {currentPage === "listing" ? (
+            <Listing
+              setCurrentPage={setCurrentPage}
+              excelData={excelData}
+              setExcelData={setExcelData}
+            />
+          ) : (
+            <Filter
+              excelData={excelData}
+              setExcelData={setExcelData}
+              setCurrentPage={setCurrentPage}
+              qualificationValues={qualificationValues}
+              cityValues={cityValues}
+              maritalStatusValues={maritalStatusValues}
+              genderData={genderData}
+            />
+          )}
+        </>
       )}
-    </>
+    </div>
   );
 };
 

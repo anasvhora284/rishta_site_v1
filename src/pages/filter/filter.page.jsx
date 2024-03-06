@@ -12,7 +12,10 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import samajLogo from "../../assets/SplashScreenLogo.png";
+import samajRishta from "../../assets/samajRishta.png";
 import { calculateAge } from "../../utils";
+import "./filter.css";
+import DevLogo from "../../assets/DevLogo.jpg";
 
 // eslint-disable-next-line react/prop-types
 const Filter = ({
@@ -205,11 +208,7 @@ const Filter = ({
     setGender(event.target.value);
   };
   return (
-    <div
-      style={{
-        backgroundColor: "#f1ffd4",
-      }}
-    >
+    <div>
       <div
         style={{
           minHeight: "100vh",
@@ -223,6 +222,16 @@ const Filter = ({
           alignItems: "center",
         }}
       >
+        {/* <div
+          className="heart"
+          style={{
+            width: "59px",
+            position: "absolute",
+            top: "33px",
+            left: "334px",
+            transform: "rotate(-13deg)",
+          }}
+        ></div> */}
         <div
           style={{
             display: "flex",
@@ -231,17 +240,29 @@ const Filter = ({
             alignItems: "center",
             gap: "16px",
             marginBlockEnd: "20px",
+            background: "rgba(255, 255, 255, 0.25)",
+            backdropFilter: "blur(1.5px)",
+            webkitBackdropFilter: "blur(10.5px)",
+            borderRadius: "10px",
+            border: "1px solid rgba(255, 255, 255, 0.18)",
+            padding: "12px 40px",
           }}
         >
-          <img src={samajLogo} height={"100px"} width={"100px"} />
+          <img src={samajLogo} height={"110px"} width={"110px"} />
           <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <Typography color={"#1f4373"} fontSize={"20px"} fontWeight={600}>
+            <Typography color={"#FFD700"} fontSize={"20px"} fontWeight={600}>
               ચરોતર સુન્ની વ્હોરા સુધારક મંડળ - 68 અટક
             </Typography>
-            <Typography color={"#000"} fontSize={"20px"} fontWeight={600}>
+            <Typography
+              color={"#FFF"}
+              fontSize={"20px"}
+              fontWeight={600}
+              textAlign={"center"}
+            >
               Rishta Group
             </Typography>
           </Box>
+          <img src={samajRishta} height={"100px"} width={"100px"} />
         </div>
         <Box
           sx={{
@@ -451,6 +472,19 @@ const Filter = ({
           </Card>
         </Box>
       </div>
+      {/* <div className="OurTeam_Main_Div">
+        <div className="OurTeam_text">
+          <h1>Our Team</h1>
+        </div>
+        <div className="TeamCard">
+          <div className="TeamCard_Img_Div">
+            <img src={DevLogo} alt="" />
+          </div>
+          <div className="Text_And_InfoDiv">
+            <p>Anas Vhora</p>
+          </div>
+        </div>
+      </div> */}
     </div>
   );
 };

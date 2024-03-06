@@ -1,7 +1,9 @@
 body {
-  background: url(../../assets/SearchPage.png) no-repeat fixed;
-  background-size: auto;
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url(../../assets/SearchPage.png) no-repeat fixed;
+  background-size: cover;
   max-height: 100vh;
+  min-height: -webkit-fill-available;
 }
 
 .cardContainer {
@@ -20,6 +22,43 @@ body {
     font-size: large;
     color: black;
     max-width: 10vw;
+} */
+/* .heart {
+  display: inline-block;
+  width: 200px;
+  aspect-ratio: 1;
+  border-image: radial-gradient(#ff0571 69%, #0000 70%) 84.5%/50%;
+  clip-path: polygon(-41% 0, 50% 91%, 141% 0);
+  animation-name: heartFadeInOut;
+  animation-iteration-count: infinite;
+  animation-duration: 4s;
+}
+
+@keyframes heartFadeInOut {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(0.97);
+  }
+  35% {
+    transform: scale(0.92);
+  }
+  45% {
+    transform: scale(1.1);
+  }
+  55% {
+    transform: scale(0.92);
+  }
+  65% {
+    transform: scale(1.1);
+  }
+  75% {
+    transform: scale(1.03);
+  }
+  100% {
+    transform: scale(1);
+  }
 } */
 
 .card_grid_container {
@@ -50,6 +89,68 @@ body {
   justify-content: center;
 }
 
+.btn-class-name {
+  --primary: 255, 90, 120;
+  --secondary: 150, 50, 60;
+  --ternary: 255, 255, 255;
+  width: 70px;
+  height: 60px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
+  outline: 10px solid rgb(var(--primary), 0.5);
+  border-radius: 100%;
+  position: relative;
+  transition: 0.3s;
+  position: fixed;
+  bottom: 31px;
+  z-index: 10;
+  left: 83%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-class-name .back {
+  background: rgb(var(--secondary));
+  border-radius: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.btn-class-name .front {
+  background: linear-gradient(
+    0deg,
+    rgba(var(--primary), 0.6) 20%,
+    rgba(var(--primary)) 50%
+  );
+  box-shadow: 0 0.5em 1em -0.2em rgba(var(--secondary), 0.5);
+  border-radius: 100%;
+  position: absolute;
+  border: 1px solid rgb(var(--secondary));
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  font-weight: 600;
+  font-family: inherit;
+  transform: translateY(-15%);
+  transition: 0.15s;
+  color: rgb(var(--ternary));
+}
+
+.btn-class-name:active .front {
+  transform: translateY(0%);
+  box-shadow: 0 0;
+}
+
 @media only screen and (max-width: 767px) {
   .card_grid_container {
     grid-template-columns: auto;
@@ -68,6 +169,18 @@ body {
   }
   .detail_tag {
     flex-direction: column;
+  }
+
+  .btn-class-name {
+    bottom: 25px;
+    z-index: 10;
+    left: 78%;
+    width: 60px;
+    height: 50px;
+  }
+
+  .btn-class-name .front {
+    font-size: 1rem;
   }
 }
 

@@ -7,7 +7,7 @@ import { convertToDateObject } from "../../utils";
 import MaleIcon from "@mui/icons-material/Male";
 import FemaleIcon from "@mui/icons-material/Female";
 
-const Listing = ({ excelData }) => {
+const Listing = ({ excelData, setCurrentPage }) => {
   const getFormattedDate = (dateString) => {
     const dateObj = convertToDateObject(dateString);
     // Format the date
@@ -20,6 +20,19 @@ const Listing = ({ excelData }) => {
 
   return (
     <div className="MainListingPage">
+      <button
+        className="btn-class-name"
+        onClick={() => {
+          setCurrentPage("filter");
+        }}
+      >
+        <span className="back"></span>
+        <span className="front">
+          Go
+          <br />
+          Back
+        </span>
+      </button>
       <div
         className="cardContainer"
         style={{
@@ -223,6 +236,34 @@ const Listing = ({ excelData }) => {
                             Education:
                           </p>
                           {` ${obj.education || "--"}`}
+                        </Typography>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          gap: "20px",
+                          paddingTop: "5px",
+                        }}
+                      >
+                        <Typography
+                          color={"#fff"}
+                          fontFamily={"Public Sans"}
+                          fontSize={"16px"}
+                          display={"flex"}
+                          alignItems="baseline"
+                          gap="5px"
+                          className="detail_tag"
+                        >
+                          <p
+                            style={{
+                              display: "inline",
+                              color: "#ffb144",
+                              minWidth: "160px",
+                            }}
+                          >
+                            Current Profile:
+                          </p>
+                          {` ${obj.currentProfile || "--"}`}
                         </Typography>
                       </Box>
                       <Box

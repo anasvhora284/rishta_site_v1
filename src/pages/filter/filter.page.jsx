@@ -11,6 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
+import RishtaImage from "../../assets/RishtaSuggestedImage.jpg";
 import samajLogo from "../../assets/SplashScreenLogo.png";
 import samajRishta from "../../assets/samajRishta.png";
 import { calculateAge } from "../../utils";
@@ -208,7 +209,12 @@ const Filter = ({
     setGender(event.target.value);
   };
   return (
-    <div>
+    <div
+      style={{
+        backgroundColor: "#f1ffd4",
+        width: "100%",
+      }}
+    >
       <div
         style={{
           minHeight: "100vh",
@@ -262,7 +268,12 @@ const Filter = ({
               Rishta Group
             </Typography>
           </Box>
-          <img src={samajRishta} height={"100px"} width={"100px"} />
+          <img
+            src={RishtaImage}
+            height={"100px"}
+            width={"100px"}
+            style={{ borderRadius: "50%" }}
+          />
         </div>
         <Box
           sx={{

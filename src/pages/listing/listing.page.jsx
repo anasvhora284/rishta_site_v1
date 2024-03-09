@@ -264,7 +264,7 @@ const Listing = ({ excelData, setCurrentPage }) => {
                           >
                             Current Profile:
                           </p>
-                          {` ${obj.currentProfile || "--"}`}
+                          /{` ${obj.currentProfile || "--"}`}
                         </Typography>
                       </Box>
                       <Box

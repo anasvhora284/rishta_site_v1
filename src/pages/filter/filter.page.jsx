@@ -10,13 +10,11 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
-import RishtaImage from "../../assets/RishtaSuggestedImage.jpg";
+import { useEffect, useState } from "react";
+import RishtaImage from "../../assets/samajRishta.png";
 import samajLogo from "../../assets/SplashScreenLogo.png";
-import samajRishta from "../../assets/samajRishta.png";
 import { calculateAge } from "../../utils";
 import "./filter.css";
-import DevLogo from "../../assets/DevLogo.jpg";
 
 // eslint-disable-next-line react/prop-types
 const Filter = ({
@@ -50,6 +48,21 @@ const Filter = ({
   const [city, setCity] = useState("");
   const [maritalStatus, setMaritalStatus] = useState("");
   const [gender, setGender] = useState("");
+  // const [navBg, setNavBg] = useState(false);
+
+  // const changeNavBg = () => {
+  //   console.log(window.scrollY, "window.scrollY");
+  //   window.scrollY >= 75 ? setNavBg(true) : setNavBg(false);
+  // };
+
+  // useEffect(() => {
+  //   window.addEventListener("scroll", changeNavBg);
+  //   return () => {
+  //     window.removeEventListener("scroll", changeNavBg);
+  //   };
+  // }, []);
+
+  // console.log(navBg, "navBg");
 
   const handleSubmit = () => {
     const filteredData = excelData.filter((data) => {
@@ -208,10 +221,34 @@ const Filter = ({
   const handleChangeGender = (event) => {
     setGender(event.target.value);
   };
+
+  const socialTeam = [
+    {
+      name: "Salimbhai Vhora (Mahemdabad)",
+      mobile: "94270 84786",
+    },
+    {
+      name: "Salimbhai Vhora (Mahemdabad)",
+      mobile: "94270 84786",
+    },
+    {
+      name: "Salimbhai Vhora (Mahemdabad)",
+      mobile: "94270 84786",
+    },
+    {
+      name: "Salimbhai Vhora (Mahemdabad)",
+      mobile: "94270 84786",
+    },
+    {
+      name: "Salimbhai Vhora (Mahemdabad)",
+      mobile: "94270 84786",
+    },
+  ];
+
   return (
     <div
       style={{
-        backgroundColor: "#f1ffd4",
+        // backgroundColor: "#f1ffd4",
         width: "100%",
       }}
     >
@@ -242,30 +279,36 @@ const Filter = ({
           style={{
             display: "flex",
             flexDirection: "row",
-            justifyContent: "center",
+            justifyContent: "space-between",
             alignItems: "center",
             gap: "16px",
             marginBlockEnd: "20px",
             background: "rgba(255, 255, 255, 0.25)",
-            backdropFilter: "blur(1.5px)",
+            backdropFilter: "blur(10.5px)",
             webkitBackdropFilter: "blur(10.5px)",
             borderRadius: "10px",
             border: "1px solid rgba(255, 255, 255, 0.18)",
-            padding: "12px 40px",
+            padding: "12px 24px",
+            marginBlock: "40px",
+            minWidth: "1000px",
+            // position: "sticky",
+            // top: "10px",
+            zIndex: "10",
           }}
         >
           <img src={samajLogo} height={"110px"} width={"110px"} />
           <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <Typography color={"#FFD700"} fontSize={"20px"} fontWeight={600}>
+            <Typography color={"#FFD700"} fontSize={"26px"} fontWeight={600}>
               ચરોતર સુન્ની વ્હોરા સુધારક મંડળ - 68 અટક
             </Typography>
             <Typography
               color={"#FFF"}
-              fontSize={"20px"}
+              fontSize={"22px"}
               fontWeight={600}
               textAlign={"center"}
+              paddingTop={"8px"}
             >
-              Rishta Group
+              ૬૮ સમાજ રિશ્તા ગ્રુપ
             </Typography>
           </Box>
           <img
@@ -280,9 +323,14 @@ const Filter = ({
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            borderRadius: "15px",
+            marginBottom: "20px",
           }}
         >
-          <Card sx={{ padding: "25px" }}>
+          <Card
+            className="filterCard"
+            sx={{ padding: "25px", borderRadius: "15px" }}
+          >
             <InputLabel sx={{ marginBottom: "4px" }}>Age:</InputLabel>
             <Box
               sx={{
@@ -482,15 +530,181 @@ const Filter = ({
             </Box>
           </Card>
         </Box>
+        {/* <div className="OurTeamSectionDiv">
+          <div className="OurTeamSectionDiv2">
+            <div className="TeamHeading">
+              <p>Rishta Team</p>
+            </div>
+            <div className="TeamContainer">
+              <div className="Social_Team">
+                <p className="SocialTeamHeading">Social Team</p>
+                <div className="SocialTeamListingDiv">
+                  <table>
+                    <tr>
+                      <td>Salimbhai Vhora (Mahemdabad)</td>
+                      <td>
+                        <span>- 94270 84786</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Altafbhai Vhora (LIC)</td>
+                      <td>
+                        <span>- 94286 60790</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Ilyasbhai Vhora (Chemical)</td>
+                      <td>
+                        <span>- 95746 68782</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Idrishbhai Vhora (Mahudha)</td>
+                      <td>
+                        <span>- 98258 53404</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Samirbhai Vhora (Boriyavi)</td>
+                      <td>
+                        <span>- 70162 88489</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Mo.Shafibhai Vhora (Nadiad)</td>
+                      <td>
+                        <span>- 97231 13658</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Dr.Sarfaraz Mansuri</td>
+                      <td>
+                        <span>- 99042 61740</span>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <div className="IT_Team">
+                <p className="ITTeamHeading">IT Team</p>
+                <div className="ITTeamListingDiv">
+                  <table>
+                    <tr>
+                      <td>Mo.Shafibhai Vhora (Nadiad)</td>
+                      <td>
+                        <span>- 97231 13658</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Dr.Sarfaraz Mansuri</td>
+                      <td>
+                        <span>- 99042 61740</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Mo.Ayaz Salimbhai Vhora</td>
+                    </tr>
+                    <tr>
+                      <td>Anas Salimbhai Vhora</td>
+                    </tr>
+                    <tr>
+                      <td>Maaz Vhora</td>
+                    </tr>
+                    <tr>
+                      <td>Faizal Vhora</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> */}
+        <div className="container">
+          <div id="out_team_wrapper">
+            <div className="TeamHeading-container">
+              <div className="TeamHeading">
+                <div className="social_team">
+                  <p className="team_label">Social Team</p>
+                  <div className="team_details">
+                    <p>
+                      <span>Salimbhai Vhora (Mahemdabad)</span>
+                      <span> 94270 84786</span>
+                    </p>
+                    <p>
+                      <span>Altafbhai Vhora (LIC)</span>
+                      <span> 94286 60790</span>
+                    </p>
+                    <p>
+                      <span> Ilyasbhai Vhora (Chemical)</span>
+                      <span> 95746 68782</span>
+                    </p>
+                    <p>
+                      <span> Idrishbhai Vhora (Mahudha)</span>
+                      <span> 98258 53404</span>
+                    </p>
+                    <p>
+                      <span> Samirbhai Vhora (Boriyavi)</span>
+                      <span> 70162 88489</span>
+                    </p>
+                    <p>
+                      <span> Mo.Shafibhai Vhora (Nadiad)</span>
+                      <span> 97231 13658</span>
+                    </p>
+                    <p>
+                      <span> Dr.Sarfaraz Mansuri</span>
+                      <span> 99042 61740</span>
+                    </p>
+                  </div>
+                </div>
+                <div className="IT_team">
+                  <p className="team_label">IT Team</p>
+                  <div className="team_details">
+                    <p>
+                      <span>Mo.Shafibhai Vhora (Nadiad)</span>
+                      <span> 97231 13658</span>
+                    </p>
+                    <p>
+                      <span>Dr.Sarfaraz Mansuri</span>
+                      <span> 99042 61740</span>
+                    </p>
+                    <p>
+                      <span>Mo.Ayaz Salimbhai Vhora</span>
+                      <span> 79904 84682</span>
+                    </p>
+                    <p>
+                      <span> Anas Salimbhai Vhora</span>
+                      <span> 70413 17915</span>
+                    </p>
+                    <p>
+                      <span> Maaz Vhora</span>
+                      <span> </span>
+                    </p>
+                    <p>
+                      <span> Faizal Vhora</span>
+                      <span> </span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="chief-details">
+                <h1>Chief</h1>
+                <p>
+                  <span>Nurulhasan Vohra</span>
+                  <span>98250 90992</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       {/* <div className="OurTeam_Main_Div">
         <div className="OurTeam_text">
-          <h1>Our Team</h1>
+        <h1>Our Team</h1>
         </div>
         <div className="TeamCard">
-          <div className="TeamCard_Img_Div">
-            <img src={DevLogo} alt="" />
-          </div>
+        <div className="TeamCard_Img_Div">
+        <img src={DevLogo} alt="" />
+        </div>
           <div className="Text_And_InfoDiv">
             <p>Anas Vhora</p>
           </div>

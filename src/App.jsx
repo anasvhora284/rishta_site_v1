@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import Home from "./pages/home/home.page";
+import Filter from "./pages/filter/filter.page";
 
 export const router = createBrowserRouter([
   {
@@ -12,7 +13,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/filter",
-    element: <Home />,
+    element: <Filter />,
   },
 ]);
 

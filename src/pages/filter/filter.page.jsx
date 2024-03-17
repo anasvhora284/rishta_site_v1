@@ -1,13 +1,11 @@
 /* eslint-disable react/prop-types */
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
   Alert,
   Box,
   Button,
-  Card,
   Checkbox,
-  FormControl,
   FormControlLabel,
-  InputLabel,
   ListItemText,
   MenuItem,
   OutlinedInput,
@@ -17,25 +15,22 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
-import RishtaImage from "../../assets/samajRishta.png";
-import samajLogo from "../../assets/SplashScreenLogo.png";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { calculateAge } from "../../utils";
-import "./filter.css";
-import { useNavigate } from "react-router-dom";
-import Loader from "../loader/loader.page";
 import axios from "axios";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import ITTeamIcon from "../../assets/ITteam.png";
+import samajLogo from "../../assets/SplashScreenLogo.png";
+import RishtaImage from "../../assets/samajRishta.png";
+import socialTeamIcon from "../../assets/socialTeam.png";
+import teamWorkIcon from "../../assets/teamwork.png";
 import { setFilteredData } from "../../duck/slice";
-import socialTeamIcon from '../../assets/socialTeam.png';
-import teamWorkIcon from '../../assets/teamwork.png';
-import ITTeamIcon from '../../assets/ITteam.png';
+import { calculateAge } from "../../utils";
+import Loader from "../loader/loader.page";
+import "./filter.css";
 
 // eslint-disable-next-line react/prop-types
-const Filter = ({
-}) => {
-
+const Filter = ({}) => {
   const [fromAge, setFromAge] = useState("");
   const [toAge, setToAge] = useState("");
   const [fromAgeError, setFromAgeError] = useState({
@@ -58,7 +53,7 @@ const Filter = ({
   const [loader, setLoader] = useState(true);
   const [isErrorFromApi, setIsErrorFromAPI] = useState(false);
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -215,7 +210,8 @@ const Filter = ({
 
       // Filter by other criteria
       return (
-        (!qualification?.length || qualification.includes(data.qualification)) &&
+        (!qualification?.length ||
+          qualification.includes(data.qualification)) &&
         (!gender || data.gender === gender) &&
         (!city?.length || city.includes(data.cityVillage)) &&
         (!maritalStatus?.length || maritalStatus.includes(data.maritalStatus))
@@ -360,27 +356,21 @@ const Filter = ({
     const {
       target: { value },
     } = event;
-    setQualification(
-      typeof value === 'string' ? value.split(',') : value,
-    );
+    setQualification(typeof value === "string" ? value.split(",") : value);
   };
 
   const handleChangeCity = (event) => {
     const {
       target: { value },
     } = event;
-    setCity(
-      typeof value === 'string' ? value.split(',') : value,
-    );
+    setCity(typeof value === "string" ? value.split(",") : value);
   };
 
   const handleChangeMaritalStatus = (event) => {
     const {
       target: { value },
     } = event;
-    setMaritalStatus(
-      typeof value === 'string' ? value.split(',') : value,
-    );
+    setMaritalStatus(typeof value === "string" ? value.split(",") : value);
   };
 
   const handleChangeGender = (event) => {
@@ -422,16 +412,15 @@ const Filter = ({
   };
 
   useEffect(() => {
-    document.body.style.background = `#fff`
-  }, [])
+    document.body.style.background = `#fff`;
+  }, []);
 
   return (
     <div className="FilterPageMainDiv">
-
-      {
-        loader ? (<Loader />) : (<div
-          className="filter-page-container"
-        >
+      {loader ? (
+        <Loader />
+      ) : (
+        <div className="filter-page-container">
           <div className="navbar-container">
             <div className="navbar-wrapper">
               <div className="navbar-inner-wrapper">
@@ -442,27 +431,24 @@ const Filter = ({
                   <Typography className="nav-title-main-text">
                     ચરોતર સુન્ની વ્હોરા સુધારક મંડળ - 68 અટક
                   </Typography>
-                  <Typography
-                    className="nav-title-sub-text"
-                  >
+                  <Typography className="nav-title-sub-text">
                     ૬૮ સમાજ રિશ્તા ગ્રુપ
                   </Typography>
                 </Box>
                 <div className="rishta-group-logo">
-                  <img
-                    src={RishtaImage}
-                    className="rishta-group"
-                  />
+                  <img src={RishtaImage} className="rishta-group" />
                 </div>
               </div>
             </div>
           </div>
 
-          {isErrorFromApi && <div className="container alert-msg">
-            <Alert variant="filled" severity="error">
-              Oops, something went wrong, please try again later.
-            </Alert>
-          </div>}
+          {isErrorFromApi && (
+            <div className="container alert-msg">
+              <Alert variant="filled" severity="error">
+                Oops, something went wrong, please try again later.
+              </Alert>
+            </div>
+          )}
           <div className="filter-box-wrapper container">
             <div id="filter-box-wrapper">
               <div className="filter-box-container">
@@ -476,17 +462,17 @@ const Filter = ({
                         variant="standard"
                         placeholder="From"
                         inputProps={{
-                          maxLength: 3
+                          maxLength: 3,
                         }}
                         sx={{
                           "& .MuiInputBase-root.MuiInput-root:hover::before": {
-                            border: "none"
+                            border: "none",
                           },
                           "& .MuiInputBase-root.MuiInput-root::before": {
-                            border: "none"
+                            border: "none",
                           },
                           "& .MuiInputBase-root.MuiInput-root::after": {
-                            border: "none"
+                            border: "none",
                           },
                         }}
                         className="age-input-field"
@@ -498,24 +484,28 @@ const Filter = ({
                         variant="standard"
                         placeholder="To"
                         inputProps={{
-                          maxLength: 3
+                          maxLength: 3,
                         }}
                         sx={{
                           "& .MuiInputBase-root.MuiInput-root:hover::before": {
-                            border: "none"
+                            border: "none",
                           },
                           "& .MuiInputBase-root.MuiInput-root::before": {
-                            border: "none"
+                            border: "none",
                           },
                           "& .MuiInputBase-root.MuiInput-root::after": {
-                            border: "none"
+                            border: "none",
                           },
                         }}
                         className="age-input-field"
                       />
                     </div>
                     <p className="age-input-error-msg">
-                      {fromAgeError.isError ? fromAgeError.message : toAgeError.isError ? toAgeError.message : ""}
+                      {fromAgeError.isError
+                        ? fromAgeError.message
+                        : toAgeError.isError
+                        ? toAgeError.message
+                        : ""}
                     </p>
                   </div>
 
@@ -527,15 +517,26 @@ const Filter = ({
                       onChange={handleChangeGender}
                       className="gender-radio-group"
                     >
-                      <FormControlLabel value="" control={<Radio />} label="All" />
-                      <FormControlLabel value="female" control={<Radio />} label="Female" />
-                      <FormControlLabel value="male" control={<Radio />} label="Male" />
+                      <FormControlLabel
+                        value=""
+                        control={<Radio />}
+                        label="All"
+                      />
+                      <FormControlLabel
+                        value="female"
+                        control={<Radio />}
+                        label="Female"
+                      />
+                      <FormControlLabel
+                        value="male"
+                        control={<Radio />}
+                        label="Male"
+                      />
                     </RadioGroup>
                   </div>
 
                   <div></div>
-                  <div className="qualification-wrapper"
-                  >
+                  <div className="qualification-wrapper">
                     <label className="filter-label">Qualification:</label>
                     <Select
                       multiple
@@ -546,9 +547,9 @@ const Filter = ({
                       IconComponent={ExpandMoreIcon}
                       renderValue={(selected) => {
                         if (selected?.length) {
-                          return selected.join(', ')
+                          return selected.join(", ");
                         }
-                        return "All"
+                        return "All";
                       }}
                       MenuProps={MenuProps}
                       className="select-dropdown-common"
@@ -556,20 +557,26 @@ const Filter = ({
                         "& fieldset": {
                           border: "1px solid #d3d3d3",
                         },
-                        "& .MuiSvgIcon-root": { color: "rgb(174, 0, 61)" }
+                        "& .MuiSvgIcon-root": { color: "rgb(174, 0, 61)" },
                       }}
                     >
                       {qualificationValues.map((value) => (
                         <MenuItem key={value} value={value}>
-                          <Checkbox checked={qualification.indexOf(value) > -1} />
-                          <ListItemText primary={value.charAt(0).toUpperCase() +
-                            value.slice(1).toLowerCase()} />
+                          <Checkbox
+                            checked={qualification.indexOf(value) > -1}
+                          />
+                          <ListItemText
+                            primary={
+                              value.charAt(0).toUpperCase() +
+                              value.slice(1).toLowerCase()
+                            }
+                          />
                         </MenuItem>
                       ))}
                     </Select>
                   </div>
 
-                  <div className="city-wrapper" >
+                  <div className="city-wrapper">
                     <label className="filter-label">City:</label>
                     <Select
                       multiple
@@ -578,12 +585,11 @@ const Filter = ({
                       input={<OutlinedInput />}
                       displayEmpty
                       IconComponent={ExpandMoreIcon}
-
                       renderValue={(selected) => {
                         if (selected?.length) {
-                          return selected.join(', ')
+                          return selected.join(", ");
                         }
-                        return "All"
+                        return "All";
                       }}
                       MenuProps={MenuProps}
                       className="select-dropdown-common"
@@ -591,14 +597,18 @@ const Filter = ({
                         "& fieldset": {
                           border: "1px solid #d3d3d3",
                         },
-                        "& .MuiSvgIcon-root": { color: "rgb(174, 0, 61)" }
+                        "& .MuiSvgIcon-root": { color: "rgb(174, 0, 61)" },
                       }}
                     >
                       {cityValues.map((value) => (
                         <MenuItem key={value} value={value}>
                           <Checkbox checked={city.indexOf(value) > -1} />
-                          <ListItemText primary={value.charAt(0).toUpperCase() +
-                            value.slice(1).toLowerCase()} />
+                          <ListItemText
+                            primary={
+                              value.charAt(0).toUpperCase() +
+                              value.slice(1).toLowerCase()
+                            }
+                          />
                         </MenuItem>
                       ))}
                     </Select>
@@ -613,12 +623,11 @@ const Filter = ({
                       input={<OutlinedInput />}
                       displayEmpty
                       IconComponent={ExpandMoreIcon}
-
                       renderValue={(selected) => {
                         if (selected?.length) {
-                          return selected.join(', ')
+                          return selected.join(", ");
                         }
-                        return "All"
+                        return "All";
                       }}
                       MenuProps={MenuProps}
                       className="select-dropdown-common"
@@ -626,26 +635,38 @@ const Filter = ({
                         "& fieldset": {
                           border: "1px solid #d3d3d3",
                         },
-                        "& .MuiSvgIcon-root": { color: "rgb(174, 0, 61)" }
+                        "& .MuiSvgIcon-root": { color: "rgb(174, 0, 61)" },
                       }}
                     >
                       {maritalStatusValues.map((value) => (
                         <MenuItem key={value} value={value}>
-                          <Checkbox checked={maritalStatus.indexOf(value) > -1} />
-                          <ListItemText primary={value.charAt(0).toUpperCase() +
-                            value.slice(1).toLowerCase()} />
+                          <Checkbox
+                            checked={maritalStatus.indexOf(value) > -1}
+                          />
+                          <ListItemText
+                            primary={
+                              value.charAt(0).toUpperCase() +
+                              value.slice(1).toLowerCase()
+                            }
+                          />
                         </MenuItem>
                       ))}
                     </Select>
                   </div>
-
                 </div>
 
-                <p className="submit-notice-msg">please wait 3 - 5 seconds for your request to be processed after submitting.</p>
+                <p className="submit-notice-msg">
+                  please wait 3 - 5 seconds for your request to be processed
+                  after submitting.
+                </p>
                 <Box className="submit-btn-box">
                   <Button
                     variant="contained"
-                    disabled={fromAgeError.isError || toAgeError.isError || isErrorFromApi}
+                    disabled={
+                      fromAgeError.isError ||
+                      toAgeError.isError ||
+                      isErrorFromApi
+                    }
                     onClick={handleSubmit}
                   >
                     Submit
@@ -700,12 +721,11 @@ const Filter = ({
                       </p>
                       <p>
                         <span> Dr.Sarfaraz Mansuri</span>
-                        <span> 99042 61740</span>
+                        <span> 73833 44881</span>
                       </p>
                     </div>
                   </div>
                   <div className="IT_team">
-
                     <div className="team-label-wrapper">
                       <p className="team_label">IT Team</p>
                       <img src={ITTeamIcon} className="it-team-img" />
@@ -738,13 +758,12 @@ const Filter = ({
                     </div>
                   </div>
                 </div>
-
               </div>
             </div>
           </div>
-        </div >)
-      }
-    </div >
+        </div>
+      )}
+    </div>
   );
 };
 

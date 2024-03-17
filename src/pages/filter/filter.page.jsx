@@ -737,7 +737,7 @@ const Filter = ({}) => {
                       </p>
                       <p>
                         <span>Dr.Sarfaraz Mansuri</span>
-                        <span> 99042 61740</span>
+                        <span> 73833 44881 </span>
                       </p>
                       <p>
                         <span>Mo.Ayaz Salimbhai Vhora</span>

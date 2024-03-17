@@ -26,6 +26,7 @@ import socialTeamIcon from "../../assets/socialTeam.png";
 import teamWorkIcon from "../../assets/teamwork.png";
 import { setFilteredData } from "../../duck/slice";
 import { calculateAge } from "../../utils";
+import { qualificationLabels } from "../../utils/qualification";
 import Loader from "../loader/loader.page";
 import "./filter.css";
 
@@ -54,6 +55,11 @@ const Filter = ({}) => {
   const [isErrorFromApi, setIsErrorFromAPI] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const formattedQualificationValues = qualificationValues.map((value) => ({
+    value,
+    label: qualificationLabels[value] || value.toUpperCase(),
+  }));
 
   useEffect(() => {
     const fetchData = async () => {
@@ -547,7 +553,13 @@ const Filter = ({}) => {
                       IconComponent={ExpandMoreIcon}
                       renderValue={(selected) => {
                         if (selected?.length) {
-                          return selected.join(", ");
+                          return selected
+                            .map(
+                              (value) =>
+                                qualificationLabels[value] ||
+                                value.toUpperCase()
+                            )
+                            .join(", ");
                         }
                         return "All";
                       }}
@@ -560,17 +572,17 @@ const Filter = ({}) => {
                         "& .MuiSvgIcon-root": { color: "rgb(174, 0, 61)" },
                       }}
                     >
-                      {qualificationValues.map((value) => (
-                        <MenuItem key={value} value={value}>
+                      {formattedQualificationValues.map((qualificationObj) => (
+                        <MenuItem
+                          key={qualificationObj.value}
+                          value={qualificationObj.value}
+                        >
                           <Checkbox
-                            checked={qualification.indexOf(value) > -1}
-                          />
-                          <ListItemText
-                            primary={
-                              value.charAt(0).toUpperCase() +
-                              value.slice(1).toLowerCase()
+                            checked={
+                              qualification.indexOf(qualificationObj.value) > -1
                             }
                           />
+                          <ListItemText primary={qualificationObj.label} />
                         </MenuItem>
                       ))}
                     </Select>

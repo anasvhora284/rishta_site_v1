@@ -12,6 +12,7 @@ import FemaleImg from "../../assets/FemaleIcon.jpg";
 import MaleImg from "../../assets/MaleIcon.jpeg";
 import backgoundImg from "../../assets/SearchPage.png";
 import { convertToDateObject } from "../../utils";
+import { qualificationLabels } from "../../utils/qualification";
 import "./listing.css";
 
 const Listing = (
@@ -195,7 +196,9 @@ const Listing = (
                             </p>
                             {` ${
                               obj.qualification
-                                ? obj.qualification?.toUpperCase()
+                                ? qualificationLabels[
+                                    obj.qualification.toLowerCase()
+                                  ] || obj.qualification.toUpperCase()
                                 : "--"
                             }`}
                           </Typography>

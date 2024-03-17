@@ -306,6 +306,38 @@
   }
 }
 
+.typewriter {
+  position: absolute;
+  bottom: 35%;
+  left: 40%;
+}
+
+.typewriter p {
+  font-size: large;
+  color: rgb(252, 0, 101);
+  font-family: monospace;
+  overflow: hidden; /* Ensures the content is not revealed until the animation */
+  border-right: .15em solid orange; /* The typwriter cursor */
+  white-space: nowrap; /* Keeps the content on a single line */
+  margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+  letter-spacing: .15em; /* Adjust as needed */
+  animation:
+    typing 1.5s steps(30, end),
+    blink-caret .5s step-end infinite;
+}
+
+/* The typing effect */
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+/* The typewriter cursor effect */
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: orange }
+}
+
 .OurTeam_Main_Div {
   margin: auto 20%;
   backdrop-filter: blur(10px) saturate(198%);
@@ -748,6 +780,13 @@ p.nav-title-sub-text.MuiTypography-root {
 }
 
 @media screen and (max-width: 426px) {
+  .cssload-main {
+    top: 45%;
+  }
+  .typewriter {
+    bottom: 40%;
+    left: unset;
+  }
 
   .filter-options-container {
     grid-template-columns: repeat(1, 1fr);

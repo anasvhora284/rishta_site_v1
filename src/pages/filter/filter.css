@@ -516,7 +516,7 @@
 
 .navbar-container {
   margin-bottom: 60px;
-  background: linear-gradient(45deg, rgb(174, 0, 61)-95%, rgb(79, 15, 30) 47%, rgb(174, 0, 60) 151%);
+  background: linear-gradient(45deg, rgb(174, 0, 61) -95%, rgb(79, 15, 30) 47%, rgb(174, 0, 60) 151%);
   width: 100%;
   padding-block: 17px;
   border-bottom: 4px solid #FFF;

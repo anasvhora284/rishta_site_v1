@@ -1,6 +1,7 @@
 /* eslint-disable no-debugger */
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Filter from "../filter/filter.page";
 import Listing from "../listing/listing.page";
 import Loader from "../loader/loader.page";
@@ -14,6 +15,7 @@ const Home = () => {
   const [maritalStatusValues, setMaritalStatusValues] = useState([]);
   const [genderData, setGenderData] = useState([]);
   const [loader, setLoader] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -168,7 +170,7 @@ const Home = () => {
         <>
           {currentPage === "listing" ? (
             <Listing
-              setCurrentPage={setCurrentPage}
+              setCurrentPage={(() => navigate("/listing"), setCurrentPage)}
               excelData={excelData}
               setExcelData={setExcelData}
             />
@@ -176,7 +178,7 @@ const Home = () => {
             <Filter
               excelData={excelData}
               setExcelData={setExcelData}
-              setCurrentPage={setCurrentPage}
+              setCurrentPage={(() => navigate("/filter"), setCurrentPage)}
               qualificationValues={qualificationValues}
               cityValues={cityValues}
               maritalStatusValues={maritalStatusValues}

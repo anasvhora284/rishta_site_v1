@@ -31,7 +31,7 @@ import Loader from "../loader/loader.page";
 import "./filter.css";
 
 // eslint-disable-next-line react/prop-types
-const Filter = ({}) => {
+const Filter = () => {
   const [fromAge, setFromAge] = useState("");
   const [toAge, setToAge] = useState("");
   const [fromAgeError, setFromAgeError] = useState({
@@ -383,29 +383,6 @@ const Filter = ({}) => {
     setGender(event.target.value);
   };
 
-  const socialTeam = [
-    {
-      name: "Salimbhai Vhora (Mahemdabad)",
-      mobile: "94270 84786",
-    },
-    {
-      name: "Salimbhai Vhora (Mahemdabad)",
-      mobile: "94270 84786",
-    },
-    {
-      name: "Salimbhai Vhora (Mahemdabad)",
-      mobile: "94270 84786",
-    },
-    {
-      name: "Salimbhai Vhora (Mahemdabad)",
-      mobile: "94270 84786",
-    },
-    {
-      name: "Salimbhai Vhora (Mahemdabad)",
-      mobile: "94270 84786",
-    },
-  ];
-
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
   const MenuProps = {
@@ -734,6 +711,10 @@ const Filter = ({}) => {
                       <p>
                         <span> Dr.Sarfaraz Mansuri</span>
                         <span> 73833 44881</span>
+                      </p>
+                      <p>
+                        <span> Haji Ismailbhai Vhora (Dabhan)</span>
+                        <span> 97237 86001</span>
                       </p>
                     </div>
                   </div>

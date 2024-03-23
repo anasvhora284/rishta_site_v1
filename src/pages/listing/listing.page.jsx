@@ -15,11 +15,7 @@ import { convertToDateObject } from "../../utils";
 import { qualificationLabels } from "../../utils/qualification";
 import "./listing.css";
 
-const Listing = (
-  {
-    // excelData, setCurrentPage
-  }
-) => {
+const Listing = () => {
   const navigate = useNavigate();
   const filteredData = useSelector((state) => state.filter.filteredData);
 

@@ -68,10 +68,9 @@ const Filter = () => {
         setLoader(true);
         // Fetch all Excel data
         const excelDataResponse = await axios.get(
-          "https://script.google.com/macros/s/AKfycbwtA1B-M3F3V-53MoKt2PgPGgBQOfLzst4ckDvsjI7xJgdTOyuyPcS7fbBzhALBI8g/exec"
+          "https://script.google.com/macros/s/AKfycbwtA1B-M3F3V-53MoKt2PgPGgBQOfLzst4ckDvsjI7xJgdTOyuyPcS7fbBzhALBI8g/exec",
         );
         const excelData = excelDataResponse.data;
-
         if (excelData && excelData.length > 0) {
           // Extract headers from the first array
           const headers = excelData[0];
@@ -139,16 +138,16 @@ const Filter = () => {
             .slice(1) // Skip the header row
             .map(
               (row) =>
-                row[8]?.charAt(0).toLowerCase() + row[8].slice(1).toLowerCase()
+                row[8]?.charAt(0).toLowerCase() + row[8].slice(1).toLowerCase(),
             ) // Convert to lowercase
             .filter(
               (city) =>
-                city !== undefined && city !== null && city.trim() !== ""
+                city !== undefined && city !== null && city.trim() !== "",
             ); // Filter out empty values
 
           setCityValues((prevCities) => {
             const uniqueCities = Array.from(
-              new Set([...prevCities, ...cities])
+              new Set([...prevCities, ...cities]),
             );
             return uniqueCities;
           });
@@ -156,11 +155,13 @@ const Filter = () => {
           // Extract qualifications from the 16th column (index 15) of Excel data
           const qualifications = excelData
             .slice(1) // Skip the header row
-            .map((row) =>
-              (
-                row[15].charAt(0).toLowerCase() + row[15].slice(1).toLowerCase()
-              ).trim()
-            ); // Convert to lowercase
+            .map((row) => {
+              const qualificationData = String(row[15]);
+              return (
+                qualificationData.charAt(0).toLowerCase() +
+                qualificationData.slice(1).toLowerCase()
+              ).trim();
+            }); // Convert to lowercase
           setQualificationValues((prevQualifications) => {
             const uniqueQualifications = [
               ...new Set([...prevQualifications, ...qualifications]),
@@ -174,11 +175,11 @@ const Filter = () => {
             .map((row) =>
               (
                 row[10].charAt(0).toLowerCase() + row[10].slice(1).toLowerCase()
-              ).trim()
+              ).trim(),
             ); // Convert to lowercase
           setMaritalStatusValues((prevMaritalStatuses) => {
             const uniqueMaritalStatuses = Array.from(
-              new Set([...prevMaritalStatuses, ...maritalStatuses])
+              new Set([...prevMaritalStatuses, ...maritalStatuses]),
             );
             return uniqueMaritalStatuses;
           });
@@ -487,8 +488,8 @@ const Filter = () => {
                       {fromAgeError.isError
                         ? fromAgeError.message
                         : toAgeError.isError
-                        ? toAgeError.message
-                        : ""}
+                          ? toAgeError.message
+                          : ""}
                     </p>
                   </div>
 
@@ -534,7 +535,7 @@ const Filter = () => {
                             .map(
                               (value) =>
                                 qualificationLabels[value] ||
-                                value.toUpperCase()
+                                value.toUpperCase(),
                             )
                             .join(", ");
                         }

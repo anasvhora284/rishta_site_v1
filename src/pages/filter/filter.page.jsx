@@ -176,7 +176,40 @@ const Filter = () => {
                                         ...qualifications,
                                    ]),
                               ];
-                              return uniqueQualifications;
+
+                              // Define the special cases
+                              const specialCases = ["10th", "12th"];
+                              const specialElements =
+                                   uniqueQualifications.filter(
+                                        (qualification) =>
+                                             specialCases.includes(
+                                                  qualification
+                                             )
+                                   );
+
+                              // Filter out the special cases from the main array
+                              const remainingElements =
+                                   uniqueQualifications.filter(
+                                        (qualification) =>
+                                             !specialCases.includes(
+                                                  qualification
+                                             )
+                                   );
+
+                              // Sort the remaining elements alphabetically
+                              remainingElements.sort();
+
+                              // Concatenate the special elements at the beginning
+                              const sortedQualifications = [
+                                   ...specialElements,
+                                   ...remainingElements,
+                              ];
+
+                              console.log(
+                                   sortedQualifications,
+                                   "sortedQualifications"
+                              );
+                              return sortedQualifications;
                          });
 
                          // Extract marital statuses from the 11th column (index 10) of Excel data

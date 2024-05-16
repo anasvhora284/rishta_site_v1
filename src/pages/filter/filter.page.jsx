@@ -159,6 +159,8 @@ const Filter = () => {
                               const uniqueCities = Array.from(
                                    new Set([...prevCities, ...cities])
                               );
+
+                              uniqueCities.sort();
                               return uniqueCities;
                          });
 
@@ -228,6 +230,8 @@ const Filter = () => {
                                         ...maritalStatuses,
                                    ])
                               );
+
+                              uniqueMaritalStatuses.sort();
                               return uniqueMaritalStatuses;
                          });
 

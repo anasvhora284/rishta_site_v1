@@ -1,0 +1,7 @@
+project_id = "rishta-portal"
+
+[api]
+enabled = true
+
+[db]
+major_version = 15

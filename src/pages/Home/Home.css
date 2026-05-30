@@ -1,0 +1,77 @@
+#home-actions-box {
+  position: relative;
+  width: 100%;
+}
+
+#home-actions-box::before {
+  position: absolute;
+  content: '';
+  background-image: linear-gradient(45deg, rgb(79, 15, 30) 0%, rgb(174, 0, 61) 51%, rgb(79, 15, 30) 100%);
+  height: 33px;
+  width: 33px;
+  top: clamp(36px, 10vw, 48px);
+  right: -7px;
+  transform: rotate(45deg);
+}
+
+#home-actions-box::after {
+  position: absolute;
+  content: '68 Vhora Rishta';
+  top: clamp(18px, 5vw, 25px);
+  right: clamp(-8px, -2vw, -14px);
+  padding: 0.5rem;
+  width: clamp(7rem, 28vw, 10rem);
+  background: linear-gradient(45deg, rgb(79, 15, 30) 0%, rgb(174, 0, 61) 51%, rgb(79, 15, 30) 100%);
+  color: white;
+  text-align: center;
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(14px, 3.5vw, 18px);
+  box-shadow: 4px 4px 15px rgba(26, 35, 126, 0.2);
+  z-index: 10;
+}
+
+.home-actions-container {
+  border-radius: 10px;
+  background: #fff;
+  font-family: 'Outfit', sans-serif;
+  width: 100%;
+  max-width: 100%;
+  min-height: 200px;
+  padding: var(--ribbon-pad-top, 100px) clamp(16px, 4vw, 40px) clamp(24px, 4vw, 40px);
+  box-sizing: border-box;
+  position: relative;
+  z-index: 10;
+}
+
+.home-welcome-text {
+  color: rgb(174, 0, 61) !important;
+  font-weight: 700 !important;
+  font-size: clamp(1.05rem, 3.5vw, 1.35rem) !important;
+  margin-bottom: 8px !important;
+  font-family: 'Outfit', 'Public Sans', sans-serif !important;
+}
+
+.home-confidential-text {
+  color: #666 !important;
+  margin-bottom: clamp(20px, 4vw, 32px) !important;
+  font-family: 'Outfit', 'Public Sans', sans-serif !important;
+  font-size: clamp(0.9rem, 2.5vw, 1rem) !important;
+}
+
+.home-action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 2vw, 16px);
+  max-width: min(400px, 100%);
+  margin: 0 auto;
+  width: 100%;
+}
+
+.home-action-btn {
+  background: linear-gradient(45deg, rgb(79, 15, 30) 0%, rgb(174, 0, 61) 51%, rgb(79, 15, 30) 100%) !important;
+  min-height: var(--btn-min-height, 56px) !important;
+  font-size: clamp(1rem, 2.8vw, 1.1rem) !important;
+  font-family: 'Outfit', sans-serif !important;
+  text-transform: none !important;
+  width: 100%;
+}

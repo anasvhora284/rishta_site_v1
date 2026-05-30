@@ -1,0 +1,111 @@
+.swipe-stack {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 0 var(--page-pad-x, 12px) calc(80px + env(safe-area-inset-bottom, 0));
+  box-sizing: border-box;
+}
+
+.swipe-stack__hint {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.85rem;
+  margin: 0 0 8px;
+  font-family: 'Outfit', sans-serif;
+}
+
+.swipe-stack__counter {
+  text-align: center;
+  color: #ffb144;
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin-bottom: 12px;
+  font-family: 'Outfit', sans-serif;
+}
+
+.swipe-stack__deck {
+  position: relative;
+  height: min(72vh, 640px);
+  min-height: 480px;
+  touch-action: pan-y;
+}
+
+.swipe-stack__card {
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+.swipe-stack__card--behind {
+  transform: scale(0.94) translateY(12px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.swipe-stack__card--active {
+  z-index: 1;
+  will-change: transform;
+  background: #141414;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+}
+
+.swipe-stack__card--active.dragging {
+  cursor: grabbing;
+}
+
+.swipe-stack__nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.swipe-stack__nav-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(174, 0, 61, 0.9);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  transition: opacity 0.2s, transform 0.15s;
+}
+
+.swipe-stack__nav-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.swipe-stack__nav-btn:not(:disabled):active {
+  transform: scale(0.95);
+}
+
+.swipe-stack__dots {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 160px;
+}
+
+.swipe-stack__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.swipe-stack__dot.active {
+  background: #ffb144;
+  transform: scale(1.25);
+}

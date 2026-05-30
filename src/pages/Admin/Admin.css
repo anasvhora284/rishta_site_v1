@@ -1,0 +1,195 @@
+.admin-content {
+  width: 100%;
+  max-width: min(800px, 100%);
+  margin: 0 auto;
+  padding: var(--section-gap, 16px) 0 var(--section-pad-bottom, 32px);
+  box-sizing: border-box;
+}
+
+.admin-login-box.page-card {
+  margin: 0;
+  max-width: min(440px, 100%);
+}
+
+.admin-login-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: clamp(16px, 4vw, 24px);
+}
+
+.admin-login-header .MuiTypography-root {
+  color: rgb(174, 0, 61);
+  font-family: 'Outfit', 'Public Sans', sans-serif;
+}
+
+.admin-login-subtitle {
+  color: #666 !important;
+  font-size: 0.9rem !important;
+  margin-top: 4px !important;
+  text-align: center;
+}
+
+.admin-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: var(--section-gap, 16px);
+  padding: 12px 14px;
+  background: #fff;
+  border-radius: var(--card-radius, 12px);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+}
+
+.admin-header__title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-header__title-row .MuiTypography-root {
+  color: rgb(174, 0, 61);
+  font-family: 'Outfit', 'Public Sans', sans-serif;
+}
+
+.admin-content .MuiTabs-root {
+  margin-bottom: var(--section-gap, 16px) !important;
+  background: #fff;
+  border-radius: var(--card-radius, 12px);
+  padding: 4px 8px 0;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.admin-content .MuiTabs-flexContainer {
+  flex-wrap: wrap;
+}
+
+.admin-content .MuiTab-root {
+  font-family: 'Outfit', 'Public Sans', sans-serif;
+  font-weight: 600;
+  min-height: 48px;
+  text-transform: none;
+}
+
+.admin-content .MuiTab-root.Mui-selected {
+  color: rgb(174, 0, 61);
+}
+
+.admin-content .MuiTabs-indicator {
+  background-color: rgb(174, 0, 61);
+}
+
+.admin-card {
+  background: #fff;
+  border-radius: var(--card-radius, 12px);
+  padding: clamp(14px, 3vw, 16px);
+  margin-bottom: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  border-left: 4px solid rgba(174, 0, 61, 0.35);
+}
+
+.admin-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.admin-btn {
+  font-family: 'Outfit', 'Public Sans', sans-serif !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  border-radius: 10px !important;
+  min-height: 44px !important;
+  gap: 8px;
+}
+
+.admin-card-actions .admin-btn {
+  flex: 1 1 auto;
+  min-width: min(130px, 48%);
+}
+
+.admin-btn--approve {
+  background: linear-gradient(135deg, #2e7d32, #43a047) !important;
+  color: #fff !important;
+}
+
+.admin-btn--approve:hover {
+  background: linear-gradient(135deg, #1b5e20, #2e7d32) !important;
+}
+
+.admin-btn--reject {
+  background: linear-gradient(135deg, #c62828, #e53935) !important;
+  color: #fff !important;
+}
+
+.admin-btn--reject:hover {
+  background: linear-gradient(135deg, #b71c1c, #c62828) !important;
+}
+
+.admin-btn--edit {
+  border-color: rgb(174, 0, 61) !important;
+  color: rgb(174, 0, 61) !important;
+}
+
+.admin-btn--hide {
+  border-color: #ed6c02 !important;
+  color: #e65100 !important;
+  background: rgba(237, 108, 2, 0.06) !important;
+}
+
+.admin-btn--sign-in {
+  background: linear-gradient(45deg, rgb(79, 15, 30) 0%, rgb(174, 0, 61) 51%, rgb(79, 15, 30) 100%) !important;
+  color: #fff !important;
+  font-size: 1.05rem !important;
+}
+
+.admin-btn--sign-out {
+  border-color: rgb(174, 0, 61) !important;
+  color: rgb(174, 0, 61) !important;
+}
+
+.admin-btn--save {
+  background: linear-gradient(45deg, rgb(79, 15, 30) 0%, rgb(174, 0, 61) 51%, rgb(79, 15, 30) 100%) !important;
+  color: #fff !important;
+}
+
+.admin-dialog-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Outfit', 'Public Sans', sans-serif;
+  font-weight: 700;
+  color: rgb(174, 0, 61);
+  flex-wrap: wrap;
+}
+
+.admin-edit-dialog__content {
+  padding-top: 16px !important;
+  max-height: min(70vh, 640px);
+}
+
+@media (max-width: 480px) {
+  .admin-card-actions .admin-btn {
+    min-width: 100%;
+    flex: 1 1 100%;
+  }
+
+  .admin-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-header .admin-btn--sign-out {
+    width: 100%;
+  }
+
+  .admin-header__title-row {
+    justify-content: center;
+    text-align: center;
+  }
+}

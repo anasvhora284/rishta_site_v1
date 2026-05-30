@@ -1,0 +1,103 @@
+.listing-page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding-top: clamp(4px, 1vh, 8px);
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+.listing-page__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(6px, 2vw, 12px);
+  padding: clamp(6px, 2vw, 8px) var(--page-pad-x, 12px) clamp(12px, 3vw, 16px);
+  max-width: var(--content-max, 720px);
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.listing-page__title {
+  flex: 1;
+  text-align: center;
+  color: #fff !important;
+  font-family: 'Outfit', sans-serif !important;
+  font-weight: 700 !important;
+  font-size: clamp(0.85rem, 2.8vw, 1rem) !important;
+  line-height: 1.3 !important;
+  padding: 0 4px;
+}
+
+.listing-page__icon-btn {
+  color: #fff !important;
+  background: rgba(174, 0, 61, 0.9) !important;
+  flex-shrink: 0;
+}
+
+.listing-page__desktop-list {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 4vw, 28px);
+  max-width: min(720px, 100%);
+  margin: 0 auto;
+  padding: 0 var(--page-pad-x, 16px) clamp(32px, 6vh, 48px);
+  box-sizing: border-box;
+}
+
+.no-data-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: min(70vh, 600px);
+  padding: var(--page-pad-x, 16px);
+  box-sizing: border-box;
+}
+
+.no-data-inner-box {
+  background: white;
+  padding: clamp(28px, 6vw, 40px) clamp(20px, 5vw, 28px);
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: clamp(20px, 4vw, 28px);
+  box-shadow: 0 11px 23px rgba(0, 0, 0, 0.18);
+  max-width: min(400px, 100%);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.no-results-text {
+  font-family: Outfit, sans-serif;
+  font-size: clamp(1rem, 3vw, 1.15rem);
+  text-align: center;
+  font-weight: bold;
+  padding-block-end: 8px;
+  color: #4a4a4a;
+  margin: 0;
+}
+
+.no-result-sub-text {
+  font-family: Outfit, sans-serif;
+  font-size: clamp(0.9rem, 2.5vw, 0.95rem);
+  text-align: center;
+  color: #4a4a4a;
+  font-weight: 400;
+  margin: 0;
+}
+
+.filter-again-btn {
+  background: rgb(174, 0, 61);
+  color: white;
+  font-family: Outfit, sans-serif;
+  font-size: clamp(0.95rem, 2.8vw, 16px);
+  font-weight: bold;
+  padding: clamp(12px, 3vw, 14px) clamp(20px, 5vw, 24px);
+  width: 100%;
+  max-width: min(320px, 100%);
+  border: none;
+  border-radius: 28px;
+  margin-block-start: clamp(16px, 4vw, 24px);
+  cursor: pointer;
+  box-shadow: 0 6px 12px rgba(190, 190, 190, 0.5);
+  min-height: var(--btn-min-height, 48px);
+}

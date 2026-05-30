@@ -1,0 +1,39 @@
+.admin-brand-logos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(12px, 3vw, 20px);
+  margin-bottom: clamp(12px, 3vw, 20px);
+}
+
+.admin-brand-logos--sm {
+  gap: 10px;
+  margin-bottom: 0;
+}
+
+.admin-brand-logos__circle {
+  background: #fff;
+  border-radius: 50%;
+  border: 2px solid rgba(174, 0, 61, 0.25);
+  box-shadow: 0 4px 12px rgba(79, 15, 30, 0.12);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-brand-logos--md .admin-brand-logos__circle {
+  width: clamp(64px, 16vw, 88px);
+  height: clamp(64px, 16vw, 88px);
+}
+
+.admin-brand-logos--sm .admin-brand-logos__circle {
+  width: 48px;
+  height: 48px;
+}
+
+.admin-brand-logos__img {
+  width: 92%;
+  height: 92%;
+  object-fit: contain;
+}

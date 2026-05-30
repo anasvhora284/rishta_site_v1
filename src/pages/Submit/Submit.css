@@ -1,0 +1,96 @@
+.submit-content {
+  width: 100%;
+  max-width: min(600px, 100%);
+  margin: 0 auto;
+  padding: var(--section-gap, 16px) 0 var(--section-pad-bottom, 48px);
+  box-sizing: border-box;
+}
+
+.submit-content > .MuiTypography-h5 {
+  font-size: clamp(1.15rem, 4vw, 1.5rem) !important;
+  padding: 0 4px;
+}
+
+.form-field {
+  margin-bottom: clamp(16px, 3vw, 20px);
+}
+
+.field-label-primary {
+  font-weight: 700 !important;
+  font-size: clamp(0.95rem, 2.8vw, 1.05rem) !important;
+  color: #333 !important;
+  margin-bottom: 2px !important;
+}
+
+.field-label-hint {
+  font-size: clamp(0.8rem, 2.2vw, 0.85rem) !important;
+  color: #666 !important;
+  margin-bottom: 8px !important;
+}
+
+.form-field .MuiTextField-root,
+.form-field .MuiFormControl-root {
+  margin-top: 4px;
+}
+
+.form-field .MuiInputBase-root {
+  min-height: 48px;
+  font-size: 1rem;
+}
+
+.step-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: clamp(24px, 4vw, 32px);
+  justify-content: center;
+}
+
+.step-btn {
+  min-height: var(--btn-min-height, 52px) !important;
+  min-width: min(140px, calc(50% - 6px)) !important;
+  flex: 1 1 140px;
+  max-width: 100%;
+  font-size: clamp(0.95rem, 2.8vw, 1.05rem) !important;
+}
+
+.review-summary {
+  background: #f9f9f9;
+  border-radius: 12px;
+  padding: clamp(12px, 3vw, 16px);
+  border: 1px solid #eee;
+}
+
+.success-box {
+  width: 100%;
+  max-width: min(480px, 100%);
+  margin: 0 auto;
+  padding: clamp(24px, 5vw, 32px) var(--page-pad-x, 16px);
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.success-box .MuiButton-root {
+  width: 100%;
+  max-width: min(320px, 100%);
+  min-height: var(--btn-min-height, 52px);
+  margin-top: 16px !important;
+}
+
+@media (max-width: 480px) {
+  .step-actions {
+    flex-direction: column;
+  }
+
+  .step-btn {
+    width: 100% !important;
+    flex: 1 1 100%;
+    min-width: 100% !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .submit-content .MuiStepper-root {
+    display: none;
+  }
+}

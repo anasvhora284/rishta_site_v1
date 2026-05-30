@@ -1,0 +1,167 @@
+.navbar-container {
+  margin-bottom: var(--section-gap, 20px);
+  background: linear-gradient(45deg, rgb(174, 0, 61) -95%, rgb(79, 15, 30) 47%, rgb(174, 0, 60) 151%);
+  width: 100%;
+  padding: clamp(10px, 2vw, 17px) 0;
+  border-bottom: 4px solid #fff;
+}
+
+.navbar-wrapper {
+  max-width: var(--content-max, 1000px);
+  margin: 0 auto;
+  padding: 0 var(--page-pad-x, 16px);
+  box-sizing: border-box;
+}
+
+.navbar-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 36px;
+  margin-bottom: clamp(8px, 2vw, 12px);
+}
+
+.navbar-top-bar__start {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-top-bar__end {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.nav-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: clamp(0.75rem, 2.5vw, 0.9rem);
+  font-family: 'Outfit', 'Public Sans', sans-serif;
+  font-weight: 600;
+  max-width: 100%;
+  white-space: nowrap;
+}
+
+.nav-back-btn:hover {
+  background: rgba(255, 255, 255, 0.32);
+}
+
+.nav-back-btn__arrow {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.nav-lang-switcher .MuiToggleButton-root {
+  background: rgba(255, 255, 255, 0.9) !important;
+  color: #ae003d !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
+  padding: 4px 8px !important;
+  min-width: 34px !important;
+  font-size: 0.8rem !important;
+}
+
+.nav-lang-switcher .MuiToggleButton-root.Mui-selected {
+  background: #fff !important;
+  font-weight: 700 !important;
+}
+
+.navbar-inner-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: clamp(8px, 2vw, 16px);
+  box-sizing: border-box;
+}
+
+.samaj-logo-bg {
+  background: white;
+  border-radius: 50%;
+  height: clamp(56px, 14vw, 107px);
+  width: clamp(56px, 14vw, 110px);
+  min-width: clamp(56px, 14vw, 61px);
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.samaj-logo {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+}
+
+.nav-title-text {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  padding: 0 4px;
+}
+
+p.nav-title-main-text.MuiTypography-root {
+  color: #fff;
+  font-size: clamp(0.8rem, 2.8vw, 1.625rem) !important;
+  font-weight: 600 !important;
+  text-align: center;
+  line-height: 1.25 !important;
+}
+
+p.nav-title-sub-text.MuiTypography-root {
+  color: #fff;
+  font-size: clamp(0.7rem, 2.2vw, 1.25rem) !important;
+  font-weight: 600 !important;
+  text-align: center;
+  padding-top: 4px;
+  line-height: 1.25 !important;
+}
+
+.rishta-group-logo {
+  background: white;
+  border-radius: 50%;
+  height: clamp(54px, 13vw, 105px);
+  width: clamp(54px, 13vw, 105px);
+  min-width: clamp(54px, 13vw, 60px);
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.rishta-group {
+  height: 92%;
+  width: 92%;
+  object-fit: contain;
+  border-radius: 50%;
+}
+
+@media (max-width: 480px) {
+  .nav-back-btn__label {
+    display: none;
+  }
+
+  .nav-back-btn {
+    padding: 8px 10px;
+  }
+}
+
+@media (min-width: 768px) {
+  .navbar-container {
+    margin-bottom: clamp(24px, 4vh, 40px);
+  }
+}

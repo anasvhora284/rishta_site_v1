@@ -27,6 +27,12 @@
   position: relative;
   height: min(72vh, 640px);
   min-height: 480px;
+  touch-action: none;
+  cursor: grab;
+  user-select: none;
+}
+
+.swipe-stack__deck .profile-card__details {
   touch-action: pan-y;
 }
 

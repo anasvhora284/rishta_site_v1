@@ -35,45 +35,66 @@ export default function SwipeableProfileStack({
   const dragXRef = useRef(0)
 
   const count = profiles.length
-  const current = profiles[index]
+  const safeIndex = count > 0 ? Math.min(Math.max(0, index), count - 1) : 0
+  const current = profiles[safeIndex]
+  const profilesKey = profiles.map((p) => p.id).join('|')
 
   useEffect(() => {
     setIndex(0)
     setDragX(0)
     dragXRef.current = 0
     // eslint-disable-next-line react-hooks/exhaustive-deps -- reset deck when filter results change
-  }, [profiles])
+  }, [profilesKey])
+
+  const resetDrag = useCallback(() => {
+    setDragX(0)
+    dragXRef.current = 0
+  }, [])
 
   const goNext = useCallback(() => {
     setIndex((i) => Math.min(i + 1, count - 1))
-    setDragX(0)
-  }, [count])
+    resetDrag()
+  }, [count, resetDrag])
 
   const goPrev = useCallback(() => {
     setIndex((i) => Math.max(i - 1, 0))
-    setDragX(0)
-  }, [])
+    resetDrag()
+  }, [resetDrag])
 
-  const onTouchStart = (e: React.TouchEvent) => {
-    startX.current = e.touches[0].clientX
+  const finishDrag = useCallback(() => {
+    setIsDragging(false)
+    const delta = dragXRef.current
+    if (delta < -SWIPE_THRESHOLD && safeIndex < count - 1) goNext()
+    else if (delta > SWIPE_THRESHOLD && safeIndex > 0) goPrev()
+    else resetDrag()
+  }, [count, goNext, goPrev, resetDrag, safeIndex])
+
+  const onPointerDown = (e: React.PointerEvent) => {
+    if (e.button !== 0) return
+    startX.current = e.clientX
     setIsDragging(true)
+    e.currentTarget.setPointerCapture(e.pointerId)
   }
 
-  const onTouchMove = (e: React.TouchEvent) => {
-    const delta = e.touches[0].clientX - startX.current
+  const onPointerMove = (e: React.PointerEvent) => {
+    if (!e.currentTarget.hasPointerCapture(e.pointerId)) return
+    const delta = e.clientX - startX.current
     dragXRef.current = delta
     setDragX(delta)
   }
 
-  const onTouchEnd = () => {
-    setIsDragging(false)
-    const delta = dragXRef.current
-    if (delta < -SWIPE_THRESHOLD && index < count - 1) goNext()
-    else if (delta > SWIPE_THRESHOLD && index > 0) goPrev()
-    else {
-      setDragX(0)
-      dragXRef.current = 0
+  const onPointerUp = (e: React.PointerEvent) => {
+    if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+      e.currentTarget.releasePointerCapture(e.pointerId)
     }
+    finishDrag()
+  }
+
+  const onPointerCancel = (e: React.PointerEvent) => {
+    if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+      e.currentTarget.releasePointerCapture(e.pointerId)
+    }
+    finishDrag()
   }
 
   if (!current) return null
@@ -84,14 +105,14 @@ export default function SwipeableProfileStack({
 
       <div
         className="swipe-stack__deck"
-        onTouchStart={onTouchStart}
-        onTouchMove={onTouchMove}
-        onTouchEnd={onTouchEnd}
-        onTouchCancel={onTouchEnd}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerCancel}
       >
-        {index < count - 1 && (
+        {safeIndex < count - 1 && (
           <div className="swipe-stack__card swipe-stack__card--behind" aria-hidden>
-            <ProfileCard profile={profiles[index + 1]} compact />
+            <ProfileCard profile={profiles[safeIndex + 1]} compact />
           </div>
         )}
 
@@ -111,7 +132,7 @@ export default function SwipeableProfileStack({
           type="button"
           className="swipe-stack__nav-btn"
           onClick={goPrev}
-          disabled={index === 0}
+          disabled={safeIndex === 0}
           aria-label={t('listing.previous')}
         >
           <ChevronLeftIcon />
@@ -122,7 +143,7 @@ export default function SwipeableProfileStack({
             <span className="swipe-stack__id">ID {current.profile_id}</span>
           )}
           <span className="swipe-stack__count">
-            {t('listing.profileCount', { current: index + 1, total: count })}
+            {t('listing.profileCount', { current: safeIndex + 1, total: count })}
           </span>
         </div>
 
@@ -130,7 +151,7 @@ export default function SwipeableProfileStack({
           type="button"
           className="swipe-stack__nav-btn"
           onClick={goNext}
-          disabled={index === count - 1}
+          disabled={safeIndex === count - 1}
           aria-label={t('listing.next')}
         >
           <ChevronRightIcon />

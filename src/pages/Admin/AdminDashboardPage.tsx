@@ -5,6 +5,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import EditIcon from '@mui/icons-material/Edit'
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty'
 import LogoutIcon from '@mui/icons-material/Logout'
+import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import {
   Alert,
@@ -31,6 +32,7 @@ import {
   approveProfile,
   hideProfileFromBrowse,
   rejectProfile,
+  showProfileOnBrowse,
   useProfiles,
 } from '@/hooks/useProfiles'
 import { isAdminSession } from '@/lib/adminAuth'
@@ -105,6 +107,16 @@ export default function AdminDashboardPage() {
     const { error: hideError } = await hideProfileFromBrowse(profile.id, userId)
     if (hideError) {
       setActionError(hideError.message)
+    } else {
+      void refetch()
+    }
+  }
+
+  const handleShowOnBrowse = async (profile: Profile) => {
+    setActionError('')
+    const { error: showError } = await showProfileOnBrowse(profile.id)
+    if (showError) {
+      setActionError(showError.message)
     } else {
       void refetch()
     }
@@ -222,6 +234,16 @@ export default function AdminDashboardPage() {
                       onClick={() => void handleHideFromBrowse(profile)}
                     >
                       {t('admin.hideFromBrowse')}
+                    </Button>
+                  )}
+                  {tab === 'approved' && profile.is_test && (
+                    <Button
+                      variant="outlined"
+                      className="admin-btn admin-btn--approve"
+                      startIcon={<VisibilityIcon />}
+                      onClick={() => void handleShowOnBrowse(profile)}
+                    >
+                      {t('admin.showOnBrowse')}
                     </Button>
                   )}
                 </Box>

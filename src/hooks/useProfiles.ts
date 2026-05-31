@@ -132,3 +132,12 @@ export async function hideProfileFromBrowse(id: string, userId: string) {
   // Column may not exist until migration — reject removes from public approved list
   return rejectProfile(id, 'Hidden from browse', userId)
 }
+
+/** Undo hide: show on public browse again (approved + not test). */
+export async function showProfileOnBrowse(id: string) {
+  const { error } = await supabase
+    .from('profiles')
+    .update({ is_test: false, status: 'approved' })
+    .eq('id', id)
+  return { error }
+}

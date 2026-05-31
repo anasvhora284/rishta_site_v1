@@ -13,7 +13,8 @@
     "preview": "vite preview",
     "migrate": "tsx scripts/migrate-excel.ts",
     "clean-excel": "tsx scripts/clean-main-excel.ts",
-    "import-excel": "tsx scripts/import-cleaned-excel.ts"
+    "import-excel": "tsx scripts/import-cleaned-excel.ts",
+    "backfill-profile-ids": "tsx scripts/backfill-profile-ids.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

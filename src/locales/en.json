@@ -122,7 +122,8 @@
     "loginError": "Invalid email or password",
     "notAdmin": "This account is not an admin. Contact the team for admin access.",
     "hideFromBrowse": "Hide Profile",
-    "testProfile": "Test / hidden"
+    "showOnBrowse": "Show on browse",
+    "testProfile": "Hidden from browse"
   },
   "team": {
     "chief": "Chief",

@@ -22,13 +22,24 @@ export default function SwipeableProfileStack({
 }: SwipeableProfileStackProps) {
   const { t } = useTranslation()
   const [internalIndex, setInternalIndex] = useState(0)
-  const index = controlledIndex ?? internalIndex
+  const isControlled = controlledIndex !== undefined
+  const index = isControlled ? controlledIndex : internalIndex
 
-  const setIndex = (next: number | ((prev: number) => number)) => {
-    const resolved = typeof next === 'function' ? next(index) : next
-    if (onIndexChange) onIndexChange(resolved)
-    else setInternalIndex(resolved)
-  }
+  const indexRef = useRef(index)
+  indexRef.current = index
+
+  const applyIndex = useCallback(
+    (next: number | ((prev: number) => number)) => {
+      const count = profiles.length
+      const resolved = typeof next === 'function' ? next(indexRef.current) : next
+      const clamped = count > 0 ? Math.min(Math.max(0, resolved), count - 1) : 0
+      indexRef.current = clamped
+      if (onIndexChange) onIndexChange(clamped)
+      else setInternalIndex(clamped)
+    },
+    [onIndexChange, profiles.length],
+  )
+
   const [dragX, setDragX] = useState(0)
   const [isDragging, setIsDragging] = useState(false)
   const startX = useRef(0)
@@ -38,13 +49,17 @@ export default function SwipeableProfileStack({
   const safeIndex = count > 0 ? Math.min(Math.max(0, index), count - 1) : 0
   const current = profiles[safeIndex]
   const profilesKey = profiles.map((p) => p.id).join('|')
+  const prevProfilesKeyRef = useRef<string | null>(null)
 
   useEffect(() => {
-    setIndex(0)
+    if (prevProfilesKeyRef.current === profilesKey) return
+    const isFirstRun = prevProfilesKeyRef.current === null
+    prevProfilesKeyRef.current = profilesKey
+    if (isFirstRun) return
+    applyIndex(0)
     setDragX(0)
     dragXRef.current = 0
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- reset deck when filter results change
-  }, [profilesKey])
+  }, [profilesKey, applyIndex])
 
   const resetDrag = useCallback(() => {
     setDragX(0)
@@ -52,22 +67,23 @@ export default function SwipeableProfileStack({
   }, [])
 
   const goNext = useCallback(() => {
-    setIndex((i) => Math.min(i + 1, count - 1))
+    applyIndex((i) => Math.min(i + 1, count - 1))
     resetDrag()
-  }, [count, resetDrag])
+  }, [count, applyIndex, resetDrag])
 
   const goPrev = useCallback(() => {
-    setIndex((i) => Math.max(i - 1, 0))
+    applyIndex((i) => Math.max(i - 1, 0))
     resetDrag()
-  }, [resetDrag])
+  }, [applyIndex, resetDrag])
 
   const finishDrag = useCallback(() => {
     setIsDragging(false)
     const delta = dragXRef.current
-    if (delta < -SWIPE_THRESHOLD && safeIndex < count - 1) goNext()
-    else if (delta > SWIPE_THRESHOLD && safeIndex > 0) goPrev()
+    const i = indexRef.current
+    if (delta < -SWIPE_THRESHOLD && i < count - 1) goNext()
+    else if (delta > SWIPE_THRESHOLD && i > 0) goPrev()
     else resetDrag()
-  }, [count, goNext, goPrev, resetDrag, safeIndex])
+  }, [count, goNext, goPrev, resetDrag])
 
   const onPointerDown = (e: React.PointerEvent) => {
     if (e.button !== 0) return
@@ -123,7 +139,7 @@ export default function SwipeableProfileStack({
             transition: isDragging ? 'none' : 'transform 0.3s cubic-bezier(0.34, 1.2, 0.64, 1)',
           }}
         >
-          <ProfileCard profile={current} compact />
+          <ProfileCard key={current.id} profile={current} compact />
         </div>
       </div>
 

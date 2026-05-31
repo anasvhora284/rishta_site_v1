@@ -22,58 +22,95 @@ export default function SwipeableProfileStack({
 }: SwipeableProfileStackProps) {
   const { t } = useTranslation()
   const [internalIndex, setInternalIndex] = useState(0)
-  const index = controlledIndex ?? internalIndex
+  const isControlled = controlledIndex !== undefined
+  const index = isControlled ? controlledIndex : internalIndex
 
-  const setIndex = (next: number | ((prev: number) => number)) => {
-    const resolved = typeof next === 'function' ? next(index) : next
-    if (onIndexChange) onIndexChange(resolved)
-    else setInternalIndex(resolved)
-  }
+  const indexRef = useRef(index)
+  indexRef.current = index
+
+  const applyIndex = useCallback(
+    (next: number | ((prev: number) => number)) => {
+      const count = profiles.length
+      const resolved = typeof next === 'function' ? next(indexRef.current) : next
+      const clamped = count > 0 ? Math.min(Math.max(0, resolved), count - 1) : 0
+      indexRef.current = clamped
+      if (onIndexChange) onIndexChange(clamped)
+      else setInternalIndex(clamped)
+    },
+    [onIndexChange, profiles.length],
+  )
+
   const [dragX, setDragX] = useState(0)
   const [isDragging, setIsDragging] = useState(false)
   const startX = useRef(0)
   const dragXRef = useRef(0)
 
   const count = profiles.length
-  const current = profiles[index]
+  const safeIndex = count > 0 ? Math.min(Math.max(0, index), count - 1) : 0
+  const current = profiles[safeIndex]
+  const profilesKey = profiles.map((p) => p.id).join('|')
+  const prevProfilesKeyRef = useRef<string | null>(null)
 
   useEffect(() => {
-    setIndex(0)
+    if (prevProfilesKeyRef.current === profilesKey) return
+    const isFirstRun = prevProfilesKeyRef.current === null
+    prevProfilesKeyRef.current = profilesKey
+    if (isFirstRun) return
+    applyIndex(0)
     setDragX(0)
     dragXRef.current = 0
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- reset deck when filter results change
-  }, [profiles])
+  }, [profilesKey, applyIndex])
 
-  const goNext = useCallback(() => {
-    setIndex((i) => Math.min(i + 1, count - 1))
+  const resetDrag = useCallback(() => {
     setDragX(0)
-  }, [count])
-
-  const goPrev = useCallback(() => {
-    setIndex((i) => Math.max(i - 1, 0))
-    setDragX(0)
+    dragXRef.current = 0
   }, [])
 
-  const onTouchStart = (e: React.TouchEvent) => {
-    startX.current = e.touches[0].clientX
+  const goNext = useCallback(() => {
+    applyIndex((i) => Math.min(i + 1, count - 1))
+    resetDrag()
+  }, [count, applyIndex, resetDrag])
+
+  const goPrev = useCallback(() => {
+    applyIndex((i) => Math.max(i - 1, 0))
+    resetDrag()
+  }, [applyIndex, resetDrag])
+
+  const finishDrag = useCallback(() => {
+    setIsDragging(false)
+    const delta = dragXRef.current
+    const i = indexRef.current
+    if (delta < -SWIPE_THRESHOLD && i < count - 1) goNext()
+    else if (delta > SWIPE_THRESHOLD && i > 0) goPrev()
+    else resetDrag()
+  }, [count, goNext, goPrev, resetDrag])
+
+  const onPointerDown = (e: React.PointerEvent) => {
+    if (e.button !== 0) return
+    startX.current = e.clientX
     setIsDragging(true)
+    e.currentTarget.setPointerCapture(e.pointerId)
   }
 
-  const onTouchMove = (e: React.TouchEvent) => {
-    const delta = e.touches[0].clientX - startX.current
+  const onPointerMove = (e: React.PointerEvent) => {
+    if (!e.currentTarget.hasPointerCapture(e.pointerId)) return
+    const delta = e.clientX - startX.current
     dragXRef.current = delta
     setDragX(delta)
   }
 
-  const onTouchEnd = () => {
-    setIsDragging(false)
-    const delta = dragXRef.current
-    if (delta < -SWIPE_THRESHOLD && index < count - 1) goNext()
-    else if (delta > SWIPE_THRESHOLD && index > 0) goPrev()
-    else {
-      setDragX(0)
-      dragXRef.current = 0
+  const onPointerUp = (e: React.PointerEvent) => {
+    if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+      e.currentTarget.releasePointerCapture(e.pointerId)
     }
+    finishDrag()
+  }
+
+  const onPointerCancel = (e: React.PointerEvent) => {
+    if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+      e.currentTarget.releasePointerCapture(e.pointerId)
+    }
+    finishDrag()
   }
 
   if (!current) return null
@@ -84,14 +121,14 @@ export default function SwipeableProfileStack({
 
       <div
         className="swipe-stack__deck"
-        onTouchStart={onTouchStart}
-        onTouchMove={onTouchMove}
-        onTouchEnd={onTouchEnd}
-        onTouchCancel={onTouchEnd}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerCancel}
       >
-        {index < count - 1 && (
+        {safeIndex < count - 1 && (
           <div className="swipe-stack__card swipe-stack__card--behind" aria-hidden>
-            <ProfileCard profile={profiles[index + 1]} compact />
+            <ProfileCard profile={profiles[safeIndex + 1]} compact />
           </div>
         )}
 
@@ -102,7 +139,7 @@ export default function SwipeableProfileStack({
             transition: isDragging ? 'none' : 'transform 0.3s cubic-bezier(0.34, 1.2, 0.64, 1)',
           }}
         >
-          <ProfileCard profile={current} compact />
+          <ProfileCard key={current.id} profile={current} compact />
         </div>
       </div>
 
@@ -111,7 +148,7 @@ export default function SwipeableProfileStack({
           type="button"
           className="swipe-stack__nav-btn"
           onClick={goPrev}
-          disabled={index === 0}
+          disabled={safeIndex === 0}
           aria-label={t('listing.previous')}
         >
           <ChevronLeftIcon />
@@ -122,7 +159,7 @@ export default function SwipeableProfileStack({
             <span className="swipe-stack__id">ID {current.profile_id}</span>
           )}
           <span className="swipe-stack__count">
-            {t('listing.profileCount', { current: index + 1, total: count })}
+            {t('listing.profileCount', { current: safeIndex + 1, total: count })}
           </span>
         </div>
 
@@ -130,7 +167,7 @@ export default function SwipeableProfileStack({
           type="button"
           className="swipe-stack__nav-btn"
           onClick={goNext}
-          disabled={index === count - 1}
+          disabled={safeIndex === count - 1}
           aria-label={t('listing.next')}
         >
           <ChevronRightIcon />

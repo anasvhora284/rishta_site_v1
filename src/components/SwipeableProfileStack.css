@@ -86,26 +86,26 @@
   transform: scale(0.95);
 }
 
-.swipe-stack__dots {
+.swipe-stack__position {
   display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  justify-content: center;
-  max-width: 160px;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 100px;
+  max-width: 140px;
+  text-align: center;
 }
 
-.swipe-stack__dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  border: none;
-  padding: 0;
-  background: rgba(255, 255, 255, 0.35);
-  cursor: pointer;
-  transition: transform 0.2s, background 0.2s;
+.swipe-stack__id {
+  color: #ffb144;
+  font-weight: 800;
+  font-size: 1rem;
+  font-family: 'Outfit', sans-serif;
+  line-height: 1.2;
 }
 
-.swipe-stack__dot.active {
-  background: #ffb144;
-  transform: scale(1.25);
+.swipe-stack__count {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.8rem;
+  font-family: 'Outfit', sans-serif;
 }

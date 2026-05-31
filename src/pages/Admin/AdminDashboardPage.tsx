@@ -31,6 +31,7 @@ import '@/pages/Browse/Filter.css'
 import {
   approveProfile,
   hideProfileFromBrowse,
+  isHiddenFromBrowseProfile,
   rejectProfile,
   showProfileOnBrowse,
   useProfiles,
@@ -180,9 +181,9 @@ export default function AdminDashboardPage() {
                 <Typography fontWeight={700} mb={1}>
                   {profile.name}
                   {profile.profile_id ? ` (ID: ${profile.profile_id})` : ''}
-                  {profile.is_test && (
+                  {isHiddenFromBrowseProfile(profile) && (
                     <Typography component="span" variant="body2" color="warning.main" ml={1}>
-                      ({t('admin.testProfile')})
+                      ({t('admin.hiddenFromBrowse')})
                     </Typography>
                   )}
                 </Typography>
@@ -226,7 +227,7 @@ export default function AdminDashboardPage() {
                   >
                     {t('admin.edit')}
                   </Button>
-                  {tab === 'approved' && !profile.is_test && (
+                  {tab === 'approved' && !isHiddenFromBrowseProfile(profile) && (
                     <Button
                       variant="outlined"
                       className="admin-btn admin-btn--hide"
@@ -236,7 +237,7 @@ export default function AdminDashboardPage() {
                       {t('admin.hideFromBrowse')}
                     </Button>
                   )}
-                  {tab === 'approved' && profile.is_test && (
+                  {isHiddenFromBrowseProfile(profile) && (
                     <Button
                       variant="outlined"
                       className="admin-btn admin-btn--approve"

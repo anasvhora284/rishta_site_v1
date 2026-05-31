@@ -58,7 +58,20 @@
     "swipeHint": "આગળની પ્રોફાઇલ માટે સ્વાઇપ કરો",
     "profileCount": "{{current}} / {{total}}",
     "previous": "પાછલી પ્રોફાઇલ",
-    "next": "આગળની પ્રોફાઇલ"
+    "next": "આગળની પ્રોફાઇલ",
+    "viewMode": "રિઝલ્ટ વ્યૂ",
+    "viewCards": "કાર્ડ",
+    "viewList": "લિસ્ટ",
+    "jumpPlaceholder": "આઈડી લખો",
+    "jumpGo": "આઈડી પર જાઓ",
+    "jumpInvalid": "સાચો આઈડી નંબર લખો",
+    "jumpNotFound": "આ ફિલ્ટરમાં ID {{id}} ની પ્રોફાઇલ નથી",
+    "goToTop": "ઉપર જાઓ",
+    "editFilters": "ફિલ્ટર બદલો",
+    "applyFilters": "ફિલ્ટર લાગુ કરો",
+    "resetFilters": "બધા ફિલ્ટર કાઢો",
+    "listShowing": "{{total}} માંથી {{shown}} પ્રોફાઇલ બતાવે છે",
+    "listLoadingMore": "વધુ પ્રોફાઇલ લોડ થઈ રહી છે…"
   },
   "submit": {
     "title": "પ્રોફાઇલ સબમિટ કરો",
@@ -123,6 +136,7 @@
     "notAdmin": "આ એકાઉન્ટ એડમિન નથી. એડમિન સેટઅપ માટે ટીમનો સંપર્ક કરો.",
     "hideFromBrowse": "પ્રોફાઇલ હાઇડ કરો",
     "showOnBrowse": "બ્રાઉઝમાં બતાવો",
+    "hiddenFromBrowse": "બ્રાઉઝમાંથી છુપાયેલ",
     "testProfile": "બ્રાઉઝમાંથી છુપાયેલ"
   },
   "team": {

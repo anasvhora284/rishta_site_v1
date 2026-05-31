@@ -58,7 +58,20 @@
     "swipeHint": "अगली प्रोफ़ाइल के लिए स्वाइप करें",
     "profileCount": "{{current}} / {{total}}",
     "previous": "पिछली प्रोफ़ाइल",
-    "next": "अगली प्रोफ़ाइल"
+    "next": "अगली प्रोफ़ाइल",
+    "viewMode": "रिज़ल्ट व्यू",
+    "viewCards": "कार्ड",
+    "viewList": "लिस्ट",
+    "jumpPlaceholder": "आईडी लिखें",
+    "jumpGo": "आईडी पर जाएँ",
+    "jumpInvalid": "सही प्रोफ़ाइल आईडी लिखें",
+    "jumpNotFound": "इस फ़िल्टर में ID {{id}} नहीं मिली",
+    "goToTop": "ऊपर जाएँ",
+    "editFilters": "फ़िल्टर बदलें",
+    "applyFilters": "फ़िल्टर लागू करें",
+    "resetFilters": "सभी फ़िल्टर हटाएँ",
+    "listShowing": "{{total}} में से {{shown}} प्रोफ़ाइल",
+    "listLoadingMore": "और प्रोफ़ाइल लोड हो रही हैं…"
   },
   "submit": {
     "title": "प्रोफ़ाइल सबमिट करें",
@@ -123,6 +136,7 @@
     "notAdmin": "यह अकाउंट एडमिन नहीं है। एडमिन सेटअप के लिए टीम से संपर्क करें।",
     "hideFromBrowse": "प्रोफ़ाइल हाइड करें",
     "showOnBrowse": "ब्राउज़ में दिखाएँ",
+    "hiddenFromBrowse": "ब्राउज़ से छुपा",
     "testProfile": "ब्राउज़ से छुपा"
   },
   "team": {

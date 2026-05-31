@@ -10,11 +10,25 @@ const SWIPE_THRESHOLD = 60
 
 interface SwipeableProfileStackProps {
   profiles: Profile[]
+  /** Controlled card index (for jump-to-ID from parent). */
+  index?: number
+  onIndexChange?: (index: number) => void
 }
 
-export default function SwipeableProfileStack({ profiles }: SwipeableProfileStackProps) {
+export default function SwipeableProfileStack({
+  profiles,
+  index: controlledIndex,
+  onIndexChange,
+}: SwipeableProfileStackProps) {
   const { t } = useTranslation()
-  const [index, setIndex] = useState(0)
+  const [internalIndex, setInternalIndex] = useState(0)
+  const index = controlledIndex ?? internalIndex
+
+  const setIndex = (next: number | ((prev: number) => number)) => {
+    const resolved = typeof next === 'function' ? next(index) : next
+    if (onIndexChange) onIndexChange(resolved)
+    else setInternalIndex(resolved)
+  }
   const [dragX, setDragX] = useState(0)
   const [isDragging, setIsDragging] = useState(false)
   const startX = useRef(0)
@@ -27,6 +41,7 @@ export default function SwipeableProfileStack({ profiles }: SwipeableProfileStac
     setIndex(0)
     setDragX(0)
     dragXRef.current = 0
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- reset deck when filter results change
   }, [profiles])
 
   const goNext = useCallback(() => {
@@ -67,10 +82,6 @@ export default function SwipeableProfileStack({ profiles }: SwipeableProfileStac
     <div className="swipe-stack">
       <p className="swipe-stack__hint">{t('listing.swipeHint')}</p>
 
-      <div className="swipe-stack__counter">
-        {t('listing.profileCount', { current: index + 1, total: count })}
-      </div>
-
       <div
         className="swipe-stack__deck"
         onTouchStart={onTouchStart}
@@ -106,21 +117,13 @@ export default function SwipeableProfileStack({ profiles }: SwipeableProfileStac
           <ChevronLeftIcon />
         </button>
 
-        <div className="swipe-stack__dots" role="tablist">
-          {profiles.map((p, i) => (
-            <button
-              key={p.id}
-              type="button"
-              role="tab"
-              aria-selected={i === index}
-              aria-label={t('listing.profileCount', { current: i + 1, total: count })}
-              className={`swipe-stack__dot ${i === index ? 'active' : ''}`}
-              onClick={() => {
-                setIndex(i)
-                setDragX(0)
-              }}
-            />
-          ))}
+        <div className="swipe-stack__position" aria-live="polite">
+          {current.profile_id != null && (
+            <span className="swipe-stack__id">ID {current.profile_id}</span>
+          )}
+          <span className="swipe-stack__count">
+            {t('listing.profileCount', { current: index + 1, total: count })}
+          </span>
         </div>
 
         <button

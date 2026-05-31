@@ -126,18 +126,40 @@ export async function updateProfile(id: string, updates: Partial<Profile>) {
   return { error }
 }
 
-export async function hideProfileFromBrowse(id: string, userId: string) {
-  const { error } = await supabase.from('profiles').update({ is_test: true }).eq('id', id)
-  if (!error) return { error: null }
-  // Column may not exist until migration — reject removes from public approved list
-  return rejectProfile(id, 'Hidden from browse', userId)
+/** Profile was hidden from public browse (flag or legacy reject note). */
+export function isHiddenFromBrowseProfile(profile: Profile): boolean {
+  if (profile.is_test) return true
+  return (profile.admin_notes ?? '').toLowerCase().includes('hidden from browse')
 }
 
-/** Undo hide: show on public browse again (approved + not test). */
-export async function showProfileOnBrowse(id: string) {
+export async function hideProfileFromBrowse(id: string, _userId: string) {
   const { error } = await supabase
     .from('profiles')
-    .update({ is_test: false, status: 'approved' })
+    .update({ is_test: true, admin_notes: null })
+    .eq('id', id)
+  return { error }
+}
+
+/** Undo hide: back on public browse as approved. */
+export async function showProfileOnBrowse(id: string) {
+  const { data: row, error: fetchError } = await supabase
+    .from('profiles')
+    .select('admin_notes')
+    .eq('id', id)
+    .maybeSingle()
+
+  if (fetchError) return { error: fetchError }
+
+  const notes = (row?.admin_notes as string | null) ?? ''
+  const clearHiddenNote = notes.toLowerCase().includes('hidden from browse')
+
+  const { error } = await supabase
+    .from('profiles')
+    .update({
+      is_test: false,
+      status: 'approved',
+      ...(clearHiddenNote ? { admin_notes: null } : {}),
+    })
     .eq('id', id)
   return { error }
 }

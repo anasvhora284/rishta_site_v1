@@ -58,7 +58,20 @@
     "swipeHint": "Swipe left or right for next profile",
     "profileCount": "{{current}} of {{total}}",
     "previous": "Previous profile",
-    "next": "Next profile"
+    "next": "Next profile",
+    "viewMode": "Results view",
+    "viewCards": "Cards",
+    "viewList": "List",
+    "jumpPlaceholder": "Jump to ID",
+    "jumpGo": "Go to profile ID",
+    "jumpInvalid": "Enter a valid profile ID number",
+    "jumpNotFound": "No profile with ID {{id}} in these results",
+    "goToTop": "Go Back",
+    "editFilters": "Edit filters",
+    "applyFilters": "Apply filters",
+    "resetFilters": "Clear all filters",
+    "listShowing": "Showing {{shown}} of {{total}} profiles",
+    "listLoadingMore": "Loading more profiles…"
   },
   "submit": {
     "title": "Submit Profile Details",
@@ -123,6 +136,7 @@
     "notAdmin": "This account is not an admin. Contact the team for admin access.",
     "hideFromBrowse": "Hide Profile",
     "showOnBrowse": "Show on browse",
+    "hiddenFromBrowse": "Hidden from browse",
     "testProfile": "Hidden from browse"
   },
   "team": {

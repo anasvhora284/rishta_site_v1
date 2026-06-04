@@ -48,7 +48,8 @@ export default function AdminDashboardPage() {
   const [userId, setUserId] = useState<string | null>(null)
   const [authChecked, setAuthChecked] = useState(false)
   const authReady = authChecked && !!userId
-  const { profiles, loading, error, refetch } = useProfiles(tab, authReady)
+  const { profiles, loading, error, refetch, removeProfileLocally, patchProfileLocally } =
+    useProfiles(tab, authReady)
   const [editProfile, setEditProfile] = useState<Profile | null>(null)
   const [rejectDialog, setRejectDialog] = useState<Profile | null>(null)
   const [rejectNotes, setRejectNotes] = useState('')
@@ -80,7 +81,8 @@ export default function AdminDashboardPage() {
     if (approveError) {
       setActionError(approveError.message)
     } else {
-      void refetch()
+      removeProfileLocally(profile.id)
+      void refetch({ silent: true })
     }
   }
 
@@ -93,7 +95,8 @@ export default function AdminDashboardPage() {
     } else {
       setRejectDialog(null)
       setRejectNotes('')
-      void refetch()
+      removeProfileLocally(rejectDialog.id)
+      void refetch({ silent: true })
     }
   }
 
@@ -109,7 +112,8 @@ export default function AdminDashboardPage() {
     if (hideError) {
       setActionError(hideError.message)
     } else {
-      void refetch()
+      patchProfileLocally(profile.id, { is_test: true, admin_notes: null })
+      void refetch({ silent: true })
     }
   }
 
@@ -119,7 +123,8 @@ export default function AdminDashboardPage() {
     if (showError) {
       setActionError(showError.message)
     } else {
-      void refetch()
+      patchProfileLocally(profile.id, { is_test: false, status: 'approved', admin_notes: null })
+      void refetch({ silent: true })
     }
   }
 
@@ -292,7 +297,7 @@ export default function AdminDashboardPage() {
           profile={editProfile}
           open={!!editProfile}
           onClose={() => setEditProfile(null)}
-          onSaved={() => void refetch()}
+          onSaved={() => void refetch({ silent: true })}
         />
       </div>
     </div>

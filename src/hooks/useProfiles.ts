@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import type { Profile, ProfileStatus } from '@/types/profile'
 
@@ -17,6 +17,11 @@ export interface UseProfilesOptions {
   publicBrowseOnly?: boolean
 }
 
+export interface RefetchOptions {
+  /** Skip the full-list loading spinner (use after admin actions). */
+  silent?: boolean
+}
+
 export function useProfiles(
   status?: ProfileStatus,
   enabled = true,
@@ -26,31 +31,46 @@ export function useProfiles(
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const publicBrowseOnly = options?.publicBrowseOnly ?? false
+  const fetchGeneration = useRef(0)
 
-  const fetchProfiles = async () => {
-    setLoading(true)
-    setError(null)
-    // Ensure auth session is attached before admin RLS queries
-    await supabase.auth.getSession()
+  const fetchProfiles = useCallback(
+    async (opts?: RefetchOptions) => {
+      const generation = ++fetchGeneration.current
+      if (!opts?.silent) setLoading(true)
+      setError(null)
+      // Ensure auth session is attached before admin RLS queries
+      await supabase.auth.getSession()
 
-    let query = supabase.from('profiles').select('*').order('created_at', { ascending: false })
-    if (status) {
-      query = query.eq('status', status)
-    } else {
-      query = query.eq('status', 'approved')
-    }
-    const { data, error: fetchError } = await query
-    if (fetchError) {
-      setError(fetchError.message)
-    } else {
-      let rows = (data as Profile[]) ?? []
-      if (publicBrowseOnly) {
-        rows = rows.filter(isPublicBrowseProfile)
+      let query = supabase.from('profiles').select('*').order('created_at', { ascending: false })
+      if (status) {
+        query = query.eq('status', status)
+      } else {
+        query = query.eq('status', 'approved')
       }
-      setProfiles(rows)
-    }
-    setLoading(false)
-  }
+      const { data, error: fetchError } = await query
+      if (generation !== fetchGeneration.current) return
+
+      if (fetchError) {
+        setError(fetchError.message)
+      } else {
+        let rows = (data as Profile[]) ?? []
+        if (publicBrowseOnly) {
+          rows = rows.filter(isPublicBrowseProfile)
+        }
+        setProfiles(rows)
+      }
+      if (!opts?.silent) setLoading(false)
+    },
+    [status, publicBrowseOnly],
+  )
+
+  const removeProfileLocally = useCallback((id: string) => {
+    setProfiles((prev) => prev.filter((p) => p.id !== id))
+  }, [])
+
+  const patchProfileLocally = useCallback((id: string, updates: Partial<Profile>) => {
+    setProfiles((prev) => prev.map((p) => (p.id === id ? { ...p, ...updates } : p)))
+  }, [])
 
   useEffect(() => {
     if (!enabled) {
@@ -58,9 +78,16 @@ export function useProfiles(
       return
     }
     void fetchProfiles()
-  }, [status, enabled, publicBrowseOnly])
+  }, [enabled, fetchProfiles])
 
-  return { profiles, loading, error, refetch: fetchProfiles }
+  return {
+    profiles,
+    loading,
+    error,
+    refetch: fetchProfiles,
+    removeProfileLocally,
+    patchProfileLocally,
+  }
 }
 
 export async function submitProfile(

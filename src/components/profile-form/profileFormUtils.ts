@@ -69,6 +69,21 @@ export function formDataToProfileUpdate(form: ProfileFormData) {
   }
 }
 
+/** Build a Profile-shaped object for the submit-flow preview card. */
+export function formDataToPreviewProfile(form: ProfileFormData): Profile {
+  const update = formDataToProfileUpdate(form)
+  return {
+    id: 'preview',
+    profile_id: null,
+    ...update,
+    status: 'pending',
+    admin_notes: null,
+    created_at: new Date().toISOString(),
+    approved_at: null,
+    approved_by: null,
+  }
+}
+
 export function validateProfileForm(
   form: ProfileFormData,
   t: TranslateFn,

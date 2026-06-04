@@ -61,7 +61,9 @@ export default function ProfileCard({ profile, compact = false }: ProfileCardPro
           />
         </div>
         <div className="profile-card__headline">
-          <h2 className="profile-card__name">{profile.name}</h2>
+          <h2 className="profile-card__name" title={profile.name}>
+            {profile.name}
+          </h2>
           <p className="profile-card__meta">
             {formatDisplayDate(profile.date_of_birth)}
             {' · '}
@@ -86,7 +88,7 @@ export default function ProfileCard({ profile, compact = false }: ProfileCardPro
         {details.map((item) => (
           <div key={item.label} className="profile-card__detail-row">
             <dt>{item.label}</dt>
-            <dd>{item.value || '—'}</dd>
+            <dd title={item.value || undefined}>{item.value || '—'}</dd>
           </div>
         ))}
       </dl>

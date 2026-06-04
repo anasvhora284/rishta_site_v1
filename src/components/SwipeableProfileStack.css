@@ -2,31 +2,15 @@
   width: 100%;
   max-width: 420px;
   margin: 0 auto;
-  padding: 0 var(--page-pad-x, 12px) calc(80px + env(safe-area-inset-bottom, 0));
+  padding: 4px var(--page-pad-x, 12px) calc(72px + env(safe-area-inset-bottom, 0));
   box-sizing: border-box;
 }
 
-.swipe-stack__hint {
-  text-align: center;
-  color: rgba(255, 255, 255, 0.65);
-  font-size: 0.85rem;
-  margin: 0 0 8px;
-  font-family: 'Outfit', sans-serif;
-}
-
-.swipe-stack__counter {
-  text-align: center;
-  color: #ffb144;
-  font-weight: 700;
-  font-size: 0.95rem;
-  margin-bottom: 12px;
-  font-family: 'Outfit', sans-serif;
-}
 
 .swipe-stack__deck {
   position: relative;
-  height: min(72vh, 640px);
-  min-height: 480px;
+  height: min(76vh, 660px);
+  min-height: 500px;
   touch-action: none;
   cursor: grab;
   user-select: none;
@@ -41,23 +25,94 @@
   inset: 0;
   border-radius: 24px;
   overflow: hidden;
+  background: #141414;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
 }
 
+/* Next card in the stack */
 .swipe-stack__card--behind {
-  transform: scale(0.94) translateY(12px);
-  z-index: 0;
+  z-index: 1;
+  transform: scale(0.92) translateY(20px);
+  opacity: 0.88;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
   pointer-events: none;
 }
 
-.swipe-stack__card--active {
-  z-index: 1;
-  will-change: transform;
-  background: #141414;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+.swipe-stack__card--behind.is-promoting {
+  z-index: 2;
+  animation: swipe-stack-step-forward 420ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-.swipe-stack__card--active.dragging {
+/* Front card — one element for drag + exit */
+.swipe-stack__card--front {
+  z-index: 3;
+  transform: translateX(0);
+  opacity: 1;
+  transition: transform 280ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.swipe-stack__card--front.is-dragging {
   cursor: grabbing;
+  transition: none;
+}
+
+.swipe-stack__card--front.is-exit-next,
+.swipe-stack__card--front.is-exit-prev {
+  transition:
+    transform 420ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 320ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.swipe-stack__card--front.is-exit-next.is-exit-active {
+  transform: translateX(-108%);
+  opacity: 0;
+}
+
+.swipe-stack__card--front.is-exit-prev.is-exit-active {
+  transform: translateX(108%);
+  opacity: 0;
+}
+
+/* Once exit finishes, hide front — user only sees the promoting card behind */
+.swipe-stack__card--front.is-hidden-after-exit {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* After slide: snap to center with NO transition (prevents slide-in from left) */
+.swipe-stack__card--front.is-landed {
+  transition: none !important;
+  transform: translateX(0) !important;
+  opacity: 1 !important;
+  visibility: visible;
+}
+
+@keyframes swipe-stack-step-forward {
+  from {
+    transform: scale(0.92) translateY(20px);
+    opacity: 0.88;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .swipe-stack__card--front.is-exit-next.is-exit-active {
+    transform: translateX(-100%);
+  }
+
+  .swipe-stack__card--behind.is-promoting {
+    animation: none;
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+
+  .swipe-stack__card--front.is-exit-next,
+  .swipe-stack__card--front.is-exit-prev {
+    transition-duration: 0.01ms;
+  }
 }
 
 .swipe-stack__nav {
@@ -65,7 +120,11 @@
   align-items: center;
   justify-content: center;
   gap: 16px;
-  margin-top: 20px;
+  margin-top: 16px;
+}
+
+.swipe-stack__nav--compact {
+  gap: 20px;
 }
 
 .swipe-stack__nav-btn {
@@ -90,28 +149,4 @@
 
 .swipe-stack__nav-btn:not(:disabled):active {
   transform: scale(0.95);
-}
-
-.swipe-stack__position {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  min-width: 100px;
-  max-width: 140px;
-  text-align: center;
-}
-
-.swipe-stack__id {
-  color: #ffb144;
-  font-weight: 800;
-  font-size: 1rem;
-  font-family: 'Outfit', sans-serif;
-  line-height: 1.2;
-}
-
-.swipe-stack__count {
-  color: rgba(255, 255, 255, 0.75);
-  font-size: 0.8rem;
-  font-family: 'Outfit', sans-serif;
 }

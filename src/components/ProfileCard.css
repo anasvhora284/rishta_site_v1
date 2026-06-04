@@ -46,6 +46,13 @@
   gap: 14px;
   margin-bottom: 16px;
   padding-right: 56px;
+  min-width: 0;
+}
+
+.profile-card__headline {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .profile-card__avatar {
@@ -78,6 +85,13 @@
   font-weight: 700;
   line-height: 1.35;
   color: #fff;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  text-overflow: ellipsis;
+  word-break: break-word;
 }
 
 .profile-card__meta {
@@ -154,6 +168,12 @@
 .profile-card__detail-row dd {
   margin: 0;
   color: rgba(255, 255, 255, 0.92);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  text-overflow: ellipsis;
   word-break: break-word;
 }
 

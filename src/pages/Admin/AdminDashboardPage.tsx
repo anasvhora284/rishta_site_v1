@@ -178,7 +178,7 @@ export default function AdminDashboardPage() {
           ) : (
             profiles.map((profile) => (
               <Box key={profile.id} className="admin-card">
-                <Typography fontWeight={700} mb={1}>
+                <Typography className="admin-card__name" fontWeight={700} mb={1} title={profile.name}>
                   {profile.name}
                   {profile.profile_id ? ` (ID: ${profile.profile_id})` : ''}
                   {isHiddenFromBrowseProfile(profile) && (

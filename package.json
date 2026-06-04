@@ -14,6 +14,7 @@
     "migrate": "tsx scripts/migrate-excel.ts",
     "clean-excel": "tsx scripts/clean-main-excel.ts",
     "import-excel": "tsx scripts/import-cleaned-excel.ts",
+    "import-form": "tsx scripts/import-form-responses.ts",
     "backfill-profile-ids": "tsx scripts/backfill-profile-ids.ts"
   },
   "dependencies": {

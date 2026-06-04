@@ -46,6 +46,7 @@
   width: 100%;
   height: 100%;
   transform: none;
+  animation: cssload-main-bob 2.88s cubic-bezier(0.75, 0, 0.5, 1) infinite normal;
 }
 
 .loader-hearts .cssload-main * {
@@ -62,6 +63,24 @@
   content: '';
 }
 
+/* Beat midpoint: one true circle (parts hidden so no puzzle-piece blob) */
+.loader-hearts .cssload-heart::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1em;
+  height: 1em;
+  margin: -0.5em 0 0 -0.5em;
+  border: 1px solid rgb(252, 0, 101);
+  background-color: rgb(252, 0, 101);
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.5);
+  animation: cssload-beat-circle 2.88s cubic-bezier(0.75, 0, 0.5, 1) infinite normal;
+}
+
 .loader-hearts .cssload-heartL {
   width: 1em;
   height: 1em;
@@ -71,7 +90,9 @@
   position: absolute;
   display: block;
   border-radius: 100%;
-  animation: cssload-heartL 2.88s cubic-bezier(0.75, 0, 0.5, 1) infinite normal;
+  animation:
+    cssload-heartL 2.88s cubic-bezier(0.75, 0, 0.5, 1) infinite normal,
+    cssload-heart-part-hide 2.88s cubic-bezier(0.75, 0, 0.5, 1) infinite normal;
   transform: translate(-15px, -15px);
 }
 
@@ -85,7 +106,9 @@
   display: block;
   border-radius: 100%;
   transform: translate(15px, -15px);
-  animation: cssload-heartR 2.88s cubic-bezier(0.75, 0, 0.5, 1) infinite normal;
+  animation:
+    cssload-heartR 2.88s cubic-bezier(0.75, 0, 0.5, 1) infinite normal,
+    cssload-heart-part-hide 2.88s cubic-bezier(0.75, 0, 0.5, 1) infinite normal;
 }
 
 .loader-hearts .cssload-square {
@@ -97,7 +120,9 @@
   display: block;
   content: '';
   transform: scale(1) rotate(-45deg);
-  animation: cssload-square 2.88s cubic-bezier(0.75, 0, 0.5, 1) infinite normal;
+  animation:
+    cssload-square 2.88s cubic-bezier(0.75, 0, 0.5, 1) infinite normal,
+    cssload-heart-part-hide 2.88s cubic-bezier(0.75, 0, 0.5, 1) infinite normal;
 }
 
 .loader-hearts .cssload-shadow {
@@ -139,6 +164,18 @@
   color: #8b2942;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .loader-hearts .cssload-main,
+  .loader-hearts .cssload-heart,
+  .loader-hearts .cssload-heart::before,
+  .loader-hearts .cssload-heartL,
+  .loader-hearts .cssload-heartR,
+  .loader-hearts .cssload-square,
+  .loader-hearts .cssload-shadow {
+    animation-duration: 4.5s;
+  }
+}
+
 @keyframes loader-message-in {
   from {
     opacity: 0;
@@ -147,6 +184,16 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes cssload-main-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-0.12em);
   }
 }
 
@@ -170,14 +217,48 @@
 }
 
 @keyframes cssload-heartL {
+  0%,
+  100% {
+    transform: translate(-15px, -15px) scale(1);
+  }
   60% {
-    transform: scale(0.4);
+    transform: translate(-15px, -15px) scale(0.4);
   }
 }
 
 @keyframes cssload-heartR {
+  0%,
+  100% {
+    transform: translate(15px, -15px) scale(1);
+  }
   40% {
-    transform: scale(0.4);
+    transform: translate(15px, -15px) scale(0.4);
+  }
+}
+
+@keyframes cssload-beat-circle {
+  0%,
+  49%,
+  51%,
+  100% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(0.5);
+  }
+}
+
+@keyframes cssload-heart-part-hide {
+  0%,
+  49%,
+  51%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
   }
 }
 

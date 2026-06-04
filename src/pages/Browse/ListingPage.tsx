@@ -1,26 +1,22 @@
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import TuneIcon from '@mui/icons-material/Tune'
-import { Box, IconButton, Typography } from '@mui/material'
-import { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import emptySearch from '@/assets/EmptyState.svg'
-import backgroundImg from '@/assets/SearchPage.png'
 import ListingFilterDialog from '@/components/browse/ListingFilterDialog'
+import ListingPageBackground from '@/components/browse/ListingPageBackground'
 import ListingListView from '@/components/ListingListView'
-import ListingViewToolbar, {
+import ListingTopBar, {
   getStoredListingViewMode,
   storeListingViewMode,
   type ListingViewMode,
-} from '@/components/ListingViewToolbar'
+} from '@/components/ListingTopBar'
 import SwipeableProfileStack from '@/components/SwipeableProfileStack'
+import { Box } from '@mui/material'
+import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
+import emptySearch from '@/assets/EmptyState.svg'
 import type { RootState } from '@/duck/store'
 import './Listing.css'
 
 export default function ListingPage() {
   const { t } = useTranslation()
-  const navigate = useNavigate()
   const filteredData = useSelector((state: RootState) => state.filter.filteredData)
   const [viewMode, setViewMode] = useState<ListingViewMode>(getStoredListingViewMode)
   const [cardIndex, setCardIndex] = useState(0)
@@ -28,11 +24,7 @@ export default function ListingPage() {
   const [listScrollTargetId, setListScrollTargetId] = useState<string | null>(null)
 
   useEffect(() => {
-    document.body.style.background = `linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url(${backgroundImg}) no-repeat fixed center/cover`
     window.scrollTo(0, 0)
-    return () => {
-      document.body.style.background = ''
-    }
   }, [])
 
   useEffect(() => {
@@ -50,42 +42,24 @@ export default function ListingPage() {
 
   return (
     <div className="listing-page">
-      <header className="listing-page__toolbar">
-        <IconButton
-          className="listing-page__icon-btn"
-          onClick={() => navigate('/filter')}
-          aria-label={t('nav.back')}
-        >
-          <ArrowBackIcon />
-        </IconButton>
-        <Typography className="listing-page__title">
-          {filteredData.length > 0
-            ? t('listing.resultsTitle', { count: filteredData.length })
-            : t('listing.noResults')}
-        </Typography>
-        <IconButton
-          className="listing-page__icon-btn"
-          onClick={() => setFilterDialogOpen(true)}
-          aria-label={t('listing.editFilters')}
-        >
-          <TuneIcon />
-        </IconButton>
-      </header>
-
-      <ListingFilterDialog
-        open={filterDialogOpen}
-        onClose={() => setFilterDialogOpen(false)}
-        onApplied={() => setCardIndex(0)}
-      />
+      <ListingPageBackground />
 
       {filteredData.length > 0 ? (
         <>
-          <ListingViewToolbar
+          <ListingTopBar
+            profiles={filteredData}
             viewMode={viewMode}
             onViewModeChange={handleViewModeChange}
-            profiles={filteredData}
             onJumpToIndex={setCardIndex}
             onJumpToListItem={jumpToListItem}
+            onOpenFilters={() => setFilterDialogOpen(true)}
+            cardIndex={cardIndex}
+          />
+
+          <ListingFilterDialog
+            open={filterDialogOpen}
+            onClose={() => setFilterDialogOpen(false)}
+            onApplied={() => setCardIndex(0)}
           />
 
           {viewMode === 'card' ? (
@@ -103,20 +77,37 @@ export default function ListingPage() {
           )}
         </>
       ) : (
-        <Box className="no-data-wrapper">
-          <Box className="no-data-inner-box">
-            <img src={emptySearch} alt="" />
-            <p className="no-results-text">{t('listing.noResults')}</p>
-            <p className="no-result-sub-text">{t('listing.noResultsHint')}</p>
-            <button
-              type="button"
-              onClick={() => setFilterDialogOpen(true)}
-              className="filter-again-btn"
-            >
-              {t('listing.editFilters')}
-            </button>
+        <>
+          <ListingTopBar
+            profiles={[]}
+            viewMode={viewMode}
+            onViewModeChange={handleViewModeChange}
+            onJumpToIndex={() => {}}
+            onJumpToListItem={() => {}}
+            onOpenFilters={() => setFilterDialogOpen(true)}
+          />
+
+          <ListingFilterDialog
+            open={filterDialogOpen}
+            onClose={() => setFilterDialogOpen(false)}
+            onApplied={() => setCardIndex(0)}
+          />
+
+          <Box className="no-data-wrapper">
+            <Box className="no-data-inner-box">
+              <img src={emptySearch} alt="" />
+              <p className="no-results-text">{t('listing.noResults')}</p>
+              <p className="no-result-sub-text">{t('listing.noResultsHint')}</p>
+              <button
+                type="button"
+                onClick={() => setFilterDialogOpen(true)}
+                className="filter-again-btn"
+              >
+                {t('listing.editFilters')}
+              </button>
+            </Box>
           </Box>
-        </Box>
+        </>
       )}
     </div>
   )

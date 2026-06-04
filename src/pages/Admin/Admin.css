@@ -90,6 +90,18 @@
   margin-bottom: 12px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
   border-left: 4px solid rgba(174, 0, 61, 0.35);
+  min-width: 0;
+}
+
+.admin-card__name {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  line-height: 1.35 !important;
 }
 
 .admin-card-actions {

@@ -48,6 +48,13 @@ export function formatDisplayDate(dateString: string): string {
   return `${dateObj.getDate()} ${dateObj.toLocaleString('default', { month: 'short' })}, ${dateObj.getFullYear()}`
 }
 
+export function displayCity(profile: { city: string; city_other?: string | null }): string {
+  if (profile.city === 'Other') {
+    return profile.city_other?.trim() || profile.city
+  }
+  return profile.city
+}
+
 export function normalizeCity(city: string): string {
   return city.trim().toLowerCase()
 }

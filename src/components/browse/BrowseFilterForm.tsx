@@ -67,7 +67,7 @@ export default function BrowseFilterForm({
   const { fromAge, toAge, gender, qualification, city, maritalStatus } = criteria
 
   const cityValues = useMemo(() => buildCityOptions(profiles), [profiles])
-  const qualificationValues = useMemo(() => buildQualificationOptions(profiles), [profiles])
+  const qualificationValues = useMemo(() => buildQualificationOptions(), [])
   const maritalStatusValues = useMemo(() => buildMaritalStatusOptions(profiles), [profiles])
 
   const patch = (partial: Partial<BrowseFilterCriteria>) => {
@@ -143,7 +143,7 @@ export default function BrowseFilterForm({
             displayEmpty
             IconComponent={ExpandMoreIcon}
             renderValue={(selected) =>
-              selected.length ? selected.map((v) => v.toUpperCase()).join(', ') : t('filter.all')
+              selected.length ? selected.join(', ') : t('filter.all')
             }
             MenuProps={MenuProps}
             className="select-dropdown-common"
@@ -152,7 +152,7 @@ export default function BrowseFilterForm({
             {qualificationValues.map((value) => (
               <MenuItem key={value} value={value}>
                 <Checkbox checked={qualification.includes(value)} />
-                <ListItemText primary={value.toUpperCase()} />
+                <ListItemText primary={value} />
               </MenuItem>
             ))}
           </Select>

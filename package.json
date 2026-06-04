@@ -15,7 +15,9 @@
     "clean-excel": "tsx scripts/clean-main-excel.ts",
     "import-excel": "tsx scripts/import-cleaned-excel.ts",
     "import-form": "tsx scripts/import-form-responses.ts",
-    "backfill-profile-ids": "tsx scripts/backfill-profile-ids.ts"
+    "backfill-profile-ids": "tsx scripts/backfill-profile-ids.ts",
+    "preview-city-cleanup": "tsx scripts/preview-city-cleanup.ts",
+    "apply-city-cleanup": "tsx scripts/apply-city-cleanup.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

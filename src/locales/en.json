@@ -160,5 +160,12 @@
     "loading": "Loading...",
     "error": "Error",
     "other": "Other"
+  },
+  "citySearch": {
+    "minChars": "Type at least 2 characters to search",
+    "noResults": "No places found — try a nearby town or use manual entry",
+    "manualEntry": "Other — enter manually",
+    "manualHint": "Type your city/village name below",
+    "filterPlaceholder": "Search city or village…"
   }
 }

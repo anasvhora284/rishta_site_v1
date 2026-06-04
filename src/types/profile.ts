@@ -71,16 +71,16 @@ export const QUALIFICATIONS = [
 ] as const
 
 export const CITIES = [
-  'AHMEDABAD', 'AJARPURA', 'ALARSA', 'ANAND', 'ASOJ', 'Ajarpura', 'Anklav',
-  'BAHIYAL', 'BHADARVA', 'BHALEJ', 'BHARUCH', 'BORSAD', 'Borsad', 'CHANGA',
-  'DAKOR', 'DUBAI', 'GANDHINAGAR', 'Gana', 'KANIJ', 'KAPADWANJ', 'KASOR',
-  'KATHLAL', 'KHAMBHAT', 'KHANDHLI', 'KHEDA', 'KOSINDRA', 'Kalsar (dakor)',
-  'Khambhat', 'MAHEMDAVAD', 'MAHESANA', 'MAHUDHA', 'MALAVADA', 'MANDVI',
-  'MUMBAI', 'Mahemdavad', 'NADIAD', 'NAPA', 'NAVSARI', 'Navli', 'Not Provided',
-  'OD', 'PADRA', 'PETLAD', 'PIPLAG', 'RAS', 'SANJAN', 'SEVALIYA', 'SOJITRA',
-  'SURAT', 'SURELI', 'Salun', 'TARAPUR', 'THASRA', 'UMETHA', 'UMRETH', 'USA',
-  'UTTARSANDA', 'VADODARA', 'VALASAN', 'VANSOL', 'VASAD', 'VASNA', 'VASO',
-  'VIRSAD', 'Virar (Mumbai)- Maharashtra', 'Wakaner', 'Other',
+  'AHMEDABAD', 'AJARPURA', 'ALARSA', 'ANAND', 'ANKLESHWAR', 'ASOJ', 'Ajarpura', 'Anghadi',
+  'Anklav', 'BAHIYAL', 'Bandhni', 'BHADARVA', 'BHALEJ', 'BHARUCH', 'BORSAD', 'Borsad', 'CHANGA',
+  'DAKOR', 'DUBAI', 'GAMDI', 'GANDHINAGAR', 'Gana', 'KANIJ', 'KANJARI', 'KAPADWANJ', 'KASOR',
+  'KATHLAL', 'KHAMBHAT', 'KHANDALI', 'KHANDHLI', 'KHEDA', 'KOSINDRA', 'Kalsar (dakor)',
+  'Khambhat', 'MAHEMDAVAD', 'MAHESANA', 'MAHUDHA', 'MALAVADA', 'MANDVI', 'MOGAR', 'MUMBAI',
+  'Mahemdavad', 'Malvan', 'NADIAD', 'NAPA', 'NAR', 'NAVSARI', 'Navakhal', 'Navli', 'Not Provided',
+  'OD', 'ODE', 'PADRA', 'PANSORA', 'PETLAD', 'PIPLAG', 'RAS', 'RUDAN', 'SANJAN', 'SEVALIYA',
+  'SOJITRA', 'SURAT', 'SURELI', 'Salun', 'TARAPUR', 'THASRA', 'UMETHA', 'UMRETH', 'USA',
+  'UTTARSANDA', 'VADODARA', 'VALASAN', 'VANSOL', 'VASAD', 'VASNA', 'VASO', 'VIRSAD',
+  'VYARA', 'Virar (Mumbai)- Maharashtra', 'Wakaner', 'Other',
 ] as const
 
 export const TEAM_CONTACTS = {

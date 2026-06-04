@@ -65,7 +65,10 @@ export default function AdminEditProfileDialog({
 
     setSaving(true)
     setSaveError('')
-    const { error } = await updateProfile(profile.id, formDataToProfileUpdate(form))
+    const { error } = await updateProfile(
+      profile.id,
+      formDataToProfileUpdate(form, { preserveCityOther: true }),
+    )
     setSaving(false)
 
     if (error) {

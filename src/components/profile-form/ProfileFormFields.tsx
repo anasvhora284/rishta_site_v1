@@ -11,7 +11,7 @@ import {
   Typography,
 } from '@mui/material'
 import { useTranslation } from 'react-i18next'
-import { CITIES, QUALIFICATIONS, type ProfileFormData } from '@/types/profile'
+import { QUALIFICATIONS, CITIES, type ProfileFormData } from '@/types/profile'
 import BilingualField from './BilingualField'
 import { maxDateOfBirthForMinAge } from './profileFormUtils'
 

@@ -1,6 +1,7 @@
 import { isPublicBrowseProfile } from '@/hooks/useProfiles'
-import type { Profile } from '@/types/profile'
-import { calculateAge, normalizeCity } from '@/utils'
+import { QUALIFICATIONS, type Profile } from '@/types/profile'
+import { calculateAge, displayCity, normalizeCity } from '@/utils'
+import { normalizeQualificationBucket } from '@/utils/qualificationNormalize'
 
 export interface BrowseFilterCriteria {
   fromAge: string
@@ -36,13 +37,13 @@ export function applyBrowseFilters(
       return false
     }
 
-    const profileCity = normalizeCity(
-      data.city === 'Other' ? (data.city_other ?? data.city) : data.city,
+    const profileCity = normalizeCity(displayCity(data))
+    const profileQual = normalizeQualificationBucket(
+      data.education_category ?? data.qualification ?? '',
     )
-    const eduCat = (data.education_category ?? data.qualification).trim()
 
     return (
-      (!qualification.length || qualification.includes(eduCat)) &&
+      (!qualification.length || qualification.includes(profileQual)) &&
       (!gender || data.gender === gender) &&
       (!city.length || city.includes(profileCity)) &&
       (!maritalStatus.length || maritalStatus.includes(data.marital_status))
@@ -69,19 +70,13 @@ export function validateBrowseFilterAges(
 
 export function buildCityOptions(profiles: Profile[]): string[] {
   const cities = profiles
-    .map((p) => normalizeCity(p.city === 'Other' ? (p.city_other ?? p.city) : p.city))
+    .map((p) => normalizeCity(displayCity(p)))
     .filter(Boolean)
   return [...new Set(cities)].sort()
 }
 
-export function buildQualificationOptions(profiles: Profile[]): string[] {
-  const quals = profiles
-    .map((p) => (p.education_category ?? p.qualification).trim())
-    .filter(Boolean)
-  const unique = [...new Set(quals)]
-  const special = ['10th', '12th'].filter((q) => unique.includes(q))
-  const rest = unique.filter((q) => !special.includes(q)).sort()
-  return [...special, ...rest]
+export function buildQualificationOptions(_profiles?: Profile[]): string[] {
+  return [...QUALIFICATIONS]
 }
 
 export function buildMaritalStatusOptions(profiles: Profile[]): string[] {

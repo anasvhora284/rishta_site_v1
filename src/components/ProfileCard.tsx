@@ -6,6 +6,7 @@ import type { Profile } from '@/types/profile'
 import {
   calculateAge,
   capitalizeWords,
+  displayCity,
   formatDisplayDate,
   toTelUrl,
   toWhatsAppUrl,
@@ -21,9 +22,7 @@ interface ProfileCardProps {
 export default function ProfileCard({ profile, compact = false }: ProfileCardProps) {
   const { t } = useTranslation()
   const isMale = profile.gender === 'male'
-  const cityDisplay = capitalizeWords(
-    profile.city === 'Other' ? (profile.city_other ?? profile.city) : profile.city,
-  )
+  const cityDisplay = capitalizeWords(displayCity(profile))
   const age = calculateAge(profile.date_of_birth.replace(/-/g, '/'))
   const hasContact = Boolean(profile.parent_contact?.trim())
   const callUrl = hasContact ? toTelUrl(profile.parent_contact) : null

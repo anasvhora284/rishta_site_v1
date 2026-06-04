@@ -43,11 +43,14 @@ export function profileToFormData(profile: Profile): ProfileFormData {
   }
 }
 
-export function formDataToProfileUpdate(form: ProfileFormData) {
+export function formDataToProfileUpdate(
+  form: ProfileFormData,
+  options?: { preserveCityOther?: boolean },
+) {
   const qualificationOther =
     form.qualification === 'Other' ? form.qualification_other.trim() || null : null
 
-  return {
+  const base = {
     name: form.name.trim(),
     gender: form.gender as Gender,
     qualification: form.qualification,
@@ -59,13 +62,21 @@ export function formDataToProfileUpdate(form: ProfileFormData) {
     father_occupation: form.father_occupation.trim(),
     mother_name: form.mother_name.trim(),
     city: form.city,
-    city_other: form.city === 'Other' ? form.city_other.trim() || null : null,
     date_of_birth: form.date_of_birth,
     marital_status: form.marital_status as MaritalStatus,
     height: form.height.trim(),
     weight_other: form.weight_other.trim(),
     parent_contact: form.parent_contact.trim(),
     sub_cast: form.sub_cast.trim(),
+  }
+
+  if (form.city === 'Other') {
+    return { ...base, city_other: form.city_other.trim() || null }
+  }
+
+  return {
+    ...base,
+    city_other: options?.preserveCityOther ? form.city_other.trim() || null : null,
   }
 }
 

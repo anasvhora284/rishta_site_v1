@@ -1,103 +1,110 @@
-import BlockIcon from '@mui/icons-material/Block'
-import CancelIcon from '@mui/icons-material/Cancel'
-import CheckCircleIcon from '@mui/icons-material/CheckCircle'
-import CloseIcon from '@mui/icons-material/Close'
-import EditIcon from '@mui/icons-material/Edit'
-import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty'
-import LogoutIcon from '@mui/icons-material/Logout'
-import VisibilityIcon from '@mui/icons-material/Visibility'
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
-import {
-  Alert,
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Tab,
-  Tabs,
-  TextField,
-  Typography,
-} from '@mui/material'
-import { useEffect, useState } from 'react'
+import { Typography, useMediaQuery, useTheme } from '@mui/material'
+import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
-// import AdminBrandLogos from '@/components/AdminBrandLogos'
-import AdminEditProfileDialog from '@/components/admin/AdminEditProfileDialog'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+import AdminPageLayout from '@/components/admin/AdminPageLayout'
+import AdminProfileDrawer from '@/components/admin/AdminProfileDrawer'
+import AdminProfileListDesktop from '@/components/admin/AdminProfileListDesktop'
+import AdminProfileListMobile from '@/components/admin/AdminProfileListMobile'
+import AdminShell from '@/components/admin/AdminShell'
+import type { AdminTab } from '@/components/admin/adminTypes'
 import Loader from '@/components/Loader'
-import SiteNavbar from '@/components/SiteNavbar'
-import '@/pages/Browse/Filter.css'
-import {
-  approveProfile,
-  hideProfileFromBrowse,
-  isHiddenFromBrowseProfile,
-  rejectProfile,
-  showProfileOnBrowse,
-  useProfiles,
-} from '@/hooks/useProfiles'
-import { isAdminSession } from '@/lib/adminAuth'
+import { useAdminAuth } from '@/hooks/useAdminAuth'
+import { useAdminProfileActions } from '@/hooks/useAdminProfileActions'
+import { useAdminProfiles } from '@/hooks/useAdminProfiles'
+import { isHiddenFromBrowseProfile } from '@/hooks/useProfiles'
 import { supabase } from '@/lib/supabase'
-import type { Profile, ProfileStatus } from '@/types/profile'
-import './Admin.css'
+import type { Profile } from '@/types/profile'
+import { buildDuplicateById, filterAdminProfiles } from '@/utils/adminListFilter'
+import '@/pages/Admin/Admin.css'
+
+const LIST_STATE_KEY = 'admin-list-state'
+
+function parseTab(value: string | null): AdminTab {
+  if (value === 'approved' || value === 'rejected' || value === 'all') return value
+  return 'pending'
+}
 
 export default function AdminDashboardPage() {
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const [tab, setTab] = useState<ProfileStatus>('pending')
-  const [userId, setUserId] = useState<string | null>(null)
-  const [authChecked, setAuthChecked] = useState(false)
-  const authReady = authChecked && !!userId
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'))
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  const { userId, authReady } = useAdminAuth()
   const { profiles, loading, error, refetch, removeProfileLocally, patchProfileLocally } =
-    useProfiles(tab, authReady)
-  const [editProfile, setEditProfile] = useState<Profile | null>(null)
-  const [rejectDialog, setRejectDialog] = useState<Profile | null>(null)
-  const [rejectNotes, setRejectNotes] = useState('')
-  const [actionError, setActionError] = useState('')
+    useAdminProfiles(authReady)
+
+  const tab = parseTab(searchParams.get('tab'))
+  const search = searchParams.get('q') ?? ''
+  const selectedProfileId = searchParams.get('profile')
+  const drawerEditMode = searchParams.get('mode') === 'edit'
+
+  const [drawerOpen, setDrawerOpen] = useState(false)
+
+  const { actionError, approve, reject, merge, hide, show } = useAdminProfileActions({
+    userId,
+    onRefetch: () => void refetch({ silent: true }),
+    removeProfileLocally,
+    patchProfileLocally,
+  })
 
   useEffect(() => {
-    const verify = async () => {
-      const { data } = await supabase.auth.getSession()
-      let session = data.session
-      if (session) {
-        await supabase.auth.refreshSession()
-        const refreshed = await supabase.auth.getSession()
-        session = refreshed.data.session ?? session
-      }
-      if (!isAdminSession(session)) {
-        navigate('/admin/login')
-      } else {
-        setUserId(session!.user.id)
-      }
-      setAuthChecked(true)
-    }
-    void verify()
-  }, [navigate])
+    sessionStorage.setItem(
+      LIST_STATE_KEY,
+      JSON.stringify({ tab, search }),
+    )
+  }, [tab, search])
 
-  const handleApprove = async (profile: Profile) => {
-    if (!userId) return
-    setActionError('')
-    const { error: approveError } = await approveProfile(profile.id, userId)
-    if (approveError) {
-      setActionError(approveError.message)
+  const stats = useMemo(() => {
+    const pending = profiles.filter((p) => p.status === 'pending').length
+    const approved = profiles.filter((p) => p.status === 'approved').length
+    const rejected = profiles.filter((p) => p.status === 'rejected').length
+    const hidden = profiles.filter((p) => isHiddenFromBrowseProfile(p)).length
+    return { pending, approved, rejected, hidden }
+  }, [profiles])
+
+  const duplicateById = useMemo(() => buildDuplicateById(profiles), [profiles])
+
+  const filteredProfiles = useMemo(
+    () => filterAdminProfiles(profiles, tab, search),
+    [profiles, tab, search],
+  )
+
+  const selectedProfile = useMemo(
+    () => profiles.find((p) => p.id === selectedProfileId) ?? null,
+    [profiles, selectedProfileId],
+  )
+
+  useEffect(() => {
+    if (!isMobile && selectedProfileId && selectedProfile) {
+      setDrawerOpen(true)
     } else {
-      removeProfileLocally(profile.id)
-      void refetch({ silent: true })
+      setDrawerOpen(false)
     }
+  }, [isMobile, selectedProfileId, selectedProfile])
+
+  const patchParams = (patch: Record<string, string | null>) => {
+    const next = new URLSearchParams(searchParams)
+    for (const [key, value] of Object.entries(patch)) {
+      if (value == null || value === '') next.delete(key)
+      else next.set(key, value)
+    }
+    setSearchParams(next, { replace: true })
   }
 
-  const handleReject = async () => {
-    if (!rejectDialog || !userId) return
-    setActionError('')
-    const { error: rejectError } = await rejectProfile(rejectDialog.id, rejectNotes, userId)
-    if (rejectError) {
-      setActionError(rejectError.message)
-    } else {
-      setRejectDialog(null)
-      setRejectNotes('')
-      removeProfileLocally(rejectDialog.id)
-      void refetch({ silent: true })
+  const handleSelectProfile = (profile: Profile) => {
+    if (isMobile) {
+      navigate(`/admin/profile/${profile.id}`)
+      return
     }
+    patchParams({ profile: profile.id, mode: null })
+  }
+
+  const closeDrawer = () => {
+    patchParams({ profile: null, mode: null })
+    setDrawerOpen(false)
   }
 
   const handleSignOut = async () => {
@@ -105,201 +112,58 @@ export default function AdminDashboardPage() {
     navigate('/admin/login')
   }
 
-  const handleHideFromBrowse = async (profile: Profile) => {
-    setActionError('')
-    if (!userId) return
-    const { error: hideError } = await hideProfileFromBrowse(profile.id, userId)
-    if (hideError) {
-      setActionError(hideError.message)
-    } else {
-      patchProfileLocally(profile.id, { is_test: true, admin_notes: null })
-      void refetch({ silent: true })
-    }
-  }
-
-  const handleShowOnBrowse = async (profile: Profile) => {
-    setActionError('')
-    const { error: showError } = await showProfileOnBrowse(profile.id)
-    if (showError) {
-      setActionError(showError.message)
-    } else {
-      patchProfileLocally(profile.id, { is_test: false, status: 'approved', admin_notes: null })
-      void refetch({ silent: true })
-    }
-  }
-
   if (!authReady) return <Loader />
 
   return (
-    <div className="FilterPageMainDiv">
-      <div className="filter-page-container">
-        <SiteNavbar showBack onBack={() => navigate('/')} />
-        <Box className="page-content-zone admin-content">
-          <Box className="admin-header">
-            <Box className="admin-header__title-row">
-              {/* <AdminBrandLogos size="sm" /> */}
-              <Typography variant="h5" fontWeight={700}>
-                {t('admin.dashboard')}
-              </Typography>
-            </Box>
-            <Button
-              variant="outlined"
-              className="admin-btn admin-btn--sign-out"
-              startIcon={<LogoutIcon />}
-              onClick={() => void handleSignOut()}
-            >
-              {t('admin.signOut')}
-            </Button>
-          </Box>
+    <AdminPageLayout showBack onBack={() => navigate('/')}>
+      <AdminShell
+        tab={tab}
+        onTabChange={(v) => patchParams({ tab: v === 'pending' ? null : v })}
+        search={search}
+        onSearchChange={(v) => patchParams({ q: v || null })}
+        stats={stats}
+        resultCount={filteredProfiles.length}
+        error={error}
+        actionError={actionError}
+        onSignOut={() => void handleSignOut()}
+      >
+        {loading ? (
+          <Loader variant="inline" />
+        ) : !filteredProfiles.length ? (
+          <Typography color="text.secondary" textAlign="center" className="admin-empty">
+            {search.trim() ? t('admin.searchNoResults') : t('admin.noProfiles')}
+          </Typography>
+        ) : isMobile ? (
+          <AdminProfileListMobile
+            profiles={filteredProfiles}
+            duplicateById={duplicateById}
+            onSelect={handleSelectProfile}
+          />
+        ) : (
+          <AdminProfileListDesktop
+            profiles={filteredProfiles}
+            duplicateById={duplicateById}
+            selectedId={selectedProfileId}
+            onSelect={handleSelectProfile}
+          />
+        )}
+      </AdminShell>
 
-          <Tabs value={tab} onChange={(_, v: ProfileStatus) => setTab(v)} sx={{ mb: 3 }}>
-            <Tab
-              icon={<HourglassEmptyIcon />}
-              iconPosition="start"
-              label={t('admin.pending')}
-              value="pending"
-            />
-            <Tab
-              icon={<CheckCircleIcon />}
-              iconPosition="start"
-              label={t('admin.approved')}
-              value="approved"
-            />
-            <Tab
-              icon={<BlockIcon />}
-              iconPosition="start"
-              label={t('admin.rejected')}
-              value="rejected"
-            />
-          </Tabs>
-
-          {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
-          {actionError && <Alert severity="error" sx={{ mb: 2 }}>{actionError}</Alert>}
-
-          {loading ? (
-            <Loader variant="inline" />
-          ) : !profiles.length ? (
-            <Typography color="text.secondary" textAlign="center">{t('admin.noProfiles')}</Typography>
-          ) : (
-            profiles.map((profile) => (
-              <Box key={profile.id} className="admin-card">
-                <Typography className="admin-card__name" fontWeight={700} mb={1} title={profile.name}>
-                  {profile.name}
-                  {profile.profile_id ? ` (ID: ${profile.profile_id})` : ''}
-                  {isHiddenFromBrowseProfile(profile) && (
-                    <Typography component="span" variant="body2" color="warning.main" ml={1}>
-                      ({t('admin.hiddenFromBrowse')})
-                    </Typography>
-                  )}
-                </Typography>
-                <Typography variant="body2" color="text.secondary" mb={1}>
-                  {profile.gender} | {profile.city} | {profile.parent_contact}
-                </Typography>
-                <Typography variant="body2" mb={2}>
-                  {profile.father_name} / {profile.mother_name} | {profile.qualification} | {profile.sub_cast}
-                </Typography>
-                {profile.admin_notes && (
-                  <Typography variant="body2" color="error" mb={1}>
-                    {t('admin.notes')}: {profile.admin_notes}
-                  </Typography>
-                )}
-                <Box className="admin-card-actions">
-                  {tab === 'pending' && (
-                    <>
-                      <Button
-                        variant="contained"
-                        className="admin-btn admin-btn--approve"
-                        startIcon={<CheckCircleIcon />}
-                        onClick={() => void handleApprove(profile)}
-                      >
-                        {t('admin.approve')}
-                      </Button>
-                      <Button
-                        variant="contained"
-                        className="admin-btn admin-btn--reject"
-                        startIcon={<CancelIcon />}
-                        onClick={() => setRejectDialog(profile)}
-                      >
-                        {t('admin.reject')}
-                      </Button>
-                    </>
-                  )}
-                  <Button
-                    variant="outlined"
-                    className="admin-btn admin-btn--edit"
-                    startIcon={<EditIcon />}
-                    onClick={() => setEditProfile({ ...profile })}
-                  >
-                    {t('admin.edit')}
-                  </Button>
-                  {tab === 'approved' && !isHiddenFromBrowseProfile(profile) && (
-                    <Button
-                      variant="outlined"
-                      className="admin-btn admin-btn--hide"
-                      startIcon={<VisibilityOffIcon />}
-                      onClick={() => void handleHideFromBrowse(profile)}
-                    >
-                      {t('admin.hideFromBrowse')}
-                    </Button>
-                  )}
-                  {isHiddenFromBrowseProfile(profile) && (
-                    <Button
-                      variant="outlined"
-                      className="admin-btn admin-btn--approve"
-                      startIcon={<VisibilityIcon />}
-                      onClick={() => void handleShowOnBrowse(profile)}
-                    >
-                      {t('admin.showOnBrowse')}
-                    </Button>
-                  )}
-                </Box>
-              </Box>
-            ))
-          )}
-        </Box>
-
-        <Dialog open={!!rejectDialog} onClose={() => setRejectDialog(null)} maxWidth="sm" fullWidth>
-          <DialogTitle className="admin-dialog-title">
-            <CancelIcon color="error" />
-            {t('admin.reject')}
-          </DialogTitle>
-          <DialogContent>
-            <TextField
-              fullWidth
-              multiline
-              rows={3}
-              label={t('admin.rejectReason')}
-              value={rejectNotes}
-              onChange={(e) => setRejectNotes(e.target.value)}
-              sx={{ mt: 1 }}
-            />
-          </DialogContent>
-          <DialogActions sx={{ px: 3, pb: 2, gap: 1 }}>
-            <Button
-              className="admin-btn admin-btn--edit"
-              startIcon={<CloseIcon />}
-              onClick={() => setRejectDialog(null)}
-            >
-              {t('admin.cancel')}
-            </Button>
-            <Button
-              variant="contained"
-              className="admin-btn admin-btn--reject"
-              startIcon={<CancelIcon />}
-              onClick={() => void handleReject()}
-            >
-              {t('admin.reject')}
-            </Button>
-          </DialogActions>
-        </Dialog>
-
-        <AdminEditProfileDialog
-          profile={editProfile}
-          open={!!editProfile}
-          onClose={() => setEditProfile(null)}
-          onSaved={() => void refetch({ silent: true })}
+      {!isMobile && (
+        <AdminProfileDrawer
+          profile={selectedProfile}
+          allProfiles={profiles}
+          open={drawerOpen && !!selectedProfile}
+          onClose={closeDrawer}
+          onRefetch={() => void refetch({ silent: true })}
+          initialMode={drawerEditMode ? 'edit' : 'view'}
+          onApprove={approve}
+          onReject={reject}
+          onMerge={merge}
+          onHide={hide}
+          onShow={show}
         />
-      </div>
-    </div>
+      )}
+    </AdminPageLayout>
   )
 }

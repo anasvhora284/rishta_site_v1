@@ -130,11 +130,18 @@
     "signIn": "સાઇન ઇન કરો",
     "signOut": "સાઇન આઉટ કરો",
     "dashboard": "એડમિન ડેશબોર્ડ",
+    "subtitle": "સબમિશન રિવ્યૂ કરો, પ્રોફાઇલ મેનેજ કરો અને પોર્ટલ અપડેટ રાખો",
     "pending": "પેન્ડિંગ",
     "approved": "અપ્રૂવ્ડ",
     "rejected": "રિજેક્ટેડ",
     "approve": "પ્રોફાઇલ અપ્રૂવ કરો",
     "reject": "પ્રોફાઇલ રિજેક્ટ કરો",
+    "approveShort": "અપ્રૂવ",
+    "rejectShort": "રિજેક્ટ",
+    "mergeTiny": "મર્જ",
+    "editShort": "એડિટ",
+    "hideShort": "હાઇડ",
+    "showShort": "બતાવો",
     "edit": "પ્રોફાઇલ એડિટ કરો",
     "save": "પ્રોફાઇલ સેવ કરો",
     "cancel": "કેન્સલ કરો",
@@ -146,7 +153,61 @@
     "hideFromBrowse": "પ્રોફાઇલ હાઇડ કરો",
     "showOnBrowse": "બ્રાઉઝમાં બતાવો",
     "hiddenFromBrowse": "બ્રાઉઝમાંથી છુપાયેલ",
-    "testProfile": "બ્રાઉઝમાંથી છુપાયેલ"
+    "testProfile": "બ્રાઉઝમાંથી છુપાયેલ",
+    "tabAll": "બધા",
+    "review": "રિવ્યૂ",
+    "searchPlaceholder": "નામ, ફોન, શહેર, ID, પિતા, માતા શોધો…",
+    "searchNoResults": "તમારી શોધ મુજબ કોઈ પ્રોફાઇલ નથી",
+    "resultCount": "{{count}} પ્રોફાઇલ બતાવાય છે",
+    "updateExistingAndReject": "અસ્તિત્વમાં અપડેટ કરો અને ડુપ્લિકેટ રિજેક્ટ કરો",
+    "mergeShort": "મર્જ અને રિજેક્ટ",
+    "approveDespiteDuplicate": "નવી પ્રોફાઇલ તરીકે અપ્રૂવ કરો?",
+    "approveDespiteDuplicateHint": "આ સબમિશન ID {{id}} જેવું લાગે છે. છતાં અલગ નવી પ્રોફાઇલ તરીકે અપ્રૂવ કરો?",
+    "approveDespiteDuplicateHintGeneric": "આ સબમિશન અસ્તિત્વમાંની પ્રોફાઇલ સાથે મેળ ખાય છે. છતાં અલગ નવી પ્રોફાઇલ તરીકે અપ્રૂવ કરો?",
+    "stats": {
+      "pending": "પેન્ડિંગ",
+      "approved": "અપ્રૂવ્ડ",
+      "rejected": "રિજેક્ટેડ",
+      "hidden": "હિડન"
+    },
+    "status": {
+      "pending": "પેન્ડિંગ",
+      "approved": "અપ્રૂવ્ડ",
+      "rejected": "રિજેક્ટેડ"
+    },
+    "col": {
+      "status": "સ્ટેટસ",
+      "duplicate": "ડુપ્લિકેટ",
+      "name": "નામ",
+      "id": "ID",
+      "city": "શહેર",
+      "phone": "ફોન",
+      "qualification": "ક્વોલિફિકેશન",
+      "submitted": "સબમિટ",
+      "actions": "એક્શન"
+    },
+    "duplicate": {
+      "new": "નવું",
+      "exact": "એક્ઝેક્ટ ડુપ્લિકેટ",
+      "nameDob": "સમાન નામ અને DOB",
+      "namePhone": "સમાન નામ અને ફોન",
+      "noMatches": "કોઈ મેળ ખાતી પ્રોફાઇલ નથી — નવું સબમિશન લાગે છે.",
+      "matchesTitle": "સંભવિત મેળ",
+      "diffTitle": "પસંદગીની પ્રોફાઇલ સામે ફેરફાર",
+      "noDiff": "પસંદગીની પ્રોફાઇલ સાથે કોઈ ફેરફાર નથી."
+    },
+    "duplicateFilter": {
+      "label": "પેન્ડિંગ ફિલ્ટર",
+      "all": "બધા પેન્ડિંગ",
+      "newOnly": "ફક્ત નવા",
+      "matchesOnly": "મેળ ધરાવતા"
+    },
+    "backToList": "લિસ્ટ પર પાછા",
+    "section": {
+      "summary": "પ્રોફાઇલ સારાંશ",
+      "duplicates": "ડુપ્લિકેટ તપાસ"
+    },
+    "moreActions": "વધુ એક્શન"
   },
   "team": {
     "chief": "ચીફ",

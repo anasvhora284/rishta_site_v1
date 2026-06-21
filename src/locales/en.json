@@ -130,11 +130,18 @@
     "signIn": "Sign In",
     "signOut": "Sign Out",
     "dashboard": "Admin Dashboard",
+    "subtitle": "Review submissions, manage profiles & keep the portal updated",
     "pending": "Pending",
     "approved": "Approved",
     "rejected": "Rejected",
     "approve": "Approve Profile",
     "reject": "Reject Profile",
+    "approveShort": "Approve",
+    "rejectShort": "Reject",
+    "mergeTiny": "Merge",
+    "editShort": "Edit",
+    "hideShort": "Hide",
+    "showShort": "Show",
     "edit": "Edit Profile",
     "save": "Save Profile",
     "cancel": "Cancel",
@@ -146,7 +153,61 @@
     "hideFromBrowse": "Hide Profile",
     "showOnBrowse": "Show on browse",
     "hiddenFromBrowse": "Hidden from browse",
-    "testProfile": "Hidden from browse"
+    "testProfile": "Hidden from browse",
+    "tabAll": "All",
+    "review": "Review",
+    "searchPlaceholder": "Search name, phone, city, ID, father, mother…",
+    "searchNoResults": "No profiles match your search",
+    "resultCount": "{{count}} profiles shown",
+    "updateExistingAndReject": "Update existing & reject duplicate",
+    "mergeShort": "Merge & reject",
+    "approveDespiteDuplicate": "Approve as new profile?",
+    "approveDespiteDuplicateHint": "This submission looks like a match for existing profile ID {{id}}. Approve anyway as a separate new profile?",
+    "approveDespiteDuplicateHintGeneric": "This submission matches an existing profile. Approve anyway as a separate new profile?",
+    "stats": {
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "hidden": "Hidden"
+    },
+    "status": {
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    },
+    "col": {
+      "status": "Status",
+      "duplicate": "Duplicate",
+      "name": "Name",
+      "id": "ID",
+      "city": "City",
+      "phone": "Phone",
+      "qualification": "Qualification",
+      "submitted": "Submitted",
+      "actions": "Actions"
+    },
+    "duplicate": {
+      "new": "New",
+      "exact": "Exact duplicate",
+      "nameDob": "Same name & DOB",
+      "namePhone": "Same name & phone",
+      "noMatches": "No matching profiles found — looks like a new submission.",
+      "matchesTitle": "Possible matches",
+      "diffTitle": "Changes vs selected profile",
+      "noDiff": "No field differences from the selected profile."
+    },
+    "duplicateFilter": {
+      "label": "Pending filter",
+      "all": "All pending",
+      "newOnly": "New only",
+      "matchesOnly": "Has matches"
+    },
+    "backToList": "Back to list",
+    "section": {
+      "summary": "Profile summary",
+      "duplicates": "Duplicate check"
+    },
+    "moreActions": "More actions"
   },
   "team": {
     "chief": "Chief",

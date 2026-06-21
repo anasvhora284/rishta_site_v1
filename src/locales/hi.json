@@ -130,11 +130,18 @@
     "signIn": "साइन इन करें",
     "signOut": "साइन आउट करें",
     "dashboard": "एडमिन डैशबोर्ड",
+    "subtitle": "सबमिशन रिव्यू करें, प्रोफ़ाइल मैनेज करें और पोर्टल अपडेट रखें",
     "pending": "पेंडिंग",
     "approved": "अप्रूव्ड",
     "rejected": "रिजेक्टेड",
     "approve": "प्रोफ़ाइल अप्रूव करें",
     "reject": "प्रोफ़ाइल रिजेक्ट करें",
+    "approveShort": "अप्रूव",
+    "rejectShort": "रिजेक्ट",
+    "mergeTiny": "मर्ज",
+    "editShort": "एडिट",
+    "hideShort": "हाइड",
+    "showShort": "दिखाएँ",
     "edit": "प्रोफ़ाइल एडिट करें",
     "save": "प्रोफ़ाइल सेव करें",
     "cancel": "कैंसल करें",
@@ -146,7 +153,61 @@
     "hideFromBrowse": "प्रोफ़ाइल हाइड करें",
     "showOnBrowse": "ब्राउज़ में दिखाएँ",
     "hiddenFromBrowse": "ब्राउज़ से छुपा",
-    "testProfile": "ब्राउज़ से छुपा"
+    "testProfile": "ब्राउज़ से छुपा",
+    "tabAll": "सभी",
+    "review": "रिव्यू",
+    "searchPlaceholder": "नाम, फोन, शहर, ID, पिता, माता खोजें…",
+    "searchNoResults": "आपकी खोज से कोई प्रोफ़ाइल नहीं मिली",
+    "resultCount": "{{count}} प्रोफ़ाइल दिख रही हैं",
+    "updateExistingAndReject": "मौजूदा अपडेट करें और डुप्लिकेट रिजेक्ट करें",
+    "mergeShort": "मर्ज और रिजेक्ट",
+    "approveDespiteDuplicate": "नई प्रोफ़ाइल के रूप में अप्रूव करें?",
+    "approveDespiteDuplicateHint": "यह सबमिशन ID {{id}} जैसा लगता है। फिर भी अलग नई प्रोफ़ाइल अप्रूव करें?",
+    "approveDespiteDuplicateHintGeneric": "यह सबमिशन मौजूदा प्रोफ़ाइल से मेल खाता है। फिर भी अलग नई प्रोफ़ाइल अप्रूव करें?",
+    "stats": {
+      "pending": "पेंडिंग",
+      "approved": "अप्रूव्ड",
+      "rejected": "रिजेक्टेड",
+      "hidden": "छुपा"
+    },
+    "status": {
+      "pending": "पेंडिंग",
+      "approved": "अप्रूव्ड",
+      "rejected": "रिजेक्टेड"
+    },
+    "col": {
+      "status": "स्टेटस",
+      "duplicate": "डुप्लिकेट",
+      "name": "नाम",
+      "id": "ID",
+      "city": "शहर",
+      "phone": "फोन",
+      "qualification": "क्वालिफिकेशन",
+      "submitted": "सबमिट",
+      "actions": "एक्शन"
+    },
+    "duplicate": {
+      "new": "नया",
+      "exact": "एक्जैक्ट डुप्लिकेट",
+      "nameDob": "समान नाम और DOB",
+      "namePhone": "समान नाम और फोन",
+      "noMatches": "कोई मेल खाती प्रोफ़ाइल नहीं — नया सबमिशन लगता है।",
+      "matchesTitle": "संभावित मेल",
+      "diffTitle": "चुनी प्रोफ़ाइल से बदलाव",
+      "noDiff": "चुनी प्रोफ़ाइल से कोई फ़ील्ड अंतर नहीं।"
+    },
+    "duplicateFilter": {
+      "label": "पेंडिंग फ़िल्टर",
+      "all": "सभी पेंडिंग",
+      "newOnly": "सिर्फ नए",
+      "matchesOnly": "मेल वाले"
+    },
+    "backToList": "लिस्ट पर वापस",
+    "section": {
+      "summary": "प्रोफ़ाइल सारांश",
+      "duplicates": "डुप्लिकेट जाँच"
+    },
+    "moreActions": "और एक्शन"
   },
   "team": {
     "chief": "चीफ",

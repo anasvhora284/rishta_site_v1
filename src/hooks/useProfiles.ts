@@ -153,6 +153,38 @@ export async function updateProfile(id: string, updates: Partial<Profile>) {
   return { error }
 }
 
+export async function mergePendingIntoExisting({
+  pendingId,
+  existingId,
+  updates,
+  userId,
+  existingProfileId,
+}: {
+  pendingId: string
+  existingId: string
+  updates: Partial<Profile>
+  userId: string
+  existingProfileId: number | null
+}) {
+  const { error: updateError } = await updateProfile(existingId, updates)
+  if (updateError) return { error: updateError }
+
+  const note = existingProfileId
+    ? `Duplicate — updated existing profile ID ${existingProfileId}`
+    : 'Duplicate — merged into existing profile'
+
+  const { error: rejectError } = await rejectProfile(pendingId, note, userId)
+  if (rejectError) {
+    return {
+      error: new Error(
+        `Existing profile was updated, but rejecting the duplicate failed: ${rejectError.message}`,
+      ),
+    }
+  }
+
+  return { error: null }
+}
+
 /** Profile was hidden from public browse (flag or legacy reject note). */
 export function isHiddenFromBrowseProfile(profile: Profile): boolean {
   if (profile.is_test) return true

@@ -7,6 +7,7 @@ import {
   rejectProfile,
   showProfileOnBrowse,
 } from '@/hooks/useProfiles'
+import i18n from '@/i18n'
 import type { Profile } from '@/types/profile'
 
 interface UseAdminProfileActionsOptions {
@@ -59,6 +60,10 @@ export function useAdminProfileActions({
   const merge = useCallback(
     async (pending: Profile, existing: Profile) => {
       if (!userId) return false
+      if (existing.status !== 'approved') {
+        setActionError(i18n.t('admin.duplicate.mergeNeedsApproved'))
+        return false
+      }
       setActionError('')
       const updates = formDataToProfileUpdate(profileToFormData(pending), { preserveCityOther: true })
       const { error } = await mergePendingIntoExisting({

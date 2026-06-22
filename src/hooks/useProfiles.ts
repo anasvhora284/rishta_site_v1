@@ -149,8 +149,10 @@ export async function rejectProfile(id: string, notes: string, userId: string) {
 }
 
 export async function updateProfile(id: string, updates: Partial<Profile>) {
-  const { error } = await supabase.from('profiles').update(updates).eq('id', id)
-  return { error }
+  const { data, error } = await supabase.from('profiles').update(updates).eq('id', id).select('id').maybeSingle()
+  if (error) return { error }
+  if (!data) return { error: new Error('Profile update did not apply — check admin permissions.') }
+  return { error: null }
 }
 
 export async function mergePendingIntoExisting({

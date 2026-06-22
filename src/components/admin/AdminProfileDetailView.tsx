@@ -5,7 +5,7 @@ import AdminDuplicatePanel from '@/components/admin/AdminDuplicatePanel'
 import AdminProfileEditForm from '@/components/admin/AdminProfileEditForm'
 import AdminReviewCard from '@/components/admin/AdminReviewCard'
 import type { Profile } from '@/types/profile'
-import { assessDuplicate, bestDuplicateMatch, hasDuplicateMatches } from '@/utils/profileDuplicate'
+import { assessDuplicate, hasDuplicateMatches, isMergeTarget, mergeEligibleMatches } from '@/utils/profileDuplicate'
 
 interface AdminProfileDetailViewProps {
   profile: Profile
@@ -48,13 +48,15 @@ export default function AdminProfileDetailView({
       setSelectedMatchId(null)
       return
     }
-    setSelectedMatchId(assessment.matches[0].profile.id)
+    const approved = mergeEligibleMatches(assessment)
+    setSelectedMatchId(approved[0]?.profile.id ?? assessment.matches[0].profile.id)
   }, [assessment, profile.id])
 
-  const selectedExisting =
-    assessment?.matches.find((m) => m.profile.id === selectedMatchId)?.profile ??
-    bestDuplicateMatch(assessment ?? { level: 'new', matches: [] })?.profile ??
-    null
+  const selectedMatch =
+    assessment?.matches.find((m) => m.profile.id === selectedMatchId) ?? assessment?.matches[0] ?? null
+
+  const mergeTarget =
+    selectedMatch && isMergeTarget(selectedMatch.profile) ? selectedMatch.profile : null
 
   const handleApprove = async () => {
     if (profile.status === 'pending' && hasDuplicateMatches(assessment)) {
@@ -74,7 +76,7 @@ export default function AdminProfileDetailView({
     <AdminActionBar
       profile={profile}
       assessment={assessment}
-      selectedExisting={selectedExisting}
+      selectedExisting={mergeTarget}
       layout={layout}
       approveConfirmPending={approveConfirmPending}
       onConfirmApprove={() => void handleConfirmApprove()}
@@ -82,7 +84,7 @@ export default function AdminProfileDetailView({
       onApprove={() => void handleApprove()}
       onReject={(notes) => void onReject(profile, notes)}
       onMerge={() => {
-        if (selectedExisting) void onMerge(profile, selectedExisting)
+        if (mergeTarget) void onMerge(profile, mergeTarget)
       }}
       onEdit={() => onModeChange('edit')}
       onHide={() => void onHide(profile)}

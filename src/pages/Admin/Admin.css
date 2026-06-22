@@ -256,16 +256,20 @@
 }
 
 .admin-stat-card--hidden {
-  cursor: default;
   border-style: dashed;
-  border-color: #cbd5e1;
+  border-color: #94a3b8;
   background: linear-gradient(165deg, #f8fafc 0%, #fff 50%, #f1f5f9 100%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.admin-stat-card--hidden.admin-stat-card--active {
+  border-style: solid;
+  border-color: #64748b;
+  background: linear-gradient(180deg, rgba(100, 116, 139, 0.12) 0%, #fff 100%);
+  box-shadow: 0 6px 20px rgba(100, 116, 139, 0.18);
 }
 
 .admin-stat-card--hidden:hover {
-  transform: none;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  border-color: #64748b;
 }
 
 .admin-stat-card__count {
@@ -456,6 +460,27 @@
 .admin-profile-item__status--rejected {
   background: #fee2e2;
   color: #b91c1c;
+}
+
+.admin-profile-item__hidden-badge {
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: rgba(100, 116, 139, 0.12);
+  color: #475569;
+  white-space: nowrap;
+}
+
+.admin-profile-item__listed-id {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #64748b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .admin-profile-item__date {
@@ -739,6 +764,12 @@
   color: #64748b;
 }
 
+.admin-review-card__listed {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
 .admin-review-card__hidden {
   padding: 3px 10px;
   border-radius: 999px;
@@ -951,6 +982,36 @@
   box-shadow: 0 0 0 2px rgba(174, 0, 61, 0.15);
 }
 
+.admin-dup-match--readonly:not(.admin-dup-match--active) {
+  opacity: 0.88;
+}
+
+.admin-dup-match__status {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+
+.admin-dup-match__status--approved {
+  background: rgba(22, 163, 74, 0.12);
+  color: #15803d;
+}
+
+.admin-dup-match__status--rejected {
+  background: rgba(220, 38, 38, 0.1);
+  color: #b91c1c;
+}
+
+.admin-dup-match__status--pending {
+  background: rgba(217, 119, 6, 0.12);
+  color: #b45309;
+}
+
 .admin-dup-diff {
   display: flex;
   flex-direction: column;
@@ -1028,51 +1089,32 @@
 }
 
 .admin-action-bar__primary {
-  display: grid;
-  grid-template-columns: 1fr 1fr 40px;
-  grid-template-areas:
-    "reject approve menu"
-    "merge merge menu";
+  display: flex;
+  flex-wrap: wrap;
   gap: 6px;
   align-items: stretch;
   width: 100%;
 }
 
-.admin-action-bar__primary--no-merge {
-  grid-template-areas: "reject approve menu";
-}
-
-.admin-action-bar__primary--idle {
-  grid-template-columns: 40px;
-  grid-template-areas: "menu";
-  justify-content: end;
-}
-
 .admin-action-bar__btn--reject {
-  grid-area: reject;
+  flex: 1 1 calc(50% - 3px);
+  min-width: 0;
 }
 
 .admin-action-bar__btn--approve {
-  grid-area: approve;
+  flex: 1 1 calc(50% - 3px);
+  min-width: 0;
 }
 
 .admin-action-bar__btn--merge {
-  grid-area: merge;
+  flex: 1 1 100%;
 }
 
-.admin-action-bar__menu-btn {
-  grid-area: menu;
-  align-self: stretch;
-  width: 40px !important;
-  height: auto !important;
-  min-height: 34px;
-  border: 1px solid #e8ecf4 !important;
-  border-radius: 10px !important;
-  background: #f8fafc !important;
-}
-
-.admin-action-bar__primary--idle .admin-action-bar__menu-btn {
-  justify-self: end;
+.admin-action-bar__btn--edit,
+.admin-action-bar__btn--hide,
+.admin-action-bar__btn--show {
+  flex: 1 1 calc(50% - 3px);
+  min-width: 0;
 }
 
 .admin-btn--merge {
@@ -1318,11 +1360,6 @@
     max-height: 36px !important;
     font-size: 0.72rem !important;
     padding: 3px 6px !important;
-  }
-
-  .admin-action-bar__menu-btn {
-    width: 36px !important;
-    min-height: 32px;
   }
 
   .admin-dup-diff__row {

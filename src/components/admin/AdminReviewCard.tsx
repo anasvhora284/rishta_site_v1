@@ -22,6 +22,14 @@ export default function AdminReviewCard({ profile, layout }: AdminReviewCardProp
         <span className="admin-review-card__submitted">
           {t('admin.col.submitted')} · {formatAdminDate(profile.created_at)}
         </span>
+        {hidden && profile.profile_id != null && (
+          <span className="admin-review-card__listed">
+            {t('admin.hiddenWasListed', { id: profile.profile_id })}
+          </span>
+        )}
+        {hidden && profile.profile_id == null && (
+          <span className="admin-review-card__listed">{t('admin.hiddenNeverListed')}</span>
+        )}
         {hidden && (
           <span className="admin-review-card__hidden">{t('admin.hiddenFromBrowse')}</span>
         )}

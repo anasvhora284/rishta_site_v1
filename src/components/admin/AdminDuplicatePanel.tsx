@@ -1,7 +1,7 @@
 import type { Profile } from '@/types/profile'
 import { displayCity } from '@/utils'
 import type { DuplicateAssessment } from '@/utils/profileDuplicate'
-import { hasDuplicateMatches, profileFieldDiff } from '@/utils/profileDuplicate'
+import { hasDuplicateMatches, isMergeTarget, profileFieldDiff } from '@/utils/profileDuplicate'
 import { Typography } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { DuplicateBadge } from './DuplicateBadge'
@@ -27,6 +27,8 @@ export default function AdminDuplicatePanel({
 
   const isCompact = layout === 'drawer'
 
+  const mergeEligibleCount = assessment.matches.filter((m) => isMergeTarget(m.profile)).length
+
   const selected =
     assessment.matches.find((m) => m.profile.id === selectedMatchId) ?? assessment.matches[0]
 
@@ -49,12 +51,15 @@ export default function AdminDuplicatePanel({
             <button
               key={match.profile.id}
               type="button"
-              className={`admin-dup-match${selected?.profile.id === match.profile.id ? ' admin-dup-match--active' : ''}`}
+              className={`admin-dup-match${selected?.profile.id === match.profile.id ? ' admin-dup-match--active' : ''}${!isMergeTarget(match.profile) ? ' admin-dup-match--readonly' : ''}`}
               onClick={() => onSelectMatch(match.profile.id)}
             >
               <span className="admin-dup-match__name">
                 {match.profile.name}
                 {match.profile.profile_id != null ? ` · ID ${match.profile.profile_id}` : ''}
+                <span className={`admin-dup-match__status admin-dup-match__status--${match.profile.status}`}>
+                  {t(`admin.${match.profile.status}`)}
+                </span>
               </span>
               <span className="admin-dup-match__meta">
                 {displayCity(match.profile)} · {match.reasons[0]}
@@ -62,6 +67,12 @@ export default function AdminDuplicatePanel({
             </button>
           ))}
         </div>
+
+        {selected && !isMergeTarget(selected.profile) && mergeEligibleCount > 0 && (
+          <Typography variant="body2" className="admin-dup-accordion__hint">
+            {t('admin.duplicate.selectApprovedToMerge')}
+          </Typography>
+        )}
 
         {selected && diffs.length > 0 && (
           <div className="admin-dup-diff-block">

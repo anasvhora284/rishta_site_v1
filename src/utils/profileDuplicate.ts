@@ -27,6 +27,31 @@ const LEVEL_RANK: Record<DuplicateLevel, number> = {
   new: 0,
 }
 
+const STATUS_RANK: Record<Profile['status'], number> = {
+  approved: 3,
+  pending: 2,
+  rejected: 1,
+}
+
+function compareMatches(a: DuplicateMatch, b: DuplicateMatch): number {
+  const levelDiff = LEVEL_RANK[b.level] - LEVEL_RANK[a.level]
+  if (levelDiff !== 0) return levelDiff
+  const statusDiff = STATUS_RANK[b.profile.status] - STATUS_RANK[a.profile.status]
+  if (statusDiff !== 0) return statusDiff
+  const idA = a.profile.profile_id ?? 0
+  const idB = b.profile.profile_id ?? 0
+  return idB - idA
+}
+
+/** Only approved live profiles should receive merged data. */
+export function isMergeTarget(profile: Profile): boolean {
+  return profile.status === 'approved'
+}
+
+export function mergeEligibleMatches(assessment: DuplicateAssessment): DuplicateMatch[] {
+  return assessment.matches.filter((m) => isMergeTarget(m.profile))
+}
+
 function matchLevel(candidate: ProfileMatchKeys, other: ProfileMatchKeys): DuplicateLevel {
   if (exactMatchKey(candidate) === exactMatchKey(other)) return 'exact'
   if (nameDobKey(candidate) === nameDobKey(other)) return 'name_dob'
@@ -66,11 +91,16 @@ export function assessDuplicate(candidate: Profile, corpus: Profile[]): Duplicat
     })
   }
 
-  matches.sort((a, b) => LEVEL_RANK[b.level] - LEVEL_RANK[a.level])
+  matches.sort(compareMatches)
 
   if (!matches.length) return { level: 'new', matches: [] }
 
   return { level: matches[0].level, matches }
+}
+
+export function preferredMergeTarget(assessment: DuplicateAssessment | null): Profile | null {
+  if (!assessment?.matches.length) return null
+  return mergeEligibleMatches(assessment)[0]?.profile ?? null
 }
 
 export function bestDuplicateMatch(assessment: DuplicateAssessment): DuplicateMatch | null {

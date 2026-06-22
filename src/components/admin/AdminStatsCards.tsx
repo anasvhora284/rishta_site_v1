@@ -8,7 +8,7 @@ interface AdminStatsCardsProps {
 }
 
 const PRIMARY_TABS: AdminTab[] = ['pending', 'approved', 'rejected']
-const SECONDARY_TABS: AdminTab[] = ['all']
+const SECONDARY_TABS: AdminTab[] = ['all', 'hidden']
 
 function StatCard({
   tabKey,
@@ -18,15 +18,13 @@ function StatCard({
   onClick,
   variant = 'primary',
 }: {
-  tabKey: AdminTab | 'hidden'
+  tabKey: AdminTab
   count: number
   label: string
   active?: boolean
   onClick?: () => void
-  variant?: 'primary' | 'secondary' | 'info'
+  variant?: 'primary' | 'secondary'
 }) {
-  const isButton = variant !== 'info'
-
   const className = [
     'admin-stat-card',
     `admin-stat-card--${tabKey}`,
@@ -43,14 +41,6 @@ function StatCard({
     </>
   )
 
-  if (!isButton) {
-    return (
-      <div className={className} aria-label={label}>
-        {content}
-      </div>
-    )
-  }
-
   return (
     <button type="button" className={className} onClick={onClick}>
       {content}
@@ -66,6 +56,7 @@ export default function AdminStatsCards({ tab, stats, onTabChange }: AdminStatsC
     approved: t('admin.approved'),
     rejected: t('admin.rejected'),
     all: t('admin.tabAll'),
+    hidden: t('admin.stats.hidden'),
   }
 
   const counts: Record<AdminTab, number> = {
@@ -73,6 +64,7 @@ export default function AdminStatsCards({ tab, stats, onTabChange }: AdminStatsC
     approved: stats.approved,
     rejected: stats.rejected,
     all: stats.pending + stats.approved + stats.rejected,
+    hidden: stats.hidden,
   }
 
   return (
@@ -102,12 +94,6 @@ export default function AdminStatsCards({ tab, stats, onTabChange }: AdminStatsC
             variant="secondary"
           />
         ))}
-        <StatCard
-          tabKey="hidden"
-          count={stats.hidden}
-          label={t('admin.stats.hidden')}
-          variant="info"
-        />
       </div>
     </div>
   )

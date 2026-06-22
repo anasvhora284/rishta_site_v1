@@ -2,21 +2,9 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import CancelIcon from '@mui/icons-material/Cancel'
 import EditIcon from '@mui/icons-material/Edit'
 import MergeIcon from '@mui/icons-material/MergeType'
-import MoreVertIcon from '@mui/icons-material/MoreVert'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
-import {
-  Box,
-  Button,
-  Collapse,
-  IconButton,
-  Menu,
-  MenuItem,
-  TextField,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material'
+import { Box, Button, Collapse, TextField, Typography, useMediaQuery, useTheme } from '@mui/material'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { isHiddenFromBrowseProfile } from '@/hooks/useProfiles'
@@ -59,7 +47,6 @@ export default function AdminActionBar({
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
   const [rejectOpen, setRejectOpen] = useState(false)
   const [rejectNotes, setRejectNotes] = useState('')
-  const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null)
   const hidden = isHiddenFromBrowseProfile(profile)
   const isPending = profile.status === 'pending'
   const showMerge = Boolean(selectedExisting && hasDuplicateMatches(assessment))
@@ -74,14 +61,7 @@ export default function AdminActionBar({
   const mergeLabel = isMobile ? t('admin.mergeTiny') : useShortLabels ? t('admin.mergeShort') : t('admin.updateExistingAndReject')
   const approveLabel = useShortLabels ? t('admin.approveShort') : t('admin.approve')
   const rejectLabel = useShortLabels ? t('admin.rejectShort') : t('admin.reject')
-
-  const primaryClass = [
-    'admin-action-bar__primary',
-    !isPending ? 'admin-action-bar__primary--idle' : '',
-    isPending && !showMerge ? 'admin-action-bar__primary--no-merge' : '',
-  ]
-    .filter(Boolean)
-    .join(' ')
+  const editLabel = useShortLabels ? t('admin.editShort') : t('admin.edit')
 
   return (
     <Box className={`admin-action-bar admin-action-bar--${layout}`}>
@@ -123,13 +103,12 @@ export default function AdminActionBar({
         </Box>
       </Collapse>
 
-      <Box className={primaryClass}>
+      <Box className="admin-action-bar__primary">
         {isPending && (
           <>
             <Button
               variant="outlined"
               size="small"
-              fullWidth
               className="admin-btn admin-btn--reject admin-action-bar__btn--reject"
               startIcon={<CancelIcon />}
               onClick={() => setRejectOpen((v) => !v)}
@@ -139,7 +118,6 @@ export default function AdminActionBar({
             <Button
               variant="contained"
               size="small"
-              fullWidth
               className="admin-btn admin-btn--approve admin-action-bar__btn--approve"
               startIcon={<CheckCircleIcon />}
               onClick={onApprove}
@@ -150,7 +128,6 @@ export default function AdminActionBar({
               <Button
                 variant="outlined"
                 size="small"
-                fullWidth
                 className="admin-btn admin-btn--merge admin-action-bar__btn--merge"
                 startIcon={<MergeIcon />}
                 onClick={onMerge}
@@ -161,48 +138,39 @@ export default function AdminActionBar({
           </>
         )}
 
-        <IconButton
-          aria-label={t('admin.moreActions')}
-          onClick={(e) => setMenuAnchor(e.currentTarget)}
-          className="admin-action-bar__menu-btn"
+        <Button
+          variant="outlined"
           size="small"
+          className="admin-btn admin-action-bar__btn--edit"
+          startIcon={<EditIcon />}
+          onClick={onEdit}
         >
-          <MoreVertIcon fontSize="small" />
-        </IconButton>
+          {editLabel}
+        </Button>
 
-        <Menu anchorEl={menuAnchor} open={!!menuAnchor} onClose={() => setMenuAnchor(null)}>
-          <MenuItem
-            onClick={() => {
-              setMenuAnchor(null)
-              onEdit()
-            }}
+        {profile.status === 'approved' && !hidden && (
+          <Button
+            variant="outlined"
+            size="small"
+            className="admin-btn admin-action-bar__btn--hide"
+            startIcon={<VisibilityOffIcon />}
+            onClick={onHide}
           >
-            <EditIcon fontSize="small" sx={{ mr: 1 }} />
-            {useShortLabels ? t('admin.editShort') : t('admin.edit')}
-          </MenuItem>
-          {profile.status === 'approved' && !hidden && (
-            <MenuItem
-              onClick={() => {
-                setMenuAnchor(null)
-                onHide()
-              }}
-            >
-              <VisibilityOffIcon fontSize="small" sx={{ mr: 1 }} />
-              {useShortLabels ? t('admin.hideShort') : t('admin.hideFromBrowse')}
-            </MenuItem>
-          )}
-          {hidden && (
-            <MenuItem
-              onClick={() => {
-                setMenuAnchor(null)
-                onShow()
-              }}
-            >
-              <VisibilityIcon fontSize="small" sx={{ mr: 1 }} />
-              {useShortLabels ? t('admin.showShort') : t('admin.showOnBrowse')}
-            </MenuItem>
-          )}
-        </Menu>
+            {useShortLabels ? t('admin.hideShort') : t('admin.hideFromBrowse')}
+          </Button>
+        )}
+
+        {hidden && (
+          <Button
+            variant="contained"
+            size="small"
+            className="admin-btn admin-btn--approve admin-action-bar__btn--show"
+            startIcon={<VisibilityIcon />}
+            onClick={onShow}
+          >
+            {useShortLabels ? t('admin.showShort') : t('admin.showOnBrowse')}
+          </Button>
+        )}
       </Box>
     </Box>
   )

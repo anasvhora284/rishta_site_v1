@@ -21,7 +21,9 @@ import '@/pages/Admin/Admin.css'
 const LIST_STATE_KEY = 'admin-list-state'
 
 function parseTab(value: string | null): AdminTab {
-  if (value === 'approved' || value === 'rejected' || value === 'all') return value
+  if (value === 'approved' || value === 'rejected' || value === 'all' || value === 'hidden') {
+    return value
+  }
   return 'pending'
 }
 
@@ -58,10 +60,10 @@ export default function AdminDashboardPage() {
   }, [tab, search])
 
   const stats = useMemo(() => {
-    const pending = profiles.filter((p) => p.status === 'pending').length
-    const approved = profiles.filter((p) => p.status === 'approved').length
-    const rejected = profiles.filter((p) => p.status === 'rejected').length
     const hidden = profiles.filter((p) => isHiddenFromBrowseProfile(p)).length
+    const pending = profiles.filter((p) => p.status === 'pending' && !isHiddenFromBrowseProfile(p)).length
+    const approved = profiles.filter((p) => p.status === 'approved' && !isHiddenFromBrowseProfile(p)).length
+    const rejected = profiles.filter((p) => p.status === 'rejected' && !isHiddenFromBrowseProfile(p)).length
     return { pending, approved, rejected, hidden }
   }, [profiles])
 

@@ -157,6 +157,8 @@
     "hideFromBrowse": "Hide Profile",
     "showOnBrowse": "Show on browse",
     "hiddenFromBrowse": "Hidden from browse",
+    "hiddenWasListed": "Was listed as ID {{id}}",
+    "hiddenNeverListed": "Never approved / no list ID",
     "testProfile": "Hidden from browse",
     "tabAll": "All",
     "review": "Review",
@@ -198,7 +200,9 @@
       "noMatches": "No matching profiles found — looks like a new submission.",
       "matchesTitle": "Possible matches",
       "diffTitle": "Changes vs selected profile",
-      "noDiff": "No field differences from the selected profile."
+      "noDiff": "No field differences from the selected profile.",
+      "selectApprovedToMerge": "Select the approved profile (with ID) to merge into. Rejected duplicates are for reference only.",
+      "mergeNeedsApproved": "Select an approved profile to merge into."
     },
     "duplicateFilter": {
       "label": "Pending filter",

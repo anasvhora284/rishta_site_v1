@@ -3,6 +3,7 @@ import femaleAvatar from '@/assets/FemaleIcon.jpg'
 import maleAvatar from '@/assets/MaleIcon.jpeg'
 import { DuplicateBadge } from '@/components/admin/DuplicateBadge'
 import { formatAdminDate } from '@/components/admin/adminTypes'
+import { isHiddenFromBrowseProfile } from '@/hooks/useProfiles'
 import type { Profile } from '@/types/profile'
 import { displayCity } from '@/utils'
 import { useCities } from '@/hooks/useCities'
@@ -31,6 +32,7 @@ export default function AdminProfileListItem({
   const { cities } = useCities()
   const cityMap = useMemo(() => buildLabelMap(cities), [cities])
   const isMale = profile.gender === 'male'
+  const hidden = isHiddenFromBrowseProfile(profile)
 
   return (
     <button
@@ -51,6 +53,9 @@ export default function AdminProfileListItem({
           {profile.status === 'pending' && hasDuplicateMatches(duplicate) && duplicate && (
             <DuplicateBadge level={duplicate.level} />
           )}
+          {hidden && (
+            <span className="admin-profile-item__hidden-badge">{t('admin.hiddenFromBrowse')}</span>
+          )}
         </div>
         <div className="admin-profile-item__row2">
           <span>{displayCity(profile, { cityMap, lng: i18n.language })}</span>
@@ -67,6 +72,14 @@ export default function AdminProfileListItem({
           <span className={`admin-profile-item__status admin-profile-item__status--${profile.status}`}>
             {t(`admin.status.${profile.status}`)}
           </span>
+          {hidden && profile.profile_id != null && (
+            <span className="admin-profile-item__listed-id">
+              {t('admin.hiddenWasListed', { id: profile.profile_id })}
+            </span>
+          )}
+          {hidden && profile.profile_id == null && (
+            <span className="admin-profile-item__listed-id">{t('admin.hiddenNeverListed')}</span>
+          )}
           <span className="admin-profile-item__date">{formatAdminDate(profile.created_at)}</span>
         </div>
       </div>

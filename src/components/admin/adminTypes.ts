@@ -1,6 +1,6 @@
 import type { ProfileStatus } from '@/types/profile'
 
-export type AdminTab = ProfileStatus | 'all'
+export type AdminTab = ProfileStatus | 'all' | 'hidden'
 
 export interface AdminStats {
   pending: number

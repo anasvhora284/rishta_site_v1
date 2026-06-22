@@ -1,5 +1,7 @@
 import type { Gender, MaritalStatus, Profile, ProfileFormData } from '@/types/profile'
+import { resolveCityCode, isOtherCity } from '@/data/canonical-cities'
 import { calculateAge } from '@/utils'
+import { extractIndianMobile10, isValidIndianMobile } from '@/utils/phoneValidation'
 
 type TranslateFn = (key: string) => string
 
@@ -32,14 +34,15 @@ export function profileToFormData(profile: Profile): ProfileFormData {
     father_name: profile.father_name,
     father_occupation: profile.father_occupation,
     mother_name: profile.mother_name,
-    city: profile.city,
+    city: resolveCityCode(profile.city),
     city_other: profile.city_other ?? '',
     date_of_birth: profileDateToInput(profile.date_of_birth),
     marital_status: profile.marital_status,
     height: profile.height,
     weight_other: profile.weight_other,
-    parent_contact: profile.parent_contact,
+    parent_contact: extractIndianMobile10(profile.parent_contact),
     sub_cast: profile.sub_cast,
+    expectations: profile.expectations ?? '',
   }
 }
 
@@ -66,11 +69,12 @@ export function formDataToProfileUpdate(
     marital_status: form.marital_status as MaritalStatus,
     height: form.height.trim(),
     weight_other: form.weight_other.trim(),
-    parent_contact: form.parent_contact.trim(),
+    parent_contact: extractIndianMobile10(form.parent_contact),
     sub_cast: form.sub_cast.trim(),
+    expectations: form.expectations.trim() || null,
   }
 
-  if (form.city === 'Other') {
+  if (isOtherCity(form.city)) {
     return { ...base, city_other: form.city_other.trim() || null }
   }
 
@@ -128,15 +132,21 @@ export function validateProfileForm(
   }
   if (check(3)) {
     if (!form.city) e.city = t('submit.required')
-    if (form.city === 'Other' && !form.city_other.trim()) e.city_other = t('submit.required')
+    if (isOtherCity(form.city) && !form.city_other.trim()) e.city_other = t('submit.required')
     if (!form.sub_cast.trim()) e.sub_cast = t('submit.required')
     if (!form.marital_status) e.marital_status = t('submit.required')
   }
   if (check(4)) {
     if (!form.height.trim()) e.height = t('submit.required')
     if (!form.weight_other.trim()) e.weight_other = t('submit.required')
-    const phone = form.parent_contact.replace(/\D/g, '')
-    if (phone.length < 10) e.parent_contact = t('submit.invalidPhone')
+    const phone = extractIndianMobile10(form.parent_contact)
+    if (!phone) {
+      e.parent_contact = t('submit.invalidPhone')
+    } else if (phone.length !== 10) {
+      e.parent_contact = t('submit.invalidPhoneLength')
+    } else if (!isValidIndianMobile(phone)) {
+      e.parent_contact = t('submit.invalidPhoneStart')
+    }
   }
 
   return e

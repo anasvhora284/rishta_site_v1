@@ -22,6 +22,7 @@ export interface Profile {
   weight_other: string
   parent_contact: string
   sub_cast: string
+  expectations: string | null
   education_category: string | null
   status: ProfileStatus
   is_test?: boolean
@@ -48,6 +49,7 @@ export interface ProfileFormData {
   weight_other: string
   parent_contact: string
   sub_cast: string
+  expectations: string
 }
 
 export interface FilterState {
@@ -59,29 +61,14 @@ export interface FilterState {
   maritalStatus: string[]
 }
 
-export const QUALIFICATIONS = [
-  '10th',
-  '12th',
-  'Bachelor',
-  'Diploma',
-  'Engineering',
-  'Master',
-  'Medical',
-  'Other',
-] as const
+import {
+  QUALIFICATION_CODES,
+  type QualificationCode,
+} from '@/data/canonical-qualifications'
 
-export const CITIES = [
-  'AHMEDABAD', 'AJARPURA', 'ALARSA', 'ANAND', 'ANKLESHWAR', 'ASOJ', 'Ajarpura', 'Anghadi',
-  'Anklav', 'BAHIYAL', 'Bandhni', 'BHADARVA', 'BHALEJ', 'BHARUCH', 'BORSAD', 'Borsad', 'CHANGA',
-  'DAKOR', 'DUBAI', 'GAMDI', 'GANDHINAGAR', 'Gana', 'KANIJ', 'KANJARI', 'KAPADWANJ', 'KASOR',
-  'KATHLAL', 'KHAMBHAT', 'KHANDALI', 'KHANDHLI', 'KHEDA', 'KOSINDRA', 'Kalsar (dakor)',
-  'Khambhat', 'MAHEMDAVAD', 'MAHESANA', 'MAHUDHA', 'MALAVADA', 'MANDVI', 'MOGAR', 'MUMBAI',
-  'Mahemdavad', 'Malvan', 'NADIAD', 'NAPA', 'NAR', 'NAVSARI', 'Navakhal', 'Navli', 'Not Provided',
-  'OD', 'ODE', 'PADRA', 'PANSORA', 'PETLAD', 'PIPLAG', 'RAS', 'RUDAN', 'SANJAN', 'SEVALIYA',
-  'SOJITRA', 'SURAT', 'SURELI', 'Salun', 'TARAPUR', 'THASRA', 'UMETHA', 'UMRETH', 'USA',
-  'UTTARSANDA', 'VADODARA', 'VALASAN', 'VANSOL', 'VASAD', 'VASNA', 'VASO', 'VIRSAD',
-  'VYARA', 'Virar (Mumbai)- Maharashtra', 'Wakaner', 'Other',
-] as const
+export type { QualificationCode }
+
+export const QUALIFICATIONS = QUALIFICATION_CODES
 
 export const TEAM_CONTACTS = {
   chief: { name: 'Nurulhasan Vohra', phone: '9825090992' },

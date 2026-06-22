@@ -17,7 +17,9 @@
     "import-form": "tsx scripts/import-form-responses.ts",
     "backfill-profile-ids": "tsx scripts/backfill-profile-ids.ts",
     "preview-city-cleanup": "tsx scripts/preview-city-cleanup.ts",
-    "apply-city-cleanup": "tsx scripts/apply-city-cleanup.ts"
+    "apply-city-cleanup": "tsx scripts/apply-city-cleanup.ts",
+    "rebuild-reference-data": "tsx scripts/rebuild-reference-data.ts",
+    "sync-city-gujarati": "tsx scripts/sync-city-gujarati.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -31,7 +33,8 @@
     "react-dom": "^18.3.1",
     "react-i18next": "^15.4.1",
     "react-redux": "^9.2.0",
-    "react-router-dom": "^6.29.0"
+    "react-router-dom": "^6.29.0",
+    "sanscript": "^0.0.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",

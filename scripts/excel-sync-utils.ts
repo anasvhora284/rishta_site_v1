@@ -128,7 +128,7 @@ export function parseFormDataRow(row: unknown[], col: ColumnMap, line: number): 
     father_name: cell(row, col.fatherName) || '-',
     father_occupation: cell(row, col.fatherOccupation) || '-',
     mother_name: cell(row, col.motherName) || '-',
-    city: cell(row, col.city) || 'Not Provided',
+    city: cell(row, col.city) || '',
     date_of_birth: dob,
     marital_status: normalizeMarital(cell(row, col.marital)),
     height: cell(row, col.height) || '-',

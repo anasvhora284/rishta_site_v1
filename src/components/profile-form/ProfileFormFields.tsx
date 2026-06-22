@@ -11,7 +11,14 @@ import {
   Typography,
 } from '@mui/material'
 import { useTranslation } from 'react-i18next'
-import { QUALIFICATIONS, CITIES, type ProfileFormData } from '@/types/profile'
+import { cityOptions, useCities } from '@/hooks/useCities'
+import { useQualifications } from '@/hooks/useQualifications'
+import { useSubCasts, subCastOptions } from '@/hooks/useSubCasts'
+import { type ProfileFormData } from '@/types/profile'
+import { CANONICAL_QUALIFICATIONS } from '@/data/canonical-qualifications'
+import { formatIndianMobileInput } from '@/utils/phoneValidation'
+import { localizedName } from '@/utils/localizeReference'
+import { isOtherCity } from '@/data/canonical-cities'
 import BilingualField from './BilingualField'
 import { maxDateOfBirthForMinAge } from './profileFormUtils'
 
@@ -43,7 +50,20 @@ export default function ProfileFormFields({
   activeStep = 0,
   showReviewSummary = false,
 }: ProfileFormFieldsProps) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const { cities, loading: citiesLoading } = useCities()
+  const { qualifications, loading: qualificationsLoading } = useQualifications()
+  const { subCasts, loading: subCastsLoading } = useSubCasts()
+  const cityChoices = cityOptions(form.city, cities)
+  const subCastChoices = subCastOptions(form.sub_cast, subCasts)
+  const qualificationChoices =
+    qualifications.length > 0
+      ? qualifications
+      : CANONICAL_QUALIFICATIONS.map((q) => ({
+          code: q.value,
+          name_en: q.nameEn,
+          name_gu: q.nameGu,
+        }))
 
   const show = (step: ProfileFormStep) => mode === 'full' || activeStep === step
 
@@ -97,10 +117,18 @@ export default function ProfileFormFields({
                 value={form.qualification}
                 label={t('form.qualification.label')}
                 onChange={(e) => onChange('qualification', e.target.value)}
+                disabled={qualificationsLoading && qualificationChoices.length === 0}
+                renderValue={(value) => {
+                  if (value === 'Other' && form.qualification_other.trim()) {
+                    return `Other (${form.qualification_other.trim()})`
+                  }
+                  const match = qualificationChoices.find((q) => q.code === value)
+                  return match ? localizedName(match, i18n.language) : value
+                }}
               >
-                {QUALIFICATIONS.map((q) => (
-                  <MenuItem key={q} value={q}>
-                    {q}
+                {qualificationChoices.map((q) => (
+                  <MenuItem key={q.code} value={q.code}>
+                    {localizedName(q, i18n.language)}
                   </MenuItem>
                 ))}
               </Select>
@@ -131,6 +159,17 @@ export default function ProfileFormFields({
               onChange={(e) => onChange('current_profile', e.target.value)}
               error={!!errors.current_profile}
               helperText={errors.current_profile}
+            />
+          </BilingualField>
+          <BilingualField labelKey="form.expectations.label" hintKey="form.expectations.hint">
+            <TextField
+              fullWidth
+              multiline
+              rows={3}
+              value={form.expectations}
+              onChange={(e) => onChange('expectations', e.target.value)}
+              error={!!errors.expectations}
+              helperText={errors.expectations}
             />
           </BilingualField>
         </Box>
@@ -179,10 +218,12 @@ export default function ProfileFormFields({
                 value={form.city}
                 label={t('form.city.label')}
                 onChange={(e) => onChange('city', e.target.value)}
+                disabled={citiesLoading && cityChoices.length === 0}
+                MenuProps={{ PaperProps: { style: { maxHeight: 320 } } }}
               >
-                {CITIES.map((c) => (
-                  <MenuItem key={c} value={c}>
-                    {c}
+                {cityChoices.map((city) => (
+                  <MenuItem key={city.code} value={city.code}>
+                    {localizedName(city, i18n.language)}
                   </MenuItem>
                 ))}
               </Select>
@@ -193,7 +234,7 @@ export default function ProfileFormFields({
               )}
             </FormControl>
           </BilingualField>
-          {form.city === 'Other' && (
+          {isOtherCity(form.city) && (
             <BilingualField labelKey="form.cityOther.label" hintKey="form.cityOther.hint">
               <TextField
                 fullWidth
@@ -205,13 +246,27 @@ export default function ProfileFormFields({
             </BilingualField>
           )}
           <BilingualField labelKey="form.subCast.label" hintKey="form.subCast.hint">
-            <TextField
-              fullWidth
-              value={form.sub_cast}
-              onChange={(e) => onChange('sub_cast', e.target.value)}
-              error={!!errors.sub_cast}
-              helperText={errors.sub_cast}
-            />
+            <FormControl fullWidth error={!!errors.sub_cast}>
+              <InputLabel>{t('form.subCast.label')}</InputLabel>
+              <Select
+                value={form.sub_cast}
+                label={t('form.subCast.label')}
+                onChange={(e) => onChange('sub_cast', e.target.value)}
+                disabled={subCastsLoading && subCastChoices.length === 0}
+                MenuProps={{ PaperProps: { style: { maxHeight: 320 } } }}
+              >
+                {subCastChoices.map((cast) => (
+                  <MenuItem key={cast.code} value={cast.code}>
+                    {localizedName(cast, i18n.language)}
+                  </MenuItem>
+                ))}
+              </Select>
+              {errors.sub_cast && (
+                <Typography color="error" fontSize="0.85rem">
+                  {errors.sub_cast}
+                </Typography>
+              )}
+            </FormControl>
           </BilingualField>
           <BilingualField labelKey="form.maritalStatus.label" hintKey="form.maritalStatus.hint">
             <RadioGroup
@@ -260,7 +315,9 @@ export default function ProfileFormFields({
               fullWidth
               type="tel"
               value={form.parent_contact}
-              onChange={(e) => onChange('parent_contact', e.target.value)}
+              onChange={(e) => onChange('parent_contact', formatIndianMobileInput(e.target.value))}
+              inputProps={{ inputMode: 'numeric', maxLength: 10, pattern: '[0-9]*' }}
+              placeholder="9876543210"
               error={!!errors.parent_contact}
               helperText={errors.parent_contact}
             />
@@ -280,7 +337,7 @@ export default function ProfileFormFields({
               </Typography>
               <Typography variant="body2">
                 <strong>{t('form.city.label')}:</strong>{' '}
-                {form.city === 'Other' ? form.city_other : form.city}
+                {isOtherCity(form.city) ? form.city_other : form.city}
               </Typography>
               <Typography variant="body2">
                 <strong>{t('form.contact.label')}:</strong> {form.parent_contact}

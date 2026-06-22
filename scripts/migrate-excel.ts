@@ -143,7 +143,7 @@ async function importSheet(filePath: string, status: 'approved' | 'pending') {
       father_name: mapped.father_name || '-',
       father_occupation: mapped.father_occupation || '-',
       mother_name: mapped.mother_name || '-',
-      city: mapped.city || 'Not Provided',
+      city: mapped.city || '',
       city_other: null,
       date_of_birth: mapped.date_of_birth,
       marital_status: mapped.marital_status,

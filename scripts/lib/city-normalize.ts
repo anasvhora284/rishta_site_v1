@@ -2,12 +2,16 @@
  * City normalization rules for cleanup preview and apply migration.
  */
 
-import { CITIES } from '../../src/types/profile'
+import {
+  CANONICAL_CITIES,
+  CITY_ALIASES_TO_CODE,
+  isOtherCity,
+} from '../../src/data/canonical-cities'
 
 export interface NormalizedCity {
   city: string
   cityOther: string | null
-  method: 'exact' | 'alias' | 'contains' | 'unchanged' | 'other' | 'not_provided'
+  method: 'exact' | 'alias' | 'contains' | 'unchanged' | 'other'
 }
 
 /** Raw values left untouched — verified correct or pending manual review. */
@@ -44,11 +48,11 @@ function preferCanonical(a: string, b: string): string {
 /** One canonical label per place from the app's city list. */
 export function buildCanonicalCityMap(): Map<string, string> {
   const map = new Map<string, string>()
-  for (const raw of CITIES) {
-    if (raw === 'Other' || raw === 'Not Provided') continue
-    const key = cityKey(raw)
+  for (const { code } of CANONICAL_CITIES) {
+    if (isOtherCity(code)) continue
+    const key = cityKey(code)
     const prev = map.get(key)
-    map.set(key, prev ? preferCanonical(prev, raw) : raw)
+    map.set(key, prev ? preferCanonical(prev, code) : code)
   }
   return map
 }
@@ -148,14 +152,20 @@ const CITY_ALIASES: Record<string, string> = {
   gorwamadhunagar: 'VADODARA',
   mhemdavad: 'MAHEMDAVAD',
   naar: 'NAR',
-  vakanersavali: 'Wakaner',
-  vankanersavli: 'Wakaner',
+  vakanersavali: 'WAKANER',
+  vankanersavli: 'WAKANER',
   બાલાપીરભાગોળમુખેડાજીખેડા: 'KHEDA',
-  city: 'Not Provided',
-  gujarat: 'Not Provided',
-  housewife: 'Not Provided',
+  city: 'OTHER',
+  gujarat: 'OTHER',
+  housewife: 'OTHER',
+  notprovided: 'OTHER',
   ઉમરેઠ: 'UMRETH',
   નડીઆદ: 'NADIAD',
+}
+
+for (const [label, code] of Object.entries(CITY_ALIASES_TO_CODE)) {
+  const k = cityKey(label)
+  if (k) CITY_ALIASES[k] = code
 }
 
 const JUNK_PATTERNS = [
@@ -169,16 +179,16 @@ const JUNK_PATTERNS = [
 export function normalizeCityValue(rawInput: string | null | undefined): NormalizedCity {
   const raw = String(rawInput ?? '').trim()
   if (!raw) {
-    return { city: 'Not Provided', cityOther: null, method: 'not_provided' }
+    return { city: 'OTHER', cityOther: null, method: 'other' }
   }
 
   if (JUNK_PATTERNS.some((re) => re.test(raw))) {
-    return { city: 'Not Provided', cityOther: raw, method: 'not_provided' }
+    return { city: 'OTHER', cityOther: raw, method: 'other' }
   }
 
   const key = cityKey(raw)
   if (!key) {
-    return { city: 'Not Provided', cityOther: raw, method: 'not_provided' }
+    return { city: 'OTHER', cityOther: raw, method: 'other' }
   }
 
   const exact = CANONICAL_BY_KEY.get(key)
@@ -224,7 +234,7 @@ export function normalizeCityValue(rawInput: string | null | undefined): Normali
     }
   }
 
-  return { city: 'Other', cityOther: raw, method: 'other' }
+  return { city: 'OTHER', cityOther: raw, method: 'other' }
 }
 
 /** Whether this row should be updated during apply (skips low-confidence / unknown). */
@@ -233,11 +243,12 @@ export function shouldApplyCityCleanup(
   beforeCityOther: string | null,
   normalized: NormalizedCity,
 ): boolean {
-  const input = beforeCity === 'Other' && beforeCityOther ? beforeCityOther : beforeCity
+  const input =
+    isOtherCity(beforeCity) && beforeCityOther ? beforeCityOther : beforeCity
   const beforeKey = cityKey(input)
 
   if (LEAVE_UNCHANGED_CITY_KEYS.has(beforeKey)) return false
-  if (beforeCity === 'Other' && !beforeCityOther?.trim()) return false
+  if (isOtherCity(beforeCity) && !beforeCityOther?.trim()) return false
   if (normalized.method === 'other') return false
 
   const afterOther = normalized.cityOther ?? null

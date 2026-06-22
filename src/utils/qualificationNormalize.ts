@@ -1,6 +1,50 @@
-import { QUALIFICATIONS } from '@/types/profile'
+import type { TFunction } from 'i18next'
+import { QUALIFICATIONS, type Profile } from '@/types/profile'
+import { localizedName, localizedQualification, type LocalizedLabel } from '@/utils/localizeReference'
 
 export type QualificationBucket = (typeof QUALIFICATIONS)[number]
+
+/** Localized qualification for profile cards (DB labels, then i18n, then legacy free-text). */
+export function formatLocalizedQualificationDisplay(
+  profile: Pick<Profile, 'qualification' | 'qualification_other' | 'education_category'>,
+  lng: string,
+  qualificationMap: Map<string, LocalizedLabel>,
+  t: TFunction,
+): string {
+  const q = profile.qualification?.trim() ?? ''
+  const other = profile.qualification_other?.trim()
+
+  if (q === 'Other' && other) {
+    const otherLabel = localizedName(
+      qualificationMap.get('Other'),
+      lng,
+      localizedQualification('Other', t, 'Other'),
+    )
+    return `${otherLabel} (${other})`
+  }
+
+  const record = qualificationMap.get(q)
+  if (record) {
+    return localizedName(record, lng, localizedQualification(q, t, q))
+  }
+
+  const fallback = profile.education_category?.trim() || q
+  return fallback || localizedQualification(q, t, q)
+}
+
+/** Show "Other (custom text)" when qualification is Other and a detail was entered. */
+export function formatQualificationDisplay(
+  profile: Pick<Profile, 'qualification' | 'qualification_other'>,
+  options?: { uppercase?: boolean },
+): string {
+  const q = profile.qualification?.trim() ?? ''
+  const other = profile.qualification_other?.trim()
+  if (q === 'Other' && other) {
+    const label = `Other (${other})`
+    return options?.uppercase ? label.toUpperCase() : label
+  }
+  return options?.uppercase ? q.toUpperCase() : q
+}
 
 /** Map free-text / legacy DB qualification strings to one of 8 buckets. */
 export function normalizeQualificationBucket(raw: string): QualificationBucket {

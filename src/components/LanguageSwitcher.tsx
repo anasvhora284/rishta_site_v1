@@ -4,7 +4,6 @@ import i18n from '@/i18n'
 
 const LANGUAGES = [
   { code: 'gu', label: 'ગુ' },
-  { code: 'hi', label: 'हि' },
   { code: 'en', label: 'EN' },
 ] as const
 
@@ -16,7 +15,7 @@ export default function LanguageSwitcher() {
       <ToggleButtonGroup
         exclusive
         size="small"
-        value={i18n.language}
+        value={i18n.language.startsWith('en') ? 'en' : 'gu'}
         onChange={(_, value) => {
           if (value) void i18n.changeLanguage(value)
         }}

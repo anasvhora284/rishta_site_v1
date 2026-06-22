@@ -28,8 +28,16 @@ Thumbs.db
 # PWA
 dev-dist
 
-# Migration / import artifacts (generated)
+# Netlify
+.netlify
+
+# Migration / import artifacts (generated — do not commit)
 scripts/migrate-batches/
 scripts/json-import-chunks/
 scripts/profiles-import.json
 scripts/chunk-*.sql
+scripts/output/
+
+# Supabase local
+.branches
+.temp

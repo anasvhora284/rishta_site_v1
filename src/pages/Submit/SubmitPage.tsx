@@ -35,6 +35,7 @@ const emptyForm: ProfileFormData = {
   weight_other: '',
   parent_contact: '',
   sub_cast: '',
+  expectations: '',
 }
 
 export default function SubmitPage() {

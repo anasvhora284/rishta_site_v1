@@ -1,17 +1,22 @@
 import CallIcon from '@mui/icons-material/Call'
 import WhatsAppIcon from '@mui/icons-material/WhatsApp'
+import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import femaleAvatar from '@/assets/FemaleIcon.jpg'
 import maleAvatar from '@/assets/MaleIcon.jpeg'
+import { useCities } from '@/hooks/useCities'
+import { useQualifications } from '@/hooks/useQualifications'
+import { useSubCasts } from '@/hooks/useSubCasts'
 import type { Profile } from '@/types/profile'
 import {
   calculateAge,
-  capitalizeWords,
   displayCity,
   formatDisplayDate,
   toTelUrl,
   toWhatsAppUrl,
 } from '@/utils'
-import { useTranslation } from 'react-i18next'
+import { formatLocalizedQualificationDisplay } from '@/utils/qualificationNormalize'
+import { buildLabelMap, localizedName } from '@/utils/localizeReference'
 import './ProfileCard.css'
 
 interface ProfileCardProps {
@@ -20,9 +25,19 @@ interface ProfileCardProps {
 }
 
 export default function ProfileCard({ profile, compact = false }: ProfileCardProps) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const { cities } = useCities()
+  const { qualifications } = useQualifications()
+  const { subCasts } = useSubCasts()
+  const cityMap = useMemo(() => buildLabelMap(cities), [cities])
+  const qualificationMap = useMemo(() => buildLabelMap(qualifications), [qualifications])
+  const subCastMap = useMemo(() => buildLabelMap(subCasts), [subCasts])
+  const qualificationDisplay = useMemo(
+    () => formatLocalizedQualificationDisplay(profile, i18n.language, qualificationMap, t),
+    [profile, i18n.language, qualificationMap, t],
+  )
   const isMale = profile.gender === 'male'
-  const cityDisplay = capitalizeWords(displayCity(profile))
+  const cityDisplay = displayCity(profile, { cityMap, lng: i18n.language })
   const age = calculateAge(profile.date_of_birth.replace(/-/g, '/'))
   const hasContact = Boolean(profile.parent_contact?.trim())
   const callUrl = hasContact ? toTelUrl(profile.parent_contact) : null
@@ -31,18 +46,20 @@ export default function ProfileCard({ profile, compact = false }: ProfileCardPro
   const highlights = [
     { label: t('listing.height'), value: profile.height },
     { label: t('listing.city'), value: cityDisplay },
-    { label: t('listing.qualification'), value: profile.qualification?.toUpperCase() },
     { label: t('listing.maritalStatus'), value: t(`marital.${profile.marital_status}`) },
   ]
 
   const details = [
-    { label: t('listing.education'), value: profile.education_category ?? profile.qualification },
+    { label: t('listing.qualification'), value: qualificationDisplay },
     { label: t('listing.currentProfile'), value: profile.current_profile },
+    ...(profile.expectations?.trim()
+      ? [{ label: t('listing.expectations'), value: profile.expectations.trim() }]
+      : []),
     { label: t('listing.weight'), value: profile.weight_other },
     { label: t('listing.fatherName'), value: profile.father_name },
     { label: t('listing.fatherOccupation'), value: profile.father_occupation },
     { label: t('listing.motherName'), value: profile.mother_name },
-    { label: t('listing.subCast'), value: profile.sub_cast },
+    { label: t('listing.subCast'), value: localizedName(subCastMap.get(profile.sub_cast), i18n.language, profile.sub_cast) },
   ]
 
   return (

@@ -50,6 +50,7 @@
     "fatherOccupation": "Father's Occupation",
     "motherName": "Mother's Name",
     "subCast": "Sub-Cast",
+    "expectations": "Partner Expectations",
     "id": "ID",
     "resultsTitle": "{{count}} profiles",
     "ageYears": "{{age}} yrs",
@@ -96,7 +97,9 @@
     "successMessage": "Our team will verify your details. Profile will be published after approval.",
     "contactHelp": "Contact for help",
     "required": "This field is required",
-    "invalidPhone": "Enter a valid WhatsApp number",
+    "invalidPhone": "Enter a valid mobile number",
+    "invalidPhoneLength": "Mobile number must be exactly 10 digits",
+    "invalidPhoneStart": "Mobile number must start with 6, 7, 8, or 9",
     "invalidDate": "Enter a valid date of birth",
     "minAge": "Age must be at least 18 years"
   },
@@ -113,10 +116,11 @@
     "city": { "label": "City / Village", "hint": "" },
     "cityOther": { "label": "Other City", "hint": "" },
     "subCast": { "label": "68 Sub Cast", "hint": "" },
+    "expectations": { "label": "Partner Expectations", "hint": "(Optional — qualities you expect in a partner)" },
     "maritalStatus": { "label": "Marital Status", "hint": "" },
     "height": { "label": "Height", "hint": "(Format: 5'2\")" },
     "weight": { "label": "Weight/Other Information", "hint": "" },
-    "contact": { "label": "Parent's WhatsApp Number", "hint": "" }
+    "contact": { "label": "Parent's WhatsApp Number", "hint": "(10-digit mobile number)" }
   },
   "marital": {
     "unmarried": "Unmarried",
@@ -216,6 +220,16 @@
   },
   "loader": {
     "welcome": "Welcome to 68 Vhora Rishta Group"
+  },
+  "qualifications": {
+    "10th": "10th Standard",
+    "12th": "12th Standard",
+    "Bachelor": "Bachelor",
+    "Diploma": "Diploma",
+    "Engineering": "Engineering",
+    "Master": "Master",
+    "Medical": "Medical",
+    "Other": "Other"
   },
   "common": {
     "loading": "Loading...",

@@ -97,7 +97,7 @@ export function parseMainSheetRow(row: unknown[]): ParsedProfileRow | null {
     father_name: cell(row, MAIN_COL.fatherName) || '-',
     father_occupation: cell(row, MAIN_COL.fatherOccupation) || '-',
     mother_name: cell(row, MAIN_COL.motherName) || '-',
-    city: cell(row, MAIN_COL.city) || 'Not Provided',
+    city: cell(row, MAIN_COL.city) || '',
     date_of_birth: dob,
     marital_status: normalizeMarital(cell(row, MAIN_COL.marital)),
     height: cell(row, MAIN_COL.height) || '-',

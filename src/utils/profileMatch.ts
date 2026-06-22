@@ -1,5 +1,7 @@
 /** Normalization helpers aligned with scripts/excel-sync-utils.ts */
 
+import { isOtherCity } from '@/data/canonical-cities'
+
 export function norm(s: unknown): string {
   return String(s ?? '')
     .trim()
@@ -38,7 +40,7 @@ export function profileMatchKeys(profile: {
   city: string
   city_other?: string | null
 }): ProfileMatchKeys {
-  const cityNorm = norm(profile.city === 'Other' ? profile.city_other : profile.city)
+  const cityNorm = norm(isOtherCity(profile.city) ? profile.city_other : profile.city)
   return {
     nameNorm: norm(profile.name),
     dobNorm: normDob(profile.date_of_birth),

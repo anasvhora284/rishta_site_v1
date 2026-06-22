@@ -1,3 +1,6 @@
+import { extractIndianMobile10 } from '@/utils/phoneValidation'
+import { isOtherCity } from '@/data/canonical-cities'
+
 export function calculateAge(dateString: string): number {
   const formattedDate = convertToDateObject(dateString)
   const currentDate = new Date()
@@ -48,9 +51,18 @@ export function formatDisplayDate(dateString: string): string {
   return `${dateObj.getDate()} ${dateObj.toLocaleString('default', { month: 'short' })}, ${dateObj.getFullYear()}`
 }
 
-export function displayCity(profile: { city: string; city_other?: string | null }): string {
-  if (profile.city === 'Other') {
+export function displayCity(
+  profile: { city: string; city_other?: string | null },
+  options?: { cityMap?: Map<string, { name_en: string; name_gu: string }>; lng?: string },
+): string {
+  if (isOtherCity(profile.city)) {
     return profile.city_other?.trim() || profile.city
+  }
+  if (options?.cityMap && options?.lng) {
+    const record = options.cityMap.get(profile.city)
+    if (record) {
+      return options.lng.startsWith('en') ? record.name_en : record.name_gu || record.name_en
+    }
   }
   return profile.city
 }
@@ -65,8 +77,10 @@ export function capitalizeWords(value: string): string {
 }
 
 export function normalizePhoneDigits(phone: string): string {
-  const digits = phone.replace(/\D/g, '')
-  return digits.startsWith('91') ? digits : `91${digits}`
+  const digits = extractIndianMobile10(phone)
+  if (digits.length === 10) return `91${digits}`
+  const raw = phone.replace(/\D/g, '')
+  return raw.startsWith('91') ? raw : `91${raw}`
 }
 
 export function toWhatsAppUrl(phone: string): string {

@@ -5,8 +5,12 @@ import { DuplicateBadge } from '@/components/admin/DuplicateBadge'
 import { formatAdminDate } from '@/components/admin/adminTypes'
 import type { Profile } from '@/types/profile'
 import { displayCity } from '@/utils'
-import { hasDuplicateMatches, type DuplicateAssessment } from '@/utils/profileDuplicate'
+import { useCities } from '@/hooks/useCities'
+import { buildLabelMap } from '@/utils/localizeReference'
+import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
+import { formatQualificationDisplay } from '@/utils/qualificationNormalize'
+import { hasDuplicateMatches, type DuplicateAssessment } from '@/utils/profileDuplicate'
 
 interface AdminProfileListItemProps {
   profile: Profile
@@ -23,7 +27,9 @@ export default function AdminProfileListItem({
   layout,
   onSelect,
 }: AdminProfileListItemProps) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const { cities } = useCities()
+  const cityMap = useMemo(() => buildLabelMap(cities), [cities])
   const isMale = profile.gender === 'male'
 
   return (
@@ -47,9 +53,9 @@ export default function AdminProfileListItem({
           )}
         </div>
         <div className="admin-profile-item__row2">
-          <span>{displayCity(profile)}</span>
+          <span>{displayCity(profile, { cityMap, lng: i18n.language })}</span>
           <span className="admin-profile-item__dot">·</span>
-          <span>{profile.qualification}</span>
+          <span>{formatQualificationDisplay(profile)}</span>
           {layout === 'desktop' && (
             <>
               <span className="admin-profile-item__dot">·</span>

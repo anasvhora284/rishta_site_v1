@@ -14,6 +14,8 @@ import {
 } from '@mui/material'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useCities } from '@/hooks/useCities'
+import { useQualifications } from '@/hooks/useQualifications'
 import type { BrowseFilterCriteria } from '@/utils/browseFilters'
 import {
   buildCityOptions,
@@ -21,6 +23,7 @@ import {
   buildQualificationOptions,
 } from '@/utils/browseFilters'
 import type { Profile } from '@/types/profile'
+import { buildLabelMap, localizedName } from '@/utils/localizeReference'
 import '@/pages/Browse/Filter.css'
 
 const ITEM_HEIGHT = 48
@@ -63,11 +66,18 @@ export default function BrowseFilterForm({
   submitLabel,
   compact = false,
 }: BrowseFilterFormProps) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const { cities } = useCities()
+  const { qualifications } = useQualifications()
+  const cityMap = useMemo(() => buildLabelMap(cities), [cities])
+  const qualificationMap = useMemo(() => buildLabelMap(qualifications), [qualifications])
   const { fromAge, toAge, gender, qualification, city, maritalStatus } = criteria
 
   const cityValues = useMemo(() => buildCityOptions(profiles), [profiles])
-  const qualificationValues = useMemo(() => buildQualificationOptions(), [])
+  const qualificationValues = useMemo(
+    () => (qualifications.length ? qualifications.map((q) => q.code) : buildQualificationOptions()),
+    [qualifications],
+  )
   const maritalStatusValues = useMemo(() => buildMaritalStatusOptions(profiles), [profiles])
 
   const patch = (partial: Partial<BrowseFilterCriteria>) => {
@@ -143,7 +153,11 @@ export default function BrowseFilterForm({
             displayEmpty
             IconComponent={ExpandMoreIcon}
             renderValue={(selected) =>
-              selected.length ? selected.join(', ') : t('filter.all')
+              selected.length
+                ? (selected as string[])
+                    .map((code) => localizedName(qualificationMap.get(code), i18n.language, code))
+                    .join(', ')
+                : t('filter.all')
             }
             MenuProps={MenuProps}
             className="select-dropdown-common"
@@ -152,7 +166,9 @@ export default function BrowseFilterForm({
             {qualificationValues.map((value) => (
               <MenuItem key={value} value={value}>
                 <Checkbox checked={qualification.includes(value)} />
-                <ListItemText primary={value} />
+                <ListItemText
+                  primary={localizedName(qualificationMap.get(value), i18n.language, value)}
+                />
               </MenuItem>
             ))}
           </Select>
@@ -172,7 +188,11 @@ export default function BrowseFilterForm({
             displayEmpty
             IconComponent={ExpandMoreIcon}
             renderValue={(selected) =>
-              selected.length ? selected.join(', ') : t('filter.all')
+              selected.length
+                ? (selected as string[])
+                    .map((code) => localizedName(cityMap.get(code), i18n.language, code))
+                    .join(', ')
+                : t('filter.all')
             }
             MenuProps={MenuProps}
             className="select-dropdown-common"
@@ -181,7 +201,9 @@ export default function BrowseFilterForm({
             {cityValues.map((value) => (
               <MenuItem key={value} value={value}>
                 <Checkbox checked={city.includes(value)} />
-                <ListItemText primary={value.charAt(0).toUpperCase() + value.slice(1)} />
+                <ListItemText
+                  primary={localizedName(cityMap.get(value), i18n.language, value)}
+                />
               </MenuItem>
             ))}
           </Select>

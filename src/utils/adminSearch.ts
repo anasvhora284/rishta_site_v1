@@ -22,6 +22,7 @@ function searchableText(profile: Profile): string {
     profile.weight_other,
     profile.parent_contact,
     profile.sub_cast,
+    profile.expectations ?? '',
     profile.status,
     profile.admin_notes ?? '',
     profile.created_at,

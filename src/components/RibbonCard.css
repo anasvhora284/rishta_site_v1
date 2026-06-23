@@ -1,0 +1,98 @@
+/*
+ * Ribbon tag stacking (back → front):
+ *   1. fold  (z-index 1) — peeks behind the card corner
+ *   2. content (z-index 2) — white panel covers the fold
+ *   3. label (z-index 3) — ribbon bar on top
+ *
+ * Fold position is relative to the label box via CSS variables so one
+ * formula scales across breakpoints instead of duplicating rules per page.
+ */
+.ribbon-card {
+  --ribbon-gradient: linear-gradient(
+    45deg,
+    rgb(79, 15, 30) 0%,
+    rgb(174, 0, 61) 51%,
+    rgb(79, 15, 30) 100%
+  );
+  --ribbon-fold-bg: rgb(45, 8, 18);
+  --ribbon-top: clamp(18px, 5vw, 25px);
+  --ribbon-right: clamp(-8px, -2vw, -14px);
+  --ribbon-width: clamp(7rem, 28vw, 10rem);
+  --ribbon-font-size: clamp(14px, 3.5vw, 18px);
+  --ribbon-fold-size: 23px;
+  --ribbon-fold-overlap: 14px;
+  --ribbon-fold-right: 5px;
+
+  position: relative;
+  width: 100%;
+  isolation: isolate;
+}
+
+.ribbon-card__tag {
+  position: absolute;
+  top: var(--ribbon-top);
+  right: var(--ribbon-right);
+  width: var(--ribbon-width);
+  pointer-events: none;
+}
+
+.ribbon-card__label {
+  position: relative;
+  z-index: 3;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.5rem;
+  background: var(--ribbon-gradient);
+  color: #fff;
+  text-align: center;
+  font-family: 'Outfit', sans-serif;
+  font-size: var(--ribbon-font-size);
+  font-weight: 500;
+  line-height: 1.25;
+  box-shadow: 4px 4px 15px rgba(26, 35, 126, 0.2);
+}
+
+.ribbon-card__fold {
+  position: absolute;
+  z-index: 1;
+  top: calc(100% - var(--ribbon-fold-overlap));
+  right: var(--ribbon-fold-right);
+  width: var(--ribbon-fold-size);
+  height: var(--ribbon-fold-size);
+  background: var(--ribbon-fold-bg);
+  transform: rotate(45deg);
+  transform-origin: center;
+  box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.ribbon-card__content {
+  position: relative;
+  z-index: 2;
+  border-radius: 10px;
+  background: #fff;
+  font-family: 'Outfit', sans-serif;
+  width: 100%;
+  max-width: 100%;
+  min-height: 200px;
+  padding: var(--ribbon-pad-top, clamp(72px, 14vw, 100px)) clamp(16px, 4vw, 40px)
+    clamp(24px, 4vw, 40px);
+  box-sizing: border-box;
+}
+
+@media screen and (max-width: 599px) {
+  .ribbon-card {
+    --ribbon-width: clamp(6rem, 28vw, 7rem);
+    --ribbon-font-size: clamp(13px, 3.5vw, 16px);
+    --ribbon-fold-size: 21px;
+    --ribbon-fold-overlap: 11px;
+    --ribbon-fold-right: 4px;
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .ribbon-card {
+    --ribbon-fold-overlap: 12px;
+    --ribbon-fold-right: 5px;
+  }
+}

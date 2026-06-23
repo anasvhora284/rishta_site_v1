@@ -7,7 +7,7 @@ Unified PWA for the 68 Vhora Samaj Rishta group — browse profiles, submit new 
 - **Browse & filter** approved matrimonial profiles
 - **Submit profile** via parent-friendly 5-step wizard (Gujarati default)
 - **Admin dashboard** to approve/reject/edit submissions (immediate publish on approve)
-- **Trilingual** UI: Gujarati, Hindi, English
+- **Trilingual** UI: Gujarati and English
 - **PWA** — installable on mobile devices
 
 ## Stack
@@ -44,13 +44,9 @@ npm install
 npm run dev
 ```
 
-### 4. Migrate existing Excel data (optional)
+### 4. Maintenance scripts
 
-```bash
-SUPABASE_URL=... SUPABASE_SERVICE_ROLE_KEY=... npm run migrate -- \
-  "../Rista Data.xlsx" \
-  "../Rishta Data Form Responses (Dont Touch _ Edit).xlsx"
-```
+See [scripts/README.md](scripts/README.md) for DB backup, archive verification, and reference-data tools.
 
 ## Deploy (Netlify)
 

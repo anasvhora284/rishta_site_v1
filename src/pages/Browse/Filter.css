@@ -44,68 +44,25 @@
 
 /* max-width / padding: see styles/layout.css */
 
-#our_team_wrapper,
-#filter-box-wrapper {
-  position: relative;
-}
-
-#our_team_wrapper::before,
-#filter-box-wrapper::before {
-  position: absolute;
-  content: "";
-  background-image: linear-gradient(45deg, rgb(79, 15, 30) 0%, rgb(174, 0, 61) 51%, rgb(79, 15, 30) 100%);
-  height: 33px;
-  width: 33px;
-  top: 48px;
-  right: -7px;
-  transform: rotate(45deg);
-}
-
-#our_team_wrapper::after,
-#filter-box-wrapper::after {
-  position: absolute;
-  content: "Rishta Team";
-  top: 25px;
-  right: -14px;
-  padding: 0.5rem;
-  width: 10rem;
-  background: linear-gradient(45deg, rgb(79, 15, 30) 0%, rgb(174, 0, 61) 51%, rgb(79, 15, 30) 100%);
-  color: white;
-  text-align: center;
-  font-family: "Outfit", sans-serif;
-  font-size: 20px;
-  box-shadow: 4px 4px 15px rgba(26, 35, 126, 0.2);
-  z-index: 10;
-}
-
-
-#filter-box-wrapper::after {
-  content: "Filter profiles";
-}
-
-#our_team_wrapper .TeamHeading-container,
-#filter-box-wrapper .filter-box-container {
-  border-radius: 10px;
-  background: #fff;
-  font-family: "Outfit", sans-serif;
+.our_team_wrapper .TeamHeading-container,
+.filter-box-wrapper .filter-box-container {
   max-width: 1000px;
-  width: 100%;
   transition: all 0.3s;
-  z-index: 10;
-  position: relative;
 }
 
-#our_team_wrapper .TeamHeading-container {
+.our_team_wrapper .TeamHeading-container {
   margin-bottom: 60px;
+  min-height: unset;
+  padding: 0 0 clamp(24px, 4vw, 40px);
 }
 
-#our_team_wrapper .TeamHeading {
+.our_team_wrapper .TeamHeading {
   position: relative;
   display: grid;
   grid-template-columns: 50% 50%;
 }
 
-#our_team_wrapper .TeamHeading>span {
+.our_team_wrapper .TeamHeading>span {
   font-size: xx-large;
   font-weight: 700;
   margin: 30px auto 40px auto;
@@ -115,13 +72,13 @@
   border-radius: 5px;
 }
 
-#our_team_wrapper .TeamHeading .social_team,
-#our_team_wrapper .TeamHeading .IT_team {
+.our_team_wrapper .TeamHeading .social_team,
+.our_team_wrapper .TeamHeading .IT_team {
   padding: 0 40px 40px;
 }
 
-#our_team_wrapper .TeamHeading .social_team .team-label-wrapper,
-#our_team_wrapper .TeamHeading .IT_team .team-label-wrapper,
+.our_team_wrapper .TeamHeading .social_team .team-label-wrapper,
+.our_team_wrapper .TeamHeading .IT_team .team-label-wrapper,
 .chief-wrapper {
   padding-bottom: 24px;
   display: flex;
@@ -129,15 +86,15 @@
   gap: 14px
 }
 
-#our_team_wrapper .TeamHeading .social_team .team_label,
-#our_team_wrapper .TeamHeading .IT_team .team_label {
+.our_team_wrapper .TeamHeading .social_team .team_label,
+.our_team_wrapper .TeamHeading .IT_team .team_label {
   color: #047857;
   font-size: 24px;
   font-weight: bold;
 }
 
-#our_team_wrapper .TeamHeading .social_team .team_details,
-#our_team_wrapper .TeamHeading .IT_team .team_details {
+.our_team_wrapper .TeamHeading .social_team .team_details,
+.our_team_wrapper .TeamHeading .IT_team .team_details {
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -156,7 +113,7 @@
   }
 }
 
-#our_team_wrapper .chief-details {
+.our_team_wrapper .chief-details {
   padding: 69px 40px 60px;
   color: #047857;
   display: flex;
@@ -187,7 +144,6 @@
 
 .filter-box-container {
   min-height: 200px;
-  padding: var(--ribbon-pad-top, 100px) clamp(16px, 4vw, 40px) clamp(24px, 4vw, 40px);
   box-sizing: border-box;
   width: 100%;
   max-width: 100%;
@@ -366,67 +322,53 @@
     width: 100%;
   }
 
-  #our_team_wrapper .TeamHeading {
+  .our_team_wrapper .TeamHeading {
     grid-template-columns: auto;
   }
 
-  #our_team_wrapper .chief-details {
+  .our_team_wrapper .chief-details {
     padding: clamp(72px, 18vw, 97px) clamp(12px, 3vw, 0) clamp(32px, 6vw, 50px);
   }
 
-  #our_team_wrapper .TeamHeading .social_team,
-  #our_team_wrapper .TeamHeading .IT_team {
+  .our_team_wrapper .TeamHeading .social_team,
+  .our_team_wrapper .TeamHeading .IT_team {
     padding: 0 clamp(16px, 4vw, 24px) clamp(24px, 5vw, 40px);
   }
 
-  #our_team_wrapper .chief-details p {
+  .our_team_wrapper .chief-details p {
     text-align: center;
   }
 
-  #our_team_wrapper .chief-details p span:first-child {
+  .our_team_wrapper .chief-details p span:first-child {
     display: block;
   }
 
-  #our_team_wrapper .TeamHeading .social_team .team-label-wrapper,
-  #our_team_wrapper .TeamHeading .IT_team .team-label-wrapper,
+  .our_team_wrapper .TeamHeading .social_team .team-label-wrapper,
+  .our_team_wrapper .TeamHeading .IT_team .team-label-wrapper,
   .chief-wrapper {
     justify-content: center;
   }
 
-  #our_team_wrapper .TeamHeading .social_team .team_details span:first-child,
-  #our_team_wrapper .TeamHeading .IT_team .team_details span:first-child,
-  #our_team_wrapper .chief-details p span:first-child {
+  .our_team_wrapper .TeamHeading .social_team .team_details span:first-child,
+  .our_team_wrapper .TeamHeading .IT_team .team_details span:first-child,
+  .our_team_wrapper .chief-details p span:first-child {
     min-width: unset;
     font-size: 14px;
     display: block;
   }
 
-  #our_team_wrapper .chief-details p span:first-child {
+  .our_team_wrapper .chief-details p span:first-child {
     padding: 0;
   }
 
-  #our_team_wrapper .TeamHeading .social_team .team_details span,
-  #our_team_wrapper .TeamHeading .IT_team .team_details span,
-  #our_team_wrapper .chief-details p span {
+  .our_team_wrapper .TeamHeading .social_team .team_details span,
+  .our_team_wrapper .TeamHeading .IT_team .team_details span,
+  .our_team_wrapper .chief-details p span {
     font-size: 14px;
   }
 
-  #our_team_wrapper .TeamHeading .social_team .team_details p,
-  #our_team_wrapper .TeamHeading .IT_team .team_details p {
+  .our_team_wrapper .TeamHeading .social_team .team_details p,
+  .our_team_wrapper .TeamHeading .IT_team .team_details p {
     text-align: center;
-  }
-
-  #our_team_wrapper::after,
-  #filter-box-wrapper::after,
-  #home-actions-box::after {
-    width: clamp(6rem, 28vw, 7rem);
-    font-size: clamp(13px, 3.5vw, 16px);
-    right: clamp(-8px, -2vw, -14px);
-  }
-
-  #our_team_wrapper::before,
-  #filter-box-wrapper::before,
-  #home-actions-box::before {
-    top: clamp(36px, 10vw, 48px);
   }
 }

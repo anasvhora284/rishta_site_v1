@@ -38,6 +38,7 @@ scripts/profiles-import.json
 scripts/chunk-*.sql
 scripts/output/
 
-# Supabase local
+# Supabase local / unused functions
 .branches
 .temp
+supabase/.temp

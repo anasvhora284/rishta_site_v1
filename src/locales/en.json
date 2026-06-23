@@ -16,6 +16,12 @@
     "submitDesc": "Fill in details for a new profile",
     "contactDesc": "Contact us for help"
   },
+  "ribbon": {
+    "home": "68 Vhora Rishta",
+    "filter": "Filter profiles",
+    "team": "Rishta Team",
+    "admin": "Admin panel"
+  },
   "filter": {
     "age": "Age",
     "from": "From",

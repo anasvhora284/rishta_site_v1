@@ -11,15 +11,11 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "migrate": "tsx scripts/migrate-excel.ts",
-    "clean-excel": "tsx scripts/clean-main-excel.ts",
-    "import-excel": "tsx scripts/import-cleaned-excel.ts",
-    "import-form": "tsx scripts/import-form-responses.ts",
-    "backfill-profile-ids": "tsx scripts/backfill-profile-ids.ts",
-    "preview-city-cleanup": "tsx scripts/preview-city-cleanup.ts",
-    "apply-city-cleanup": "tsx scripts/apply-city-cleanup.ts",
     "rebuild-reference-data": "tsx scripts/rebuild-reference-data.ts",
-    "sync-city-gujarati": "tsx scripts/sync-city-gujarati.ts"
+    "sync-city-gujarati": "tsx scripts/sync-city-gujarati.ts",
+    "export-db-backup": "tsx scripts/export-db-backup.ts",
+    "archive-excel-profiles": "tsx scripts/archive-excel-profiles.ts",
+    "verify-archive": "tsx scripts/verify-archive.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

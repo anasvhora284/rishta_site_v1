@@ -1,47 +1,12 @@
 /* Admin — site-aligned ribbon card + rich profile list */
 
-#admin-box-wrapper {
-  position: relative;
-}
-
-#admin-box-wrapper::before {
-  position: absolute;
-  content: "";
-  background-image: linear-gradient(45deg, rgb(79, 15, 30) 0%, rgb(174, 0, 61) 51%, rgb(79, 15, 30) 100%);
-  height: 33px;
-  width: 33px;
-  top: 48px;
-  right: -7px;
-  transform: rotate(45deg);
-}
-
-#admin-box-wrapper::after {
-  position: absolute;
-  content: "Admin panel";
-  top: 25px;
-  right: -14px;
-  padding: 0.5rem;
-  width: 10rem;
-  background: linear-gradient(45deg, rgb(79, 15, 30) 0%, rgb(174, 0, 61) 51%, rgb(79, 15, 30) 100%);
-  color: white;
-  text-align: center;
-  font-family: "Outfit", sans-serif;
-  font-size: 18px;
-  box-shadow: 4px 4px 15px rgba(26, 35, 126, 0.2);
-  z-index: 10;
-}
-
 .admin-box-container {
-  border-radius: 10px;
-  background: #fff;
   font-family: "Outfit", "Public Sans", sans-serif;
   max-width: 1000px;
-  width: 100%;
-  transition: all 0.3s;
-  z-index: 10;
-  position: relative;
-  padding: clamp(16px, 3vw, 28px);
   box-shadow: 0 8px 32px rgba(79, 15, 30, 0.08);
+  min-height: unset;
+  padding: var(--ribbon-pad-top, clamp(72px, 14vw, 100px)) clamp(16px, 3vw, 28px)
+    clamp(16px, 3vw, 28px);
 }
 
 .admin-box-header {
@@ -1268,12 +1233,6 @@
     flex-direction: column;
     align-items: stretch;
   }
-
-  #admin-box-wrapper::after {
-    font-size: 15px;
-    width: 8.5rem;
-    right: -10px;
-  }
 }
 
 @media (max-width: 599px) {
@@ -1385,10 +1344,5 @@
   .admin-profile-item__avatar {
     width: 44px;
     height: 44px;
-  }
-
-  #admin-box-wrapper::after,
-  #admin-box-wrapper::before {
-    display: none;
   }
 }

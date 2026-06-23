@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BrowseFilterForm from '@/components/browse/BrowseFilterForm'
 import Loader from '@/components/Loader'
+import RibbonCard from '@/components/RibbonCard'
 import SiteNavbar from '@/components/SiteNavbar'
 import TeamSection from '@/components/TeamSection'
 import { setBrowseFilters } from '@/duck/slice'
@@ -67,19 +68,17 @@ export default function FilterPage() {
         )}
 
         <div className="filter-box-wrapper container">
-          <div id="filter-box-wrapper">
-            <div className="filter-box-container">
-              <BrowseFilterForm
-                profiles={profiles}
-                criteria={criteria}
-                onCriteriaChange={setCriteria}
-                fromAgeError={fromAgeError}
-                toAgeError={toAgeError}
-                onSubmit={handleSubmit}
-                submitDisabled={!!error}
-              />
-            </div>
-          </div>
+          <RibbonCard label={t('ribbon.filter')} contentClassName="filter-box-container">
+            <BrowseFilterForm
+              profiles={profiles}
+              criteria={criteria}
+              onCriteriaChange={setCriteria}
+              fromAgeError={fromAgeError}
+              toAgeError={toAgeError}
+              onSubmit={handleSubmit}
+              submitDisabled={!!error}
+            />
+          </RibbonCard>
         </div>
 
         <TeamSection />

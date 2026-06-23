@@ -1,6 +1,7 @@
 import { Box, Typography } from '@mui/material'
 import { useEffect, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
+import RibbonCard from '@/components/RibbonCard'
 import SiteNavbar from '@/components/SiteNavbar'
 import '@/pages/Browse/Filter.css'
 import '@/pages/Admin/Admin.css'
@@ -37,15 +38,13 @@ export default function AdminPageLayout({
         {isDetail ? (
           <main className="admin-detail-shell page-content-zone">{children}</main>
         ) : (
-          <div id="admin-box-wrapper" className="page-content-zone">
-            <div className="admin-box-container">
-              <Box className="admin-box-header">
-                <Typography className="admin-box-header__title">{t('admin.dashboard')}</Typography>
-                <Typography className="admin-box-header__subtitle">{t('admin.subtitle')}</Typography>
-              </Box>
-              {children}
-            </div>
-          </div>
+          <RibbonCard label={t('ribbon.admin')} className="page-content-zone" contentClassName="admin-box-container">
+            <Box className="admin-box-header">
+              <Typography className="admin-box-header__title">{t('admin.dashboard')}</Typography>
+              <Typography className="admin-box-header__subtitle">{t('admin.subtitle')}</Typography>
+            </Box>
+            {children}
+          </RibbonCard>
         )}
       </div>
     </div>

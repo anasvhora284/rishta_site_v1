@@ -70,6 +70,11 @@ export type { QualificationCode }
 
 export const QUALIFICATIONS = QUALIFICATION_CODES
 
+export interface TeamContact {
+  name: string
+  phone: string
+}
+
 export const TEAM_CONTACTS = {
   chief: { name: 'Nurulhasan Vohra', phone: '9825090992' },
   social: [

@@ -1,0 +1,5 @@
+/* Page-specific tweaks for team design preview */
+
+.team-preview-page .page-content-zone {
+  padding-top: var(--section-gap);
+}

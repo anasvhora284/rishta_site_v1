@@ -1,1 +1,6 @@
-/* Team section styles live in Filter.css (our_team_wrapper, TeamHeading, etc.) */
+.our_team_wrapper .team-variant {
+  max-width: 1000px;
+  width: 100%;
+  margin: 0 auto 60px;
+  min-height: unset !important;
+}

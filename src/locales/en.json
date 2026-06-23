@@ -226,7 +226,27 @@
   "team": {
     "chief": "Chief",
     "social": "Social Team",
-    "it": "IT Team"
+    "it": "IT Team",
+    "subtitle": "Contact the team for help with profiles and submissions",
+    "call": "Call",
+    "whatsapp": "WhatsApp"
+  },
+  "teamPreview": {
+    "title": "Rishta Team — design options",
+    "intro": "Compare three layouts below. All use the same ribbon card and contact data. Pick one to apply on Home and Filter pages.",
+    "optionLabel": "Option {{id}}",
+    "planA": {
+      "title": "Plan A — Polished flat layout",
+      "desc": "Same Chief + two-column structure as today, with maroon accents, clearer name/phone rows, and tap-to-call links."
+    },
+    "planB": {
+      "title": "Plan B — Inner mini-cards",
+      "desc": "Chief, Social, and IT each sit in a soft bordered panel — easier to scan, matches admin card style."
+    },
+    "planC": {
+      "title": "Plan C — Mini-cards + actions",
+      "desc": "Plan B layout with Call and WhatsApp buttons on every row — best for parents on mobile."
+    }
   },
   "loader": {
     "welcome": "Welcome to 68 Vhora Rishta Group"

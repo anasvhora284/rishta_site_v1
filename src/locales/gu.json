@@ -226,7 +226,27 @@
   "team": {
     "chief": "ચીફ",
     "social": "સોશિયલ ટીમ",
-    "it": "આઈટી ટીમ"
+    "it": "આઈટી ટીમ",
+    "subtitle": "પ્રોફાઇલ અને સબમિશન માટે મદદ હેતુ ટીમનો સંપર્ક કરો",
+    "call": "કૉલ",
+    "whatsapp": "વોટ્સએપ"
+  },
+  "teamPreview": {
+    "title": "રિશ્તા ટીમ — ડિઝાઇન વિકલ્પો",
+    "intro": "નીચે ત્રણ લેઆઉટ compare કરો. ત્રણેયમાં સમાન ribbon card અને contact data છે. Home અને Filter માટે એક પસંદ કરો.",
+    "optionLabel": "વિકલ્પ {{id}}",
+    "planA": {
+      "title": "પ્લાન A — સાદું polished લેઆઉટ",
+      "desc": "આજ જેવી Chief + બે-column structure, maroon accents, સ્પષ્ટ name/phone rows અને tap-to-call."
+    },
+    "planB": {
+      "title": "પ્લાન B — અંદરની mini-cards",
+      "desc": "Chief, Social અને IT અલગ bordered panel માં — વાંચવા સરળ, admin card style જેવું."
+    },
+    "planC": {
+      "title": "પ્લાન C — mini-cards + actions",
+      "desc": "પ્લાન B + દરેક row પર Call અને WhatsApp બટન — mobile parents માટે શ્રેષ્ઠ."
+    }
   },
   "loader": {
     "welcome": "68 વ્હોરા રિશ્તા પોર્ટલમાં આપનું સ્વાગત છે"

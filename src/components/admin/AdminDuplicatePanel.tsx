@@ -83,9 +83,19 @@ export default function AdminDuplicatePanel({
               {diffs.map((d) => (
                 <div key={d.field} className="admin-dup-diff__row">
                   <span className="admin-dup-diff__field">{d.field}</span>
-                  <span className="admin-dup-diff__before">{d.before || '—'}</span>
-                  <span className="admin-dup-diff__arrow">→</span>
-                  <span className="admin-dup-diff__after">{d.after || '—'}</span>
+                  <div className="admin-dup-diff__change">
+                    <div className="admin-dup-diff__value admin-dup-diff__value--before">
+                      <span className="admin-dup-diff__label">{t('admin.duplicate.before')}</span>
+                      <span className="admin-dup-diff__text">{d.before || '—'}</span>
+                    </div>
+                    <span className="admin-dup-diff__arrow" aria-hidden="true">
+                      →
+                    </span>
+                    <div className="admin-dup-diff__value admin-dup-diff__value--after">
+                      <span className="admin-dup-diff__label">{t('admin.duplicate.after')}</span>
+                      <span className="admin-dup-diff__text">{d.after || '—'}</span>
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>

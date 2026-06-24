@@ -44,7 +44,6 @@
 .team-variant__header {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 12px;
   margin-bottom: 14px;
 }
@@ -53,15 +52,21 @@
   justify-content: center;
 }
 
+.team-variant--combined .team-variant-a__column .team-variant__header {
+  justify-content: flex-start;
+}
+
 .team-variant__header-pill {
   display: inline-block;
-  padding: 6px 14px;
-  border-radius: 999px;
-  background: linear-gradient(45deg, rgb(79, 15, 30) 0%, rgb(174, 0, 61) 51%, rgb(79, 15, 30) 100%);
-  color: #fff;
-  font-size: clamp(0.9rem, 2.5vw, 1.05rem);
-  font-weight: 700;
+  padding: 0 0 5px;
+  border-radius: 0;
+  background: none;
+  color: rgb(79, 15, 30);
+  font-size: clamp(1rem, 2.8vw, 1.2rem);
+  font-weight: 800;
   letter-spacing: 0.02em;
+  border-bottom: 2px solid rgba(174, 0, 61, 0.45);
+  line-height: 1.2;
 }
 
 .team-variant__icon {

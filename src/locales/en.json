@@ -206,6 +206,8 @@
       "noMatches": "No matching profiles found — looks like a new submission.",
       "matchesTitle": "Possible matches",
       "diffTitle": "Changes vs selected profile",
+      "before": "Before",
+      "after": "After",
       "noDiff": "No field differences from the selected profile.",
       "selectApprovedToMerge": "Select the approved profile (with ID) to merge into. Rejected duplicates are for reference only.",
       "mergeNeedsApproved": "Select an approved profile to merge into."

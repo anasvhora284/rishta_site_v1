@@ -992,11 +992,10 @@
 }
 
 .admin-dup-diff__row {
-  display: grid;
-  grid-template-columns: minmax(72px, 28%) 1fr auto 1fr;
-  gap: 6px;
-  align-items: start;
-  padding: 6px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 10px;
   background: #f8fafc;
   border-radius: 8px;
   border: 1px solid #e8ecf4;
@@ -1008,26 +1007,48 @@
   text-transform: capitalize;
   color: rgb(174, 0, 61);
   font-size: 0.72rem;
-  grid-column: 1 / -1;
-  margin-bottom: 2px;
 }
 
-.admin-dup-diff__before {
+.admin-dup-diff__change {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 8px;
+  align-items: center;
+}
+
+.admin-dup-diff__value {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.admin-dup-diff__label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #94a3b8;
+}
+
+.admin-dup-diff__text {
+  word-break: break-word;
+}
+
+.admin-dup-diff__value--before .admin-dup-diff__text {
   color: #64748b;
   text-decoration: line-through;
-  word-break: break-word;
 }
 
 .admin-dup-diff__arrow {
   color: #94a3b8;
-  font-size: 0.7rem;
+  font-size: 0.85rem;
   align-self: center;
 }
 
-.admin-dup-diff__after {
+.admin-dup-diff__value--after .admin-dup-diff__text {
   color: #15803d;
   font-weight: 600;
-  word-break: break-word;
 }
 
 /* Action bar */
@@ -1321,9 +1342,9 @@
     padding: 3px 6px !important;
   }
 
-  .admin-dup-diff__row {
-    grid-template-columns: 1fr auto 1fr;
-    font-size: 0.75rem;
+  .admin-dup-diff__change {
+    grid-template-columns: 1fr;
+    gap: 6px;
   }
 
   .admin-dup-diff__arrow {

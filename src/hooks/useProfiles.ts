@@ -104,6 +104,8 @@ export async function submitProfile(
     | 'is_test'
   >,
 ) {
+  // DB trigger replace_prior_pending_submissions removes older pending rows for the
+  // same person (exact / name+DOB / name+phone) before this insert lands.
   const { error } = await supabase.from('profiles').insert({
     ...data,
     status: 'pending',

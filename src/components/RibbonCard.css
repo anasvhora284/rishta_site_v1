@@ -84,7 +84,7 @@
   .ribbon-card {
     --ribbon-width: clamp(6rem, 28vw, 7rem);
     --ribbon-font-size: clamp(13px, 3.5vw, 16px);
-    --ribbon-right: 0;
+    --ribbon-right: -10px;
     --ribbon-fold-size: 21px;
     --ribbon-fold-overlap: 11px;
     --ribbon-fold-right: 4px;

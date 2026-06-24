@@ -2,11 +2,21 @@
 
 .admin-box-container {
   font-family: "Outfit", "Public Sans", sans-serif;
-  max-width: 1000px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   box-shadow: 0 8px 32px rgba(79, 15, 30, 0.08);
   min-height: unset;
+  overflow-x: clip;
   padding: var(--ribbon-pad-top, clamp(72px, 14vw, 100px)) clamp(16px, 3vw, 28px)
     clamp(16px, 3vw, 28px);
+}
+
+.admin-shell {
+  max-width: 100%;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .admin-box-header {
@@ -35,11 +45,6 @@
 }
 
 /* Shell */
-
-.admin-shell {
-  max-width: 100%;
-  box-sizing: border-box;
-}
 
 .admin-toolbar {
   display: flex;
@@ -1254,6 +1259,11 @@
     flex-direction: column;
     align-items: stretch;
   }
+
+  .admin-btn--sign-out {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 @media (max-width: 599px) {
@@ -1354,7 +1364,9 @@
 
 @media (max-width: 480px) {
   .admin-box-container {
-    padding: 14px;
+    padding-left: 14px;
+    padding-right: 14px;
+    padding-bottom: 14px;
   }
 
   .admin-profile-item {

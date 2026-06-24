@@ -10,6 +10,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
+import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { cityOptions, useCities } from '@/hooks/useCities'
 import { useQualifications } from '@/hooks/useQualifications'
@@ -17,7 +18,7 @@ import { useSubCasts, subCastOptions } from '@/hooks/useSubCasts'
 import { type ProfileFormData } from '@/types/profile'
 import { CANONICAL_QUALIFICATIONS } from '@/data/canonical-qualifications'
 import { formatIndianMobileInput } from '@/utils/phoneValidation'
-import { localizedName } from '@/utils/localizeReference'
+import { localizedName, sortLocalizedRecords } from '@/utils/localizeReference'
 import { isOtherCity } from '@/data/canonical-cities'
 import BilingualField from './BilingualField'
 import { maxDateOfBirthForMinAge } from './profileFormUtils'
@@ -54,8 +55,14 @@ export default function ProfileFormFields({
   const { cities, loading: citiesLoading } = useCities()
   const { qualifications, loading: qualificationsLoading } = useQualifications()
   const { subCasts, loading: subCastsLoading } = useSubCasts()
-  const cityChoices = cityOptions(form.city, cities)
-  const subCastChoices = subCastOptions(form.sub_cast, subCasts)
+  const cityChoices = useMemo(
+    () => sortLocalizedRecords(cityOptions(form.city, cities), i18n.language),
+    [form.city, cities, i18n.language],
+  )
+  const subCastChoices = useMemo(
+    () => sortLocalizedRecords(subCastOptions(form.sub_cast, subCasts), i18n.language),
+    [form.sub_cast, subCasts, i18n.language],
+  )
   const qualificationChoices =
     qualifications.length > 0
       ? qualifications

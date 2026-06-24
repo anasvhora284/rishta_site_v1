@@ -38,13 +38,15 @@ export default function AdminPageLayout({
         {isDetail ? (
           <main className="admin-detail-shell page-content-zone">{children}</main>
         ) : (
-          <RibbonCard label={t('ribbon.admin')} className="page-content-zone" contentClassName="admin-box-container">
-            <Box className="admin-box-header">
-              <Typography className="admin-box-header__title">{t('admin.dashboard')}</Typography>
-              <Typography className="admin-box-header__subtitle">{t('admin.subtitle')}</Typography>
-            </Box>
-            {children}
-          </RibbonCard>
+          <div className="page-content-zone admin-dashboard-zone">
+            <RibbonCard label={t('ribbon.admin')} contentClassName="admin-box-container">
+              <Box className="admin-box-header">
+                <Typography className="admin-box-header__title">{t('admin.dashboard')}</Typography>
+                <Typography className="admin-box-header__subtitle">{t('admin.subtitle')}</Typography>
+              </Box>
+              {children}
+            </RibbonCard>
+          </div>
         )}
       </div>
     </div>

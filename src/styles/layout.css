@@ -12,9 +12,11 @@
 .filter-page-container {
   background-color: var(--page-bg);
   width: 100%;
+  max-width: 100%;
   min-height: 100vh;
   min-height: 100dvh;
   box-sizing: border-box;
+  overflow-x: clip;
 }
 
 .filter-page-container--centered {
@@ -31,6 +33,17 @@
   padding-right: var(--page-pad-x);
   padding-bottom: var(--section-pad-bottom);
   box-sizing: border-box;
+  min-width: 0;
+  overflow-x: clip;
+}
+
+.admin-dashboard-zone {
+  padding-bottom: var(--section-pad-bottom);
+}
+
+.admin-dashboard-zone .ribbon-card {
+  width: 100%;
+  max-width: 100%;
 }
 
 .page-content-zone--center {

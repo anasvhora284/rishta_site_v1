@@ -23,7 +23,7 @@ import {
   buildQualificationOptions,
 } from '@/utils/browseFilters'
 import type { Profile } from '@/types/profile'
-import { buildLabelMap, localizedName } from '@/utils/localizeReference'
+import { buildLabelMap, localizedName, sortByDisplayLabel } from '@/utils/localizeReference'
 import '@/pages/Browse/Filter.css'
 
 const ITEM_HEIGHT = 48
@@ -73,7 +73,13 @@ export default function BrowseFilterForm({
   const qualificationMap = useMemo(() => buildLabelMap(qualifications), [qualifications])
   const { fromAge, toAge, gender, qualification, city, maritalStatus } = criteria
 
-  const cityValues = useMemo(() => buildCityOptions(profiles), [profiles])
+  const cityValues = useMemo(() => {
+    const values = buildCityOptions(profiles)
+    return sortByDisplayLabel(values, i18n.language, (code) =>
+      localizedName(cityMap.get(code), i18n.language, code),
+    )
+  }, [profiles, i18n.language, cityMap])
+
   const qualificationValues = useMemo(
     () => (qualifications.length ? qualifications.map((q) => q.code) : buildQualificationOptions()),
     [qualifications],

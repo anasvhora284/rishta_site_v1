@@ -1,23 +1,20 @@
-import LockResetIcon from '@mui/icons-material/LockReset'
 import {
   Alert,
   Box,
   Button,
   TextField,
-  Typography,
 } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import AdminPageLayout from '@/components/admin/AdminPageLayout'
 import Loader from '@/components/Loader'
-import SiteNavbar from '@/components/SiteNavbar'
 import {
   isAdminSession,
   updateOwnAdminPassword,
   verifyAdminPasswordResetGate,
 } from '@/lib/adminAuth'
 import { supabase } from '@/lib/supabase'
-import '@/pages/Browse/Filter.css'
 import '@/pages/Admin/Admin.css'
 
 export default function AdminResetPasswordPage() {
@@ -93,66 +90,63 @@ export default function AdminResetPasswordPage() {
   if (!authReady) return <Loader />
 
   return (
-    <div className="FilterPageMainDiv">
-      <div className="filter-page-container filter-page-container--centered">
-        <SiteNavbar showBack onBack={() => navigate('/admin')} />
-        <main className="page-content-zone page-content-zone--center page-content-zone--tight-top">
-          <Box className="admin-login-box page-card">
-            <header className="admin-login-header">
-              <LockResetIcon sx={{ color: 'rgb(174, 0, 61)', fontSize: 32 }} />
-              <Typography variant="h5" fontWeight={700}>
-                {t('admin.resetPasswordTitle')}
-              </Typography>
-              <Typography className="admin-login-subtitle">{t('admin.resetPasswordHint')}</Typography>
-            </header>
-
-            <form onSubmit={(e) => void handleSubmit(e)}>
-              <TextField
-                fullWidth
-                type="password"
-                label={t('admin.resetGatePassword')}
-                value={gatePassword}
-                onChange={(e) => setGatePassword(e.target.value)}
-                required
-                sx={{ mb: 2 }}
-                autoComplete="off"
-              />
-              <TextField
-                fullWidth
-                type="password"
-                label={t('admin.resetNewPassword')}
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                required
-                sx={{ mb: 2 }}
-                autoComplete="new-password"
-              />
-              <TextField
-                fullWidth
-                type="password"
-                label={t('admin.resetConfirmPassword')}
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-                sx={{ mb: 2 }}
-                autoComplete="new-password"
-              />
-              {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
-              {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
-              <Button
-                type="submit"
-                variant="contained"
-                fullWidth
-                disabled={loading}
-                className="admin-btn admin-btn--sign-in"
-                sx={{ minHeight: 'var(--btn-min-height, 52px)' }}
-              >
-                {t('admin.resetPasswordSubmit')}
-              </Button>
-            </form>
-          </Box>
-        </main>
-      </div>
-    </div>
+    <AdminPageLayout
+      showBack
+      onBack={() => navigate('/admin')}
+      pageTitle={t('admin.resetPasswordTitle')}
+      pageSubtitle={t('admin.resetPasswordHint')}
+    >
+      <Box className="admin-reset-form" component="form" onSubmit={(e) => void handleSubmit(e)}>
+        <TextField
+          fullWidth
+          size="small"
+          type="password"
+          label={t('admin.resetGatePassword')}
+          value={gatePassword}
+          onChange={(e) => setGatePassword(e.target.value)}
+          required
+          autoComplete="off"
+        />
+        <TextField
+          fullWidth
+          size="small"
+          type="password"
+          label={t('admin.resetNewPassword')}
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
+          required
+          autoComplete="new-password"
+        />
+        <TextField
+          fullWidth
+          size="small"
+          type="password"
+          label={t('admin.resetConfirmPassword')}
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          required
+          autoComplete="new-password"
+        />
+        {error && (
+          <Alert severity="error" className="admin-shell__alert">
+            {error}
+          </Alert>
+        )}
+        {success && (
+          <Alert severity="success" className="admin-shell__alert">
+            {success}
+          </Alert>
+        )}
+        <Button
+          type="submit"
+          variant="contained"
+          fullWidth
+          disabled={loading}
+          className="admin-btn admin-btn--approve admin-reset-form__submit"
+        >
+          {t('admin.resetPasswordSubmit')}
+        </Button>
+      </Box>
+    </AdminPageLayout>
   )
 }

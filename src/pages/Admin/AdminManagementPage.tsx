@@ -1,7 +1,7 @@
 import AddIcon from '@mui/icons-material/Add'
-import DeleteIcon from '@mui/icons-material/Delete'
-import EditIcon from '@mui/icons-material/Edit'
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts'
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings'
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 import {
   Alert,
   Box,
@@ -10,14 +10,16 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  IconButton,
   TextField,
+  Tooltip,
   Typography,
 } from '@mui/material'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import AdminPageLayout from '@/components/admin/AdminPageLayout'
 import Loader from '@/components/Loader'
-import SiteNavbar from '@/components/SiteNavbar'
 import {
   createAdminUser,
   deleteAdminUser,
@@ -27,12 +29,18 @@ import {
 } from '@/hooks/useAdminUsers'
 import { isSuperUserSession } from '@/lib/adminAuth'
 import { supabase } from '@/lib/supabase'
-import '@/pages/Browse/Filter.css'
 import '@/pages/Admin/Admin.css'
 
 type FormMode = 'create' | 'edit'
 
 const emptyForm = { name: '', email: '', password: '' }
+
+function adminInitials(name: string, email: string): string {
+  const source = name.trim() || email.split('@')[0] || '?'
+  const parts = source.split(/\s+/).filter(Boolean)
+  if (parts.length >= 2) return `${parts[0][0]}${parts[1][0]}`.toUpperCase()
+  return source.slice(0, 2).toUpperCase()
+}
 
 export default function AdminManagementPage() {
   const { t } = useTranslation()
@@ -134,126 +142,146 @@ export default function AdminManagementPage() {
   if (!authReady || !isSuper) return <Loader />
 
   return (
-    <div className="FilterPageMainDiv">
-      <div className="filter-page-container">
-        <SiteNavbar showBack onBack={() => navigate('/admin')} />
-        <Box className="page-content-zone admin-content">
-          <Box className="admin-header">
-            <Box className="admin-header__title-row">
-              <ManageAccountsIcon sx={{ color: 'rgb(174, 0, 61)' }} />
-              <Typography variant="h5" fontWeight={700}>
-                {t('admin.manageTitle')}
-              </Typography>
-            </Box>
-            <Button
-              variant="contained"
-              className="admin-btn admin-btn--approve"
-              startIcon={<AddIcon />}
-              onClick={openCreate}
-            >
-              {t('admin.manageCreate')}
-            </Button>
-          </Box>
+    <AdminPageLayout
+      showBack
+      onBack={() => navigate('/admin')}
+      pageTitle={t('admin.manageTitle')}
+      pageSubtitle={t('admin.manageSubtitle')}
+    >
+      <Box className="admin-manage-toolbar">
+        <Typography variant="body2" className="admin-manage-toolbar__count">
+          {t('admin.manageCount', { count: admins.length })}
+        </Typography>
+        <Button
+          variant="contained"
+          size="small"
+          className="admin-btn admin-btn--approve admin-manage-toolbar__add"
+          startIcon={<AddIcon />}
+          onClick={openCreate}
+        >
+          {t('admin.manageCreate')}
+        </Button>
+      </Box>
 
-          {error && (
-            <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError('')}>
-              {error}
-            </Alert>
-          )}
+      {error && (
+        <Alert severity="error" className="admin-shell__alert" onClose={() => setError('')}>
+          {error}
+        </Alert>
+      )}
 
-          {loading ? (
-            <Loader variant="inline" />
-          ) : !admins.length ? (
-            <Typography color="text.secondary" textAlign="center">
-              {t('admin.manageEmpty')}
-            </Typography>
-          ) : (
-            admins.map((admin) => (
-              <Box key={admin.id} className="admin-card">
-                <Typography fontWeight={700} mb={0.5}>
-                  {admin.name || admin.email}
-                  {admin.role === 'superuser' && (
-                    <Typography component="span" variant="body2" color="primary" ml={1}>
-                      ({t('admin.superuserBadge')})
-                    </Typography>
-                  )}
-                </Typography>
-                <Typography variant="body2" color="text.secondary" mb={2}>
-                  {admin.email}
-                </Typography>
-                <Box className="admin-card-actions">
-                  <Button
-                    variant="outlined"
-                    className="admin-btn admin-btn--edit"
-                    startIcon={<EditIcon />}
-                    onClick={() => openEdit(admin)}
-                  >
-                    {t('admin.manageEdit')}
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    className="admin-btn admin-btn--reject"
-                    startIcon={<DeleteIcon />}
-                    disabled={admin.id === currentUserId}
-                    onClick={() => void handleDelete(admin)}
-                  >
-                    {t('admin.manageDelete')}
-                  </Button>
-                </Box>
+      {loading ? (
+        <Loader variant="inline" />
+      ) : !admins.length ? (
+        <Typography color="text.secondary" textAlign="center" className="admin-empty">
+          {t('admin.manageEmpty')}
+        </Typography>
+      ) : (
+        <Box className="admin-user-list" component="ul">
+          {admins.map((admin) => {
+            const isSelf = admin.id === currentUserId
+            const isSuperuser = admin.role === 'superuser'
+            return (
+              <Box key={admin.id} className="admin-user-item" component="li">
+                <div className="admin-user-item__avatar" aria-hidden>
+                  {adminInitials(admin.name, admin.email)}
+                </div>
+                <div className="admin-user-item__body">
+                  <div className="admin-user-item__row1">
+                    <span className="admin-user-item__name">{admin.name || admin.email}</span>
+                    {isSuperuser && (
+                      <span className="admin-user-item__badge">{t('admin.superuserBadge')}</span>
+                    )}
+                    {isSelf && (
+                      <span className="admin-user-item__you">{t('admin.manageYou')}</span>
+                    )}
+                  </div>
+                  <div className="admin-user-item__email">{admin.email}</div>
+                </div>
+                <div className="admin-user-item__actions">
+                  <Tooltip title={t('admin.manageEdit')}>
+                    <IconButton
+                      size="small"
+                      className="admin-user-item__action admin-user-item__action--edit"
+                      onClick={() => openEdit(admin)}
+                      aria-label={t('admin.manageEdit')}
+                    >
+                      <EditOutlinedIcon fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title={isSelf ? t('admin.manageCannotDeleteSelf') : t('admin.manageDelete')}>
+                    <span>
+                      <IconButton
+                        size="small"
+                        className="admin-user-item__action admin-user-item__action--delete"
+                        disabled={isSelf}
+                        onClick={() => void handleDelete(admin)}
+                        aria-label={t('admin.manageDelete')}
+                      >
+                        <DeleteOutlineIcon fontSize="small" />
+                      </IconButton>
+                    </span>
+                  </Tooltip>
+                </div>
               </Box>
-            ))
-          )}
+            )
+          })}
         </Box>
+      )}
 
-        <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} maxWidth="sm" fullWidth>
-          <DialogTitle className="admin-dialog-title">
-            {formMode === 'create' ? t('admin.manageCreate') : t('admin.manageEdit')}
-          </DialogTitle>
-          <DialogContent>
-            <TextField
-              fullWidth
-              label={t('admin.manageName')}
-              value={form.name}
-              onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-              sx={{ mt: 1, mb: 2 }}
-              required
-            />
-            <TextField
-              fullWidth
-              type="email"
-              label={t('admin.email')}
-              value={form.email}
-              onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
-              sx={{ mb: 2 }}
-              required
-            />
-            <TextField
-              fullWidth
-              type="password"
-              label={
-                formMode === 'create' ? t('admin.password') : t('admin.manageNewPasswordOptional')
-              }
-              value={form.password}
-              onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))}
-              required={formMode === 'create'}
-              autoComplete="new-password"
-            />
-          </DialogContent>
-          <DialogActions sx={{ px: 3, pb: 2, gap: 1 }}>
-            <Button className="admin-btn admin-btn--edit" onClick={() => setDialogOpen(false)}>
-              {t('admin.cancel')}
-            </Button>
-            <Button
-              variant="contained"
-              className="admin-btn admin-btn--approve"
-              disabled={saving || !form.name.trim() || !form.email.trim() || (formMode === 'create' && form.password.length < 8)}
-              onClick={() => void handleSave()}
-            >
-              {t('admin.save')}
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </div>
-    </div>
+      <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} maxWidth="sm" fullWidth>
+        <DialogTitle className="admin-dialog-title">
+          <AdminPanelSettingsIcon sx={{ color: 'rgb(174, 0, 61)' }} />
+          {formMode === 'create' ? t('admin.manageCreate') : t('admin.manageEdit')}
+        </DialogTitle>
+        <DialogContent dividers>
+          <TextField
+            fullWidth
+            label={t('admin.manageName')}
+            value={form.name}
+            onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
+            sx={{ mt: 1, mb: 2 }}
+            required
+          />
+          <TextField
+            fullWidth
+            type="email"
+            label={t('admin.email')}
+            value={form.email}
+            onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
+            sx={{ mb: 2 }}
+            required
+          />
+          <TextField
+            fullWidth
+            type="password"
+            label={
+              formMode === 'create' ? t('admin.password') : t('admin.manageNewPasswordOptional')
+            }
+            value={form.password}
+            onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))}
+            required={formMode === 'create'}
+            autoComplete="new-password"
+          />
+        </DialogContent>
+        <DialogActions sx={{ px: 3, pb: 2, gap: 1 }}>
+          <Button className="admin-btn admin-btn--edit" onClick={() => setDialogOpen(false)}>
+            {t('admin.cancel')}
+          </Button>
+          <Button
+            variant="contained"
+            className="admin-btn admin-btn--approve"
+            disabled={
+              saving ||
+              !form.name.trim() ||
+              !form.email.trim() ||
+              (formMode === 'create' && form.password.length < 8)
+            }
+            onClick={() => void handleSave()}
+          >
+            {t('admin.save')}
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </AdminPageLayout>
   )
 }

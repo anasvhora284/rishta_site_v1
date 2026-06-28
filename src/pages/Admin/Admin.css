@@ -1220,6 +1220,13 @@
   text-align: center;
 }
 
+.admin-toolbar__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
 .admin-btn--sign-in {
   background: linear-gradient(45deg, rgb(79, 15, 30) 0%, rgb(174, 0, 61) 51%, rgb(79, 15, 30) 100%) !important;
   color: #fff !important;
@@ -1378,4 +1385,158 @@
     width: 44px;
     height: 44px;
   }
+}
+
+/* Admin user management list */
+
+.admin-manage-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.admin-manage-toolbar__count {
+  color: #5a6478 !important;
+  font-family: 'Outfit', 'Public Sans', sans-serif !important;
+  font-weight: 600;
+}
+
+.admin-manage-toolbar__add {
+  min-height: 40px !important;
+  padding-inline: 14px !important;
+  font-size: 0.85rem !important;
+}
+
+.admin-user-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.admin-user-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: #fff;
+  border: 1px solid rgba(174, 0, 61, 0.1);
+  border-radius: 14px;
+  box-shadow: 0 1px 4px rgba(79, 15, 30, 0.05);
+}
+
+.admin-user-item__avatar {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(145deg, rgba(174, 0, 61, 0.12), rgba(174, 0, 61, 0.22));
+  color: rgb(174, 0, 61);
+  font-family: 'Outfit', 'Public Sans', sans-serif;
+  font-weight: 800;
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+}
+
+.admin-user-item__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-user-item__row1 {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.admin-user-item__name {
+  font-family: 'Outfit', 'Public Sans', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #1a1f2e;
+  line-height: 1.3;
+}
+
+.admin-user-item__badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(174, 0, 61, 0.1);
+  color: rgb(174, 0, 61);
+}
+
+.admin-user-item__you {
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(46, 125, 50, 0.1);
+  color: #2e7d32;
+}
+
+.admin-user-item__email {
+  font-size: 0.82rem;
+  color: #3d4a5c;
+  line-height: 1.35;
+  word-break: break-all;
+}
+
+.admin-user-item__actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.admin-user-item__action {
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 10px !important;
+}
+
+.admin-user-item__action--edit {
+  color: rgb(174, 0, 61) !important;
+  background: rgba(174, 0, 61, 0.06) !important;
+}
+
+.admin-user-item__action--delete {
+  color: #c62828 !important;
+  background: rgba(198, 40, 40, 0.06) !important;
+}
+
+.admin-user-item__action--delete:disabled {
+  opacity: 0.35 !important;
+}
+
+.admin-reset-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 4px 0 8px;
+}
+
+.admin-reset-form .MuiOutlinedInput-root {
+  border-radius: 12px;
+  background: #f8f9fc;
+  font-family: 'Outfit', 'Public Sans', sans-serif;
+}
+
+.admin-reset-form__submit {
+  margin-top: 4px !important;
+  min-height: 44px !important;
 }

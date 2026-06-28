@@ -11,6 +11,8 @@ interface AdminPageLayoutProps {
   showBack?: boolean
   onBack?: () => void
   variant?: 'dashboard' | 'detail'
+  pageTitle?: string
+  pageSubtitle?: string
 }
 
 export default function AdminPageLayout({
@@ -18,6 +20,8 @@ export default function AdminPageLayout({
   showBack,
   onBack,
   variant = 'dashboard',
+  pageTitle,
+  pageSubtitle,
 }: AdminPageLayoutProps) {
   const { t } = useTranslation()
 
@@ -41,8 +45,12 @@ export default function AdminPageLayout({
           <div className="page-content-zone admin-dashboard-zone">
             <RibbonCard label={t('ribbon.admin')} contentClassName="admin-box-container">
               <Box className="admin-box-header">
-                <Typography className="admin-box-header__title">{t('admin.dashboard')}</Typography>
-                <Typography className="admin-box-header__subtitle">{t('admin.subtitle')}</Typography>
+                <Typography className="admin-box-header__title">
+                  {pageTitle ?? t('admin.dashboard')}
+                </Typography>
+                <Typography className="admin-box-header__subtitle">
+                  {pageSubtitle ?? t('admin.subtitle')}
+                </Typography>
               </Box>
               {children}
             </RibbonCard>

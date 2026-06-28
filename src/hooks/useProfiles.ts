@@ -114,28 +114,12 @@ export async function submitProfile(
   return { error }
 }
 
-export async function approveProfile(id: string, userId: string) {
-  const { data: maxRows } = await supabase
-    .from('profiles')
-    .select('profile_id')
-    .eq('status', 'approved')
-    .not('profile_id', 'is', null)
-    .order('profile_id', { ascending: false })
-    .limit(1)
+export async function approveProfile(id: string, _userId: string) {
+  const { data, error } = await supabase.rpc('approve_profile_and_assign_id', {
+    p_profile_id: id,
+  })
 
-  const nextId = ((maxRows?.[0]?.profile_id as number | undefined) ?? 0) + 1
-
-  const { error } = await supabase
-    .from('profiles')
-    .update({
-      status: 'approved',
-      profile_id: nextId,
-      approved_at: new Date().toISOString(),
-      approved_by: userId,
-    })
-    .eq('id', id)
-
-  return { error, profileId: nextId }
+  return { error, profileId: data as number | null }
 }
 
 export async function rejectProfile(id: string, notes: string, userId: string) {

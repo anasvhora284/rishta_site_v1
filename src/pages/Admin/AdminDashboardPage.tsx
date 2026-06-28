@@ -34,7 +34,7 @@ export default function AdminDashboardPage() {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
   const [searchParams, setSearchParams] = useSearchParams()
 
-  const { userId, authReady } = useAdminAuth()
+  const { userId, authReady, isSuperUser } = useAdminAuth()
   const { profiles, loading, error, refetch, removeProfileLocally, patchProfileLocally } =
     useAdminProfiles(authReady)
 
@@ -127,6 +127,9 @@ export default function AdminDashboardPage() {
         resultCount={filteredProfiles.length}
         error={error}
         actionError={actionError}
+        isSuperUser={isSuperUser}
+        onManageAdmins={() => navigate('/admin/manage')}
+        onResetPassword={() => navigate('/admin/reset-password')}
         onSignOut={() => void handleSignOut()}
       >
         {loading ? (

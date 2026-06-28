@@ -1,6 +1,8 @@
 import type { Session, User } from '@supabase/supabase-js'
 import { supabase } from '@/lib/supabase'
 
+export type AdminRole = 'admin' | 'superuser'
+
 function decodeJwtPayload(token: string): Record<string, unknown> | null {
   try {
     const base64Url = token.split('.')[1]
@@ -18,38 +20,69 @@ function decodeJwtPayload(token: string): Record<string, unknown> | null {
   }
 }
 
-function roleFromMetadata(meta: unknown): string | undefined {
+function roleFromMetadata(meta: unknown): AdminRole | undefined {
   if (!meta || typeof meta !== 'object') return undefined
   const record = meta as Record<string, unknown>
-  if (typeof record.role === 'string') return record.role
+  if (record.role === 'superuser') return 'superuser'
+  if (record.role === 'admin') return 'admin'
+  if (Array.isArray(record.roles) && record.roles.includes('superuser')) return 'superuser'
   if (Array.isArray(record.roles) && record.roles.includes('admin')) return 'admin'
   return undefined
 }
 
-/** True if this user/session has admin role (app_metadata, user_metadata, or JWT). */
-export function isAdminUser(
+export function getAdminRole(
   user: { app_metadata?: Record<string, unknown>; user_metadata?: Record<string, unknown> } | null,
   accessToken?: string | null,
-): boolean {
-  if (!user && !accessToken) return false
-
+): AdminRole | undefined {
   if (user) {
-    if (roleFromMetadata(user.app_metadata) === 'admin') return true
-    if (roleFromMetadata(user.user_metadata) === 'admin') return true
+    const appRole = roleFromMetadata(user.app_metadata)
+    if (appRole) return appRole
+    const userRole = roleFromMetadata(user.user_metadata)
+    if (userRole) return userRole
   }
 
   if (accessToken) {
     const payload = decodeJwtPayload(accessToken)
-    if (roleFromMetadata(payload?.app_metadata) === 'admin') return true
-    if (roleFromMetadata(payload?.user_metadata) === 'admin') return true
+    const appRole = roleFromMetadata(payload?.app_metadata)
+    if (appRole) return appRole
+    const userRole = roleFromMetadata(payload?.user_metadata)
+    if (userRole) return userRole
   }
 
-  return false
+  return undefined
+}
+
+/** True if this user/session has admin or superuser role. */
+export function isAdminUser(
+  user: { app_metadata?: Record<string, unknown>; user_metadata?: Record<string, unknown> } | null,
+  accessToken?: string | null,
+): boolean {
+  const role = getAdminRole(user, accessToken)
+  return role === 'admin' || role === 'superuser'
+}
+
+export function isSuperUser(
+  user: { app_metadata?: Record<string, unknown>; user_metadata?: Record<string, unknown> } | null,
+  accessToken?: string | null,
+): boolean {
+  return getAdminRole(user, accessToken) === 'superuser'
 }
 
 export function isAdminSession(session: Session | null): boolean {
   if (!session?.user) return false
   return isAdminUser(session.user, session.access_token)
+}
+
+export function isSuperUserSession(session: Session | null): boolean {
+  if (!session?.user) return false
+  return isSuperUser(session.user, session.access_token)
+}
+
+/** Gate password required before normal admins can reset their own password. */
+export function verifyAdminPasswordResetGate(gatePassword: string): boolean {
+  const expected = import.meta.env.VITE_ADMIN_PASSWORD_RESET_GATE?.trim()
+  if (!expected) return false
+  return gatePassword === expected
 }
 
 export type AdminSignInResult =
@@ -83,9 +116,13 @@ export async function signInAsAdmin(email: string, password: string): Promise<Ad
     return {
       ok: false,
       code: 'not_admin',
-      message: 'This account is not an admin. Set App Metadata to { "role": "admin" } in Supabase.',
+      message: 'This account is not an admin.',
     }
   }
 
   return { ok: true, session, user }
+}
+
+export async function updateOwnAdminPassword(newPassword: string) {
+  return supabase.auth.updateUser({ password: newPassword })
 }

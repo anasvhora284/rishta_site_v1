@@ -1220,6 +1220,13 @@
   text-align: center;
 }
 
+.admin-toolbar__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
 .admin-btn--sign-in {
   background: linear-gradient(45deg, rgb(79, 15, 30) 0%, rgb(174, 0, 61) 51%, rgb(79, 15, 30) 100%) !important;
   color: #fff !important;

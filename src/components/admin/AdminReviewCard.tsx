@@ -25,7 +25,11 @@ export default function AdminReviewCard({ profile, layout }: AdminReviewCardProp
         <span className="admin-review-card__submitted">
           {t('admin.col.submitted')} · {formatAdminDate(profile.created_at)}
         </span>
-        {actedBy && <span className="admin-review-card__acted-by">{actedBy}</span>}
+        {actedBy && (
+          <span className="admin-review-card__acted-by" title={actedBy}>
+            {actedBy}
+          </span>
+        )}
         {profile.status === 'approved' && profile.approved_at && (
           <span className="admin-review-card__approved-at">
             {t('admin.approvedAt', { date: formatAdminDate(profile.approved_at) })}
@@ -44,7 +48,7 @@ export default function AdminReviewCard({ profile, layout }: AdminReviewCardProp
         )}
       </div>
 
-      <ProfileCard profile={profile} />
+      <ProfileCard profile={profile} showFullDetails />
 
       {profile.admin_notes?.trim() && (
         <div className="admin-review-card__notes">

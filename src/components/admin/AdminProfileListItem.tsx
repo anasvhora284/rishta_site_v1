@@ -83,7 +83,11 @@ export default function AdminProfileListItem({
           {hidden && profile.profile_id == null && (
             <span className="admin-profile-item__listed-id">{t('admin.hiddenNeverListed')}</span>
           )}
-          {actedBy && <span className="admin-profile-item__acted-by">{actedBy}</span>}
+          {actedBy && (
+            <span className="admin-profile-item__acted-by" title={actedBy}>
+              {actedBy}
+            </span>
+          )}
           <span className="admin-profile-item__date">{formatAdminDate(profile.created_at)}</span>
         </div>
       </div>

@@ -63,6 +63,7 @@
     "contactCall": "Call",
     "contactWhatsApp": "WhatsApp",
     "swipeHint": "Swipe left or right for next profile",
+    "scrollForMore": "Scroll for more details",
     "profileCount": "{{current}} of {{total}}",
     "previous": "Previous profile",
     "next": "Next profile",

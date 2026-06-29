@@ -1,5 +1,6 @@
 import ProfileCard from '@/components/ProfileCard'
-import { formatAdminDate } from '@/components/admin/adminTypes'
+import { formatAdminDate, formatProfileActedBy } from '@/components/admin/adminTypes'
+import { useAdminNameMap } from '@/hooks/useAdminUsers'
 import { isHiddenFromBrowseProfile } from '@/hooks/useProfiles'
 import type { Profile } from '@/types/profile'
 import { useTranslation } from 'react-i18next'
@@ -11,7 +12,9 @@ interface AdminReviewCardProps {
 
 export default function AdminReviewCard({ profile, layout }: AdminReviewCardProps) {
   const { t } = useTranslation()
+  const { nameById } = useAdminNameMap()
   const hidden = isHiddenFromBrowseProfile(profile)
+  const actedBy = formatProfileActedBy(profile, nameById, t)
 
   return (
     <div className={`admin-review-card admin-review-card--${layout}`}>
@@ -22,6 +25,12 @@ export default function AdminReviewCard({ profile, layout }: AdminReviewCardProp
         <span className="admin-review-card__submitted">
           {t('admin.col.submitted')} · {formatAdminDate(profile.created_at)}
         </span>
+        {actedBy && <span className="admin-review-card__acted-by">{actedBy}</span>}
+        {profile.status === 'approved' && profile.approved_at && (
+          <span className="admin-review-card__approved-at">
+            {t('admin.approvedAt', { date: formatAdminDate(profile.approved_at) })}
+          </span>
+        )}
         {hidden && profile.profile_id != null && (
           <span className="admin-review-card__listed">
             {t('admin.hiddenWasListed', { id: profile.profile_id })}

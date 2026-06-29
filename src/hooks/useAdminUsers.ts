@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 
 export interface AdminUserRow {
@@ -36,4 +37,56 @@ export async function updateAdminUser(
 
 export async function deleteAdminUser(userId: string) {
   return supabase.rpc('superuser_delete_admin', { p_user_id: userId })
+}
+
+let cachedAdminNameMap: Map<string, string> | null = null
+let adminNameMapPromise: Promise<Map<string, string>> | null = null
+
+async function fetchAdminNameMap(): Promise<Map<string, string>> {
+  const { data, error } = await supabase.rpc('list_admin_display_names')
+  if (error) throw error
+  return new Map(
+    (data ?? []).map((row: { id: string; name: string }) => [row.id, row.name || 'Admin']),
+  )
+}
+
+/** Shared id → display name map for approved_by / rejected-by labels. */
+export function useAdminNameMap(enabled = true) {
+  const [nameById, setNameById] = useState<Map<string, string>>(cachedAdminNameMap ?? new Map())
+  const [loading, setLoading] = useState(enabled && cachedAdminNameMap === null)
+
+  useEffect(() => {
+    if (!enabled) {
+      setLoading(false)
+      return
+    }
+
+    if (cachedAdminNameMap) {
+      setNameById(cachedAdminNameMap)
+      setLoading(false)
+      return
+    }
+
+    if (!adminNameMapPromise) {
+      adminNameMapPromise = fetchAdminNameMap()
+        .then((map) => {
+          cachedAdminNameMap = map
+          return map
+        })
+        .finally(() => {
+          adminNameMapPromise = null
+        })
+    }
+
+    void adminNameMapPromise
+      .then((map) => {
+        setNameById(map)
+        setLoading(false)
+      })
+      .catch(() => {
+        setLoading(false)
+      })
+  }, [enabled])
+
+  return { nameById, loading }
 }

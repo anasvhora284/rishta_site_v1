@@ -2,7 +2,8 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import femaleAvatar from '@/assets/FemaleIcon.jpg'
 import maleAvatar from '@/assets/MaleIcon.jpeg'
 import { DuplicateBadge } from '@/components/admin/DuplicateBadge'
-import { formatAdminDate } from '@/components/admin/adminTypes'
+import { formatAdminDate, formatProfileActedBy } from '@/components/admin/adminTypes'
+import { useAdminNameMap } from '@/hooks/useAdminUsers'
 import { isHiddenFromBrowseProfile } from '@/hooks/useProfiles'
 import type { Profile } from '@/types/profile'
 import { displayCity } from '@/utils'
@@ -30,9 +31,11 @@ export default function AdminProfileListItem({
 }: AdminProfileListItemProps) {
   const { t, i18n } = useTranslation()
   const { cities } = useCities()
+  const { nameById } = useAdminNameMap()
   const cityMap = useMemo(() => buildLabelMap(cities), [cities])
   const isMale = profile.gender === 'male'
   const hidden = isHiddenFromBrowseProfile(profile)
+  const actedBy = formatProfileActedBy(profile, nameById, t)
 
   return (
     <button
@@ -80,6 +83,7 @@ export default function AdminProfileListItem({
           {hidden && profile.profile_id == null && (
             <span className="admin-profile-item__listed-id">{t('admin.hiddenNeverListed')}</span>
           )}
+          {actedBy && <span className="admin-profile-item__acted-by">{actedBy}</span>}
           <span className="admin-profile-item__date">{formatAdminDate(profile.created_at)}</span>
         </div>
       </div>

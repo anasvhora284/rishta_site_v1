@@ -458,6 +458,16 @@
   color: #94a3b8;
 }
 
+.admin-profile-item__acted-by {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #64748b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
 .admin-profile-item__chevron {
   flex-shrink: 0;
   color: rgb(174, 0, 61);
@@ -730,6 +740,18 @@
 
 .admin-review-card__submitted {
   font-size: 0.78rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.admin-review-card__acted-by {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #475569;
+}
+
+.admin-review-card__approved-at {
+  font-size: 0.72rem;
   font-weight: 600;
   color: #64748b;
 }

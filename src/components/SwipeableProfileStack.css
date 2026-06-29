@@ -16,7 +16,8 @@
   user-select: none;
 }
 
-.swipe-stack__deck .profile-card__details {
+.swipe-stack__deck .profile-card__details-wrap,
+.swipe-stack__deck .scroll-area-hint__viewport {
   touch-action: pan-y;
 }
 

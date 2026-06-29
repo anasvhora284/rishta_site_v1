@@ -17,14 +17,21 @@ import {
 } from '@/utils'
 import { formatLocalizedQualificationDisplay } from '@/utils/qualificationNormalize'
 import { buildLabelMap, localizedName } from '@/utils/localizeReference'
+import ScrollAreaHint from '@/components/ScrollAreaHint'
 import './ProfileCard.css'
 
 interface ProfileCardProps {
   profile: Profile
   compact?: boolean
+  /** Admin review: show all fields without truncation. */
+  showFullDetails?: boolean
 }
 
-export default function ProfileCard({ profile, compact = false }: ProfileCardProps) {
+export default function ProfileCard({
+  profile,
+  compact = false,
+  showFullDetails = false,
+}: ProfileCardProps) {
   const { t, i18n } = useTranslation()
   const { cities } = useCities()
   const { qualifications } = useQualifications()
@@ -63,7 +70,9 @@ export default function ProfileCard({ profile, compact = false }: ProfileCardPro
   ]
 
   return (
-    <article className={`profile-card ${compact ? 'profile-card--compact' : ''}`}>
+    <article
+      className={`profile-card ${compact ? 'profile-card--compact' : ''}${showFullDetails ? ' profile-card--full-details' : ''}`}
+    >
       {profile.profile_id != null && (
         <span className="profile-card__id">ID {profile.profile_id}</span>
       )}
@@ -100,14 +109,27 @@ export default function ProfileCard({ profile, compact = false }: ProfileCardPro
         ))}
       </div>
 
-      <dl className="profile-card__details">
-        {details.map((item) => (
-          <div key={item.label} className="profile-card__detail-row">
-            <dt>{item.label}</dt>
-            <dd title={item.value || undefined}>{item.value || '—'}</dd>
-          </div>
-        ))}
-      </dl>
+      {showFullDetails ? (
+        <dl className="profile-card__details">
+          {details.map((item) => (
+            <div key={item.label} className="profile-card__detail-row">
+              <dt>{item.label}</dt>
+              <dd title={item.value || undefined}>{item.value || '—'}</dd>
+            </div>
+          ))}
+        </dl>
+      ) : (
+        <ScrollAreaHint className="profile-card__details-wrap">
+          <dl className="profile-card__details">
+            {details.map((item) => (
+              <div key={item.label} className="profile-card__detail-row">
+                <dt>{item.label}</dt>
+                <dd title={item.value || undefined}>{item.value || '—'}</dd>
+              </div>
+            ))}
+          </dl>
+        </ScrollAreaHint>
+      )}
 
       {hasContact && (
         <div className="profile-card__contact-actions">

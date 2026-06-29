@@ -403,8 +403,9 @@
 
 .admin-profile-item__row3 {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 10px;
+  gap: 6px 10px;
   margin-top: 8px;
 }
 
@@ -456,6 +457,14 @@
 .admin-profile-item__date {
   font-size: 0.75rem;
   color: #94a3b8;
+}
+
+.admin-profile-item__acted-by {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #64748b;
+  min-width: 0;
+  line-height: 1.35;
 }
 
 .admin-profile-item__chevron {
@@ -730,6 +739,20 @@
 
 .admin-review-card__submitted {
   font-size: 0.78rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.admin-review-card__acted-by {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #475569;
+  min-width: 0;
+  line-height: 1.35;
+}
+
+.admin-review-card__approved-at {
+  font-size: 0.72rem;
   font-weight: 600;
   color: #64748b;
 }
@@ -1223,8 +1246,25 @@
 .admin-toolbar__actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  align-items: center;
+  gap: clamp(8px, 1.5vw, 12px);
+  align-items: stretch;
+  justify-content: flex-end;
+  min-width: 0;
+}
+
+.admin-toolbar__actions .admin-btn {
+  min-height: 36px;
+}
+
+@media (min-width: 900px) {
+  .admin-toolbar__actions {
+    flex-shrink: 0;
+    flex-wrap: nowrap;
+  }
+
+  .admin-toolbar__actions .admin-btn {
+    flex: 0 0 auto;
+  }
 }
 
 .admin-btn--sign-in {
@@ -1267,13 +1307,56 @@
     align-items: stretch;
   }
 
-  .admin-btn--sign-out {
+  .admin-toolbar__actions {
     width: 100%;
+    justify-content: flex-start;
+  }
+
+  .admin-toolbar__actions .admin-btn {
+    flex: 1 1 calc(33.333% - 0.67rem);
+    min-width: min(100%, 9.75rem);
     justify-content: center;
+    align-items: center;
+    min-height: 40px;
+    white-space: normal;
+    text-align: center;
+    line-height: 1.25;
+    font-size: 0.74rem !important;
+    padding: 8px 10px !important;
+  }
+
+  .admin-toolbar__actions .admin-btn .MuiButton-startIcon {
+    margin-right: 4px !important;
+    margin-left: -2px !important;
   }
 }
 
 @media (max-width: 599px) {
+  .admin-toolbar__actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .admin-toolbar__actions .admin-btn {
+    width: 100%;
+    flex: none;
+    min-width: 0;
+    min-height: 44px;
+    justify-content: flex-start;
+    text-align: left;
+    font-size: 0.85rem !important;
+    padding: 10px 14px !important;
+  }
+
+  .admin-profile-item__name {
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+  }
+
   .admin-detail-view__scroll {
     gap: 12px;
   }

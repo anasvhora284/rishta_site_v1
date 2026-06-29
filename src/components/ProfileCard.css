@@ -94,6 +94,13 @@
   word-break: break-word;
 }
 
+.profile-card--full-details .profile-card__name {
+  display: block;
+  -webkit-line-clamp: unset;
+  line-clamp: unset;
+  overflow: visible;
+}
+
 .profile-card__meta {
   margin: 6px 0 0;
   font-size: 0.85rem;
@@ -131,19 +138,21 @@
   margin-right: 4px;
 }
 
-.profile-card__details {
+.profile-card__details-wrap {
   margin: 0 0 14px;
   max-height: 220px;
-  overflow-y: auto;
-  padding-right: 4px;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(174, 0, 61, 0.6) transparent;
+  display: flex;
+  flex-direction: column;
 }
 
-.profile-card--compact .profile-card__details {
+.profile-card--compact .profile-card__details-wrap {
   flex: 1;
   max-height: none;
   min-height: 0;
+}
+
+.profile-card__details {
+  margin: 0;
 }
 
 .profile-card__detail-row {
@@ -175,6 +184,18 @@
   line-clamp: 2;
   text-overflow: ellipsis;
   word-break: break-word;
+}
+
+.profile-card--full-details .profile-card__details {
+  max-height: none;
+  overflow: visible;
+}
+
+.profile-card--full-details .profile-card__detail-row dd {
+  display: block;
+  -webkit-line-clamp: unset;
+  line-clamp: unset;
+  overflow: visible;
 }
 
 .profile-card__contact-actions {
@@ -216,6 +237,27 @@
   font-size: 1.25rem;
 }
 
+@media (max-width: 767px) {
+  .profile-card__name,
+  .profile-card__detail-row dd {
+    display: block;
+    -webkit-line-clamp: unset;
+    line-clamp: unset;
+    overflow: visible;
+  }
+
+  /* Cap height so details scroll inside the card */
+  .profile-card:not(.profile-card--full-details) .profile-card__details-wrap {
+    max-height: min(40vh, 300px);
+  }
+
+  .profile-card--compact .profile-card__details-wrap {
+    max-height: none;
+    flex: 1;
+    min-height: 0;
+  }
+}
+
 @media (min-width: 768px) {
   .profile-card {
     max-width: 720px;
@@ -230,8 +272,11 @@
     font-size: 1.35rem;
   }
 
-  .profile-card__details {
+  .profile-card__details-wrap {
     max-height: none;
+  }
+
+  .profile-card__details {
     display: grid;
     grid-template-columns: 1fr 1fr;
     column-gap: 24px;

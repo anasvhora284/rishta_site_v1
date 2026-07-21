@@ -34,7 +34,7 @@ export default function SiteNavbar({ showBack, onBack }: SiteNavbarProps) {
 
         <div className="navbar-inner-wrapper">
           <div className="samaj-logo-bg">
-            <img src={samajLogo} className="samaj-logo" alt="" />
+            <img src={samajLogo} className="samaj-logo" alt={t('nav.samajLogoAlt')} />
           </div>
           <Box className="nav-title-text">
             <Typography className="nav-title-main-text" component="p">
@@ -45,7 +45,7 @@ export default function SiteNavbar({ showBack, onBack }: SiteNavbarProps) {
             </Typography>
           </Box>
           <div className="rishta-group-logo">
-            <img src={rishtaLogo} className="rishta-group" alt="" />
+            <img src={rishtaLogo} className="rishta-group" alt={t('nav.rishtaLogoAlt')} />
           </div>
         </div>
       </div>

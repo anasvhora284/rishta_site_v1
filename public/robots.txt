@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /team-design-preview
+
+Sitemap: https://rishta-group-68-samaj.netlify.app/sitemap.xml

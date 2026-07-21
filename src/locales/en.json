@@ -7,10 +7,13 @@
     "submit": "Submit Profile",
     "admin": "Admin",
     "back": "Go Back",
-    "language": "Language"
+    "language": "Language",
+    "samajLogoAlt": "Charotar Sunni Vhora Sudharak Mandal logo",
+    "rishtaLogoAlt": "68 Samaj Rishta Group logo"
   },
   "home": {
     "welcome": "Welcome to 68 Vhora Rishta Portal",
+    "intro": "This portal helps families of Charotar Sunni Vhora Sudharak Mandal's 68 Samaj find suitable matches and submit matrimonial profiles.",
     "confidential": "Your details are safe and confidential",
     "browseDesc": "Search and filter matrimonial profiles",
     "submitDesc": "Fill in details for a new profile",

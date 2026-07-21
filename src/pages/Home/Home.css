@@ -11,6 +11,15 @@
   font-family: 'Outfit', 'Public Sans', sans-serif !important;
 }
 
+.home-intro-text {
+  max-width: 680px;
+  margin: 0 auto 10px !important;
+  color: #3f4754;
+  font-family: 'Outfit', 'Public Sans', sans-serif !important;
+  font-size: clamp(0.92rem, 2.5vw, 1.02rem) !important;
+  line-height: 1.55 !important;
+}
+
 .home-confidential-text {
   color: #666 !important;
   margin-bottom: clamp(20px, 4vw, 32px) !important;

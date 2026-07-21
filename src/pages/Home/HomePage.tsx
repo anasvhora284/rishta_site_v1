@@ -3,7 +3,7 @@ import SearchIcon from '@mui/icons-material/Search'
 import { Button, Typography } from '@mui/material'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import RibbonCard from '@/components/RibbonCard'
 import SiteNavbar from '@/components/SiteNavbar'
 import TeamSection from '@/components/TeamSection'
@@ -12,7 +12,6 @@ import './Home.css'
 
 export default function HomePage() {
   const { t } = useTranslation()
-  const navigate = useNavigate()
 
   useEffect(() => {
     document.body.style.background = '#DBE3F0'
@@ -28,8 +27,11 @@ export default function HomePage() {
 
         <div className="home-actions-wrapper container">
           <RibbonCard label={t('ribbon.home')} contentClassName="home-actions-container">
-            <Typography className="home-welcome-text" textAlign="center">
+            <Typography component="h1" className="home-welcome-text" textAlign="center">
               {t('home.welcome')}
+            </Typography>
+            <Typography component="p" className="home-intro-text" textAlign="center">
+              {t('home.intro')}
             </Typography>
             <Typography className="home-confidential-text" textAlign="center">
               {t('home.confidential')}
@@ -40,7 +42,8 @@ export default function HomePage() {
                 variant="contained"
                 className="home-action-btn"
                 startIcon={<SearchIcon />}
-                onClick={() => navigate('/filter')}
+                component={Link}
+                to="/filter"
               >
                 {t('nav.browse')}
               </Button>
@@ -48,7 +51,8 @@ export default function HomePage() {
                 variant="contained"
                 className="home-action-btn"
                 startIcon={<EditNoteIcon />}
-                onClick={() => navigate('/submit')}
+                component={Link}
+                to="/submit"
               >
                 {t('nav.submit')}
               </Button>

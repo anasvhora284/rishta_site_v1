@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import AdminPageLayout from '@/components/admin/AdminPageLayout'
+import AdminExportDialog from '@/components/admin/AdminExportDialog'
 import AdminProfileDrawer from '@/components/admin/AdminProfileDrawer'
 import AdminProfileListDesktop from '@/components/admin/AdminProfileListDesktop'
 import AdminProfileListMobile from '@/components/admin/AdminProfileListMobile'
@@ -44,6 +45,7 @@ export default function AdminDashboardPage() {
   const drawerEditMode = searchParams.get('mode') === 'edit'
 
   const [drawerOpen, setDrawerOpen] = useState(false)
+  const [exportDialogOpen, setExportDialogOpen] = useState(false)
 
   const { actionError, approve, reject, merge, hide, show } = useAdminProfileActions({
     userId,
@@ -128,6 +130,7 @@ export default function AdminDashboardPage() {
         error={error}
         actionError={actionError}
         isSuperUser={isSuperUser}
+        onExportExcel={() => setExportDialogOpen(true)}
         onManageAdmins={() => navigate('/admin/manage')}
         onResetPassword={() => navigate('/admin/reset-password')}
         onSignOut={() => void handleSignOut()}
@@ -153,6 +156,16 @@ export default function AdminDashboardPage() {
           />
         )}
       </AdminShell>
+
+      <AdminExportDialog
+        open={exportDialogOpen}
+        onClose={() => setExportDialogOpen(false)}
+        profiles={profiles}
+        filteredProfiles={filteredProfiles}
+        currentTab={tab}
+        searchQuery={search}
+        stats={stats}
+      />
 
       {!isMobile && (
         <AdminProfileDrawer

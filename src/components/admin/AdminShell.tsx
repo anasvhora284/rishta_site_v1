@@ -2,6 +2,7 @@ import SearchIcon from '@mui/icons-material/Search'
 import LogoutIcon from '@mui/icons-material/Logout'
 import LockResetIcon from '@mui/icons-material/LockReset'
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts'
+import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined'
 import { Alert, Box, Button, InputAdornment, TextField, Typography } from '@mui/material'
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -18,6 +19,7 @@ interface AdminShellProps {
   error?: string | null
   actionError?: string
   isSuperUser?: boolean
+  onExportExcel?: () => void
   onManageAdmins?: () => void
   onResetPassword?: () => void
   onSignOut: () => void
@@ -34,6 +36,7 @@ export default function AdminShell({
   error,
   actionError,
   isSuperUser = false,
+  onExportExcel,
   onManageAdmins,
   onResetPassword,
   onSignOut,
@@ -60,6 +63,17 @@ export default function AdminShell({
           }}
         />
         <Box className="admin-toolbar__actions">
+          {onExportExcel && (
+            <Button
+              variant="outlined"
+              size="small"
+              className="admin-btn admin-btn--export"
+              startIcon={<FileDownloadOutlinedIcon />}
+              onClick={onExportExcel}
+            >
+              {t('admin.exportExcel')}
+            </Button>
+          )}
           <Button
             variant="outlined"
             size="small"

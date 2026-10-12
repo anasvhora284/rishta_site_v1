@@ -257,7 +257,32 @@
     "resetGateNotConfigured": "પાસવર્ડ રીસેટ કોન્ફિગર નથી. સુપરયુઝરનો સંપર્ક કરો.",
     "resetPasswordTooShort": "પાસવર્ડ ઓછામાં ઓછા 8 અક્ષરનો હોવો જોઈએ",
     "resetPasswordMismatch": "પાસવર્ડ મેળ ખાતા નથી",
-    "resetPasswordSuccess": "પાસવર્ડ સફળતાપૂર્વક અપડેટ થયો"
+    "resetPasswordSuccess": "પાસવર્ડ સફળતાપૂર્વક અપડેટ થયો",
+    "exportExcel": "એક્સેલ ડાઉનલોડ",
+    "export": {
+      "button": "એક્સેલ ડાઉનલોડ",
+      "buttonTooltip": "પ્રોફાઇલ્સ ડેટા એક્સેલમાં ડાઉનલોડ કરો",
+      "dialogTitle": "પ્રોફાઇલ્સ એક્સેલ ડાઉનલોડ",
+      "dialogSubtitle": "પસંદગી મુજબ પ્રોફાઇલ્સનો સંપૂર્ણ ડેટા Excel (.xlsx) ફાઇલમાં ડાઉનલોડ કરો.",
+      "scopeTitle": "કયા પ્રોફાઇલ્સ એક્સપોર્ટ કરવા છે?",
+      "scopeAll": "તમામ પ્રોફાઇલ્સ ({{count}})",
+      "scopeApproved": "અપ્રૂવ્ડ પ્રોફાઇલ્સ ({{count}})",
+      "scopePending": "પેન્ડિંગ પ્રોફાઇલ્સ ({{count}})",
+      "scopeRejected": "રિજેક્ટેડ પ્રોફાઇલ્સ ({{count}})",
+      "scopeHidden": "હિડન / છુપાયેલ પ્રોફાઇલ્સ ({{count}})",
+      "scopeFiltered": "હાલનું પરિણામ ({{count}})",
+      "allSheetsHint": "બધા સ્ટેટસ અલગ-અલગ ટેબ/શીટ સાથે",
+      "languageTitle": "એક્સેલ હેડર્સ અને ભાષા",
+      "langGu": "ગુજરાતી (Gujarati)",
+      "langEn": "અંગ્રેજી (English)",
+      "summary": "કુલ {{count}} પ્રોફાઇલ એક્સપોર્ટ કરવા માટે તૈયાર છે",
+      "fieldsIncludedNote": "સંપૂર્ણ વિગતો શામેલ: નામ, ઉંમર, DOB, અભ્યાસ, વ્યવસાય, શહેર, અટક, માતા-પિતા, WhatsApp સંપર્ક, મેરિટલ સ્ટેટસ વગેરે.",
+      "noProfiles": "પસંદ કરેલ વિકલ્પ માટે કોઈ પ્રોફાઇલ નથી.",
+      "downloading": "એક્સેલ ફાઇલ તૈયાર થઈ રહી છે...",
+      "downloadButton": "ડાઉનલોડ કરો ({{count}} પ્રોફાઇલ)",
+      "successTitle": "ડાઉનલોડ સફળ!",
+      "success": "{{count}} પ્રોફાઇલ્સ સાથે '{{filename}}' સફળતાપૂર્વક ડાઉનલોડ થઈ ગઈ છે."
+    }
   },
   "team": {
     "chief": "ચીફ",

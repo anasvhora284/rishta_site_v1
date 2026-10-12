@@ -257,7 +257,32 @@
     "resetGateNotConfigured": "Password reset is not configured. Contact the superuser.",
     "resetPasswordTooShort": "Password must be at least 8 characters",
     "resetPasswordMismatch": "Passwords do not match",
-    "resetPasswordSuccess": "Password updated successfully"
+    "resetPasswordSuccess": "Password updated successfully",
+    "exportExcel": "Export Excel",
+    "export": {
+      "button": "Export Excel",
+      "buttonTooltip": "Export profiles to Excel",
+      "dialogTitle": "Export Profiles to Excel",
+      "dialogSubtitle": "Download comprehensive matrimonial profile data in Excel (.xlsx) format.",
+      "scopeTitle": "Select profiles to export",
+      "scopeAll": "All Profiles ({{count}})",
+      "scopeApproved": "Approved Profiles ({{count}})",
+      "scopePending": "Pending Profiles ({{count}})",
+      "scopeRejected": "Rejected Profiles ({{count}})",
+      "scopeHidden": "Hidden Profiles ({{count}})",
+      "scopeFiltered": "Current Filtered Results ({{count}})",
+      "allSheetsHint": "Includes separate tabs for each status",
+      "languageTitle": "Excel Column Headers & Language",
+      "langGu": "Gujarati (ગુજરાતી)",
+      "langEn": "English",
+      "summary": "Total {{count}} profile(s) ready to export",
+      "fieldsIncludedNote": "Includes full details: Name, Age, DOB, Education, Occupation, City, Sub Caste, Parents, WhatsApp contact, Marital status, etc.",
+      "noProfiles": "No profiles to export for the selected option.",
+      "downloading": "Generating Excel file...",
+      "downloadButton": "Download Excel ({{count}} profiles)",
+      "successTitle": "Download Complete!",
+      "success": "Successfully downloaded '{{filename}}' with {{count}} profile(s)."
+    }
   },
   "team": {
     "chief": "Chief",
